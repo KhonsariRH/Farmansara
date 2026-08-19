@@ -72,24 +72,11 @@ app) to pick up your changes as the new starting point.
 
 ## Deploying
 
-### Cloudflare Pages (recommended — gets you `farmansara.pages.dev`)
-
-No repo required:
-
-1. Go to the [Cloudflare dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create** → **Pages** → **Upload assets**.
-2. Name the project `farmansara` (this is what determines the
-   `farmansara.pages.dev` subdomain).
-3. Drag in this whole folder (or a zip of it) and deploy.
-4. To update later: re-upload the folder from the same Pages project, or
-   connect it to a git repo from the project's **Settings** if you want
-   auto-deploys on push.
-
-### GitHub Pages (alternative)
-
-If you'd rather host it from a GitHub repo, `.github/workflows/deploy-pages.yml`
-is already set up to publish to GitHub Pages on every push to `main`. Push
-this folder to a new repo, then enable it once under the repo's
-**Settings → Pages → Source → GitHub Actions**.
+This site is deployed via **Cloudflare** (Workers & Pages), connected to
+this repo's `main` branch — every push auto-deploys, live at
+`farmansara.roman-khonsari.workers.dev`. Manage it from the
+[Cloudflare dashboard](https://dash.cloudflare.com/) under **Workers & Pages
+→ farmansara**.
 
 ## Tech
 
