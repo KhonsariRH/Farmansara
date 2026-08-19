@@ -596,7 +596,7 @@
         container.innerHTML = '';
 
         const nodeWidth = 160;
-        const nodeHeight = 130;
+        const nodeHeight = 175;
 
         const root = d3.hierarchy(window.SEED_QAJAR_REFERENCE);
         const hasAnySpouse = root.descendants().some(d => !!d.data.spouse);

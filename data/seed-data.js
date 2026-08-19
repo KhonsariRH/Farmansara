@@ -777,155 +777,156 @@ window.SEED_FAMILY_TREE = {
 };
 
 window.SEED_QAJAR_REFERENCE = {
-    "id": "q-agha-mohammad-khan",
-    "name": "Agha Mohammad Khan",
-    "nameFa": "آقا محمد خان",
-    "born": 1742,
-    "died": 1797,
-    "note": "Founder of the Qajar dynasty.",
+    "id": "q-fath-ali-khan-ghovanlou",
+    "name": "Fath Ali Khan Ghovanlou Qajar",
+    "nameFa": "",
+    "born": null,
+    "died": 1726,
+    "note": "Qajar chief; father of Agha Mohammad Khan and of Hossein Gholi Khan, whose branches are both shown below per the genealogy book's \"Descent of the Qajar Rulers\" chart.",
+    "social": {},
+    "photo": null,
     "children": [
         {
-            "id": "q-qajar-branch-unconfirmed",
-            "name": "Qajar dynasty (exact branch not yet confirmed)",
-            "nameFa": "",
-            "born": null,
-            "died": null,
+            "id": "q-agha-mohammad-khan",
+            "name": "Agha Mohammad Khan",
+            "nameFa": "آقا محمد خان",
+            "born": 1734,
+            "died": 1797,
+            "note": "Founder of the Qajar dynasty; 1st Qajar Shah (reg. 1796-1797). Had no descendants -- the throne passed to his nephew, Fath-Ali Shah.",
             "social": {},
             "photo": null,
-            "note": "Placeholder grouping node -- not a real person. Ezzat-ed-Dowleh Qajar (below) is confirmed Qajar and confirmed as Farmanfarma's first wife, but her exact parentage within the dynasty is still unconfirmed, so she isn't nested under a specific Qajar Shah here. See her note for details.",
-            "children": [
-                {
-                    "id": "q-ezzat-ed-dowleh",
-                    "name": "Ezzat-ed-Dowleh Qajar (Dovom / 2nd)",
-                    "nameFa": "",
-                    "born": 1872,
-                    "died": null,
-                    "social": {},
-                    "photo": null,
-                    "note": "Farmanfarma's first wife -- her birth year (1872) matches the wife #1 birth year already recorded on the children in the family tree above. The genealogy book records her as \"Ezzat-ed-Dowleh Dovom\" (2nd), distinct from an earlier, unrelated Qajar princess of the same title who really was a daughter of Mohammad Shah (an earlier version of this chart wrongly conflated the two -- corrected here). The book also shows a dotted connecting line from her to a note reading roughly \"later wife of Naser al-Din Shah\", but the exact nature of that connection and her precise place in the Qajar lineage weren't legible enough in the photo to transcribe with confidence. Placed here provisionally pending a clearer photo of that page.",
-                    "spouse": {
-                        "name": "Abdol Hossein Mirza Farmanfarma",
-                        "photo": "images/people/farmanfarma-root.jpg",
-                        "linkToMainTree": "farmanfarma"
-                    },
-                    "children": []
-                }
-            ]
+            "children": []
         },
         {
-            "id": "q-fath-ali-shah",
-            "name": "Fath-Ali Shah",
-            "nameFa": "فتح‌علی شاه",
-            "born": 1772,
-            "died": 1834,
-            "note": "2nd Qajar Shah.",
+            "id": "q-hossein-gholi-khan",
+            "name": "Hossein Gholi Khan (the 1st)",
+            "nameFa": "",
+            "born": null,
+            "died": 1777,
+            "note": "Brother of Agha Mohammad Khan; father of Fath-Ali Shah -- corrected per the genealogy book's \"Descent of the Qajar Rulers\" chart (an earlier version of this chart had Fath-Ali Shah as Agha Mohammad Khan's own son).",
+            "social": {},
+            "photo": null,
             "children": [
                 {
-                    "id": "q-abbas-mirza",
-                    "name": "Abbas Mirza",
-                    "nameFa": "عباس میرزا",
-                    "born": 1789,
-                    "died": 1833,
-                    "note": "Crown Prince; died before he could reign.",
+                    "id": "q-fath-ali-shah",
+                    "name": "Fath-Ali Shah",
+                    "nameFa": "فتح‌علی شاه",
+                    "born": 1771,
+                    "died": 1834,
+                    "note": "2nd Qajar Shah (reg. 1797-1834). Nephew, not son, of Agha Mohammad Khan.",
+                    "social": {},
+                    "photo": null,
                     "children": [
                         {
-                            "id": "q-firuz-mirza-nosrat-ed-dowleh",
-                            "name": "Firuz Mirza Nosrat-ed-Dowleh I",
-                            "nameFa": "فیروز میرزا نصرت‌الدوله",
-                            "born": 1817,
-                            "died": 1886,
-                            "note": "16th son of Abbas Mirza. Qajar prince, military commander and administrator. Father of Abdol Hossein Mirza Farmanfarma -- confirmed directly by this branch of the original chart. Source: Wikipedia + original document.",
+                            "id": "q-abbas-mirza",
+                            "name": "Abbas Mirza",
+                            "nameFa": "عباس میرزا",
+                            "born": 1789,
+                            "died": 1833,
+                            "note": "Crown Prince; died before he could reign.",
                             "children": [
                                 {
-                                    "id": "q-firuz-child-1",
-                                    "name": "Eskandar (Nosrat-ed-Dowleh)",
-                                    "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "social": {},
-                                    "note": "Son of Firuz Mirza Nosrat-ed-Dowleh I -- a brother of Abdol Hossein Mirza Farmanfarma. Full name/title and dates still to be confirmed.",
-                                    "children": [],
-                                    "photo": null
-                                },
-                                {
-                                    "id": "q-firuz-child-3",
-                                    "name": "Massoumeh Kalantar",
-                                    "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "social": {},
-                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
-                                    "children": [],
-                                    "photo": null
-                                },
-                                {
-                                    "id": "q-firuz-child-4",
-                                    "name": "Hazrat Olia",
-                                    "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "social": {},
-                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
-                                    "children": [],
-                                    "photo": null
-                                },
-                                {
-                                    "id": "q-firuz-child-5",
-                                    "name": "Noshee Soltaneh",
-                                    "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "social": {},
-                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
-                                    "children": [],
-                                    "photo": null
-                                }
-                            ],
-                            "social": {
-                                "wikipedia": "https://en.wikipedia.org/wiki/Firuz_Mirza"
-                            },
-                            "photo": null
-                        },
-                        {
-                            "id": "q-mohammad-shah",
-                            "name": "Mohammad Shah",
-                            "nameFa": "محمد شاه",
-                            "born": 1808,
-                            "died": 1848,
-                            "note": "3rd Qajar Shah.",
-                            "children": [
-                                {
-                                    "id": "q-naser-al-din-shah",
-                                    "name": "Naser al-Din Shah",
-                                    "nameFa": "ناصرالدین شاه",
-                                    "born": 1831,
-                                    "died": 1896,
-                                    "note": "4th Qajar Shah.",
+                                    "id": "q-firuz-mirza-nosrat-ed-dowleh",
+                                    "name": "Firuz Mirza Nosrat-ed-Dowleh I",
+                                    "nameFa": "فیروز میرزا نصرت‌الدوله",
+                                    "born": 1817,
+                                    "died": 1886,
+                                    "note": "16th son of Abbas Mirza. Qajar prince, military commander and administrator. Father of Abdol Hossein Mirza Farmanfarma -- confirmed directly by this branch of the original chart. Source: Wikipedia + original document.",
                                     "children": [
                                         {
-                                            "id": "q-mozaffar-al-din-shah",
-                                            "name": "Mozaffar ad-Din Shah",
-                                            "nameFa": "مظفرالدین شاه",
-                                            "born": 1853,
-                                            "died": 1907,
-                                            "note": "5th Qajar Shah.",
+                                            "id": "q-firuz-child-1",
+                                            "name": "Eskandar (Nosrat-ed-Dowleh)",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "social": {},
+                                            "note": "Son of Firuz Mirza Nosrat-ed-Dowleh I -- a brother of Abdol Hossein Mirza Farmanfarma. Full name/title and dates still to be confirmed.",
+                                            "children": [],
+                                            "photo": null
+                                        },
+                                        {
+                                            "id": "q-firuz-child-3",
+                                            "name": "Massoumeh Kalantar",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "social": {},
+                                            "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
+                                            "children": [],
+                                            "photo": null
+                                        },
+                                        {
+                                            "id": "q-firuz-child-4",
+                                            "name": "Hazrat Olia",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "social": {},
+                                            "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
+                                            "children": [],
+                                            "photo": null
+                                        },
+                                        {
+                                            "id": "q-firuz-child-5",
+                                            "name": "Noshee Soltaneh",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "social": {},
+                                            "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
+                                            "children": [],
+                                            "photo": null
+                                        }
+                                    ],
+                                    "social": {
+                                        "wikipedia": "https://en.wikipedia.org/wiki/Firuz_Mirza"
+                                    },
+                                    "photo": null
+                                },
+                                {
+                                    "id": "q-mohammad-shah",
+                                    "name": "Mohammad Shah",
+                                    "nameFa": "محمد شاه",
+                                    "born": 1808,
+                                    "died": 1848,
+                                    "note": "3rd Qajar Shah.",
+                                    "children": [
+                                        {
+                                            "id": "q-naser-al-din-shah",
+                                            "name": "Naser al-Din Shah",
+                                            "nameFa": "ناصرالدین شاه",
+                                            "born": 1831,
+                                            "died": 1896,
+                                            "note": "4th Qajar Shah. The genealogy book shows a dotted \"later wife\" connection from one of his wives to Ezzat-ed-Dowleh Qajar (Dovom / 2nd) -- Farmanfarma's first wife, shown below under a provisional grouping node. See her note for details.",
                                             "children": [
                                                 {
-                                                    "id": "q-mohammad-ali-shah",
-                                                    "name": "Mohammad Ali Shah",
-                                                    "nameFa": "محمدعلی شاه",
-                                                    "born": 1872,
-                                                    "died": 1925,
-                                                    "note": "6th Qajar Shah.",
+                                                    "id": "q-mozaffar-al-din-shah",
+                                                    "name": "Mozaffar ad-Din Shah",
+                                                    "nameFa": "مظفرالدین شاه",
+                                                    "born": 1853,
+                                                    "died": 1907,
+                                                    "note": "5th Qajar Shah.",
                                                     "children": [
                                                         {
-                                                            "id": "q-ahmad-shah",
-                                                            "name": "Ahmad Shah",
-                                                            "nameFa": "احمد شاه",
-                                                            "born": 1898,
-                                                            "died": 1930,
-                                                            "note": "7th and last Qajar Shah.",
-                                                            "children": [],
+                                                            "id": "q-mohammad-ali-shah",
+                                                            "name": "Mohammad Ali Shah",
+                                                            "nameFa": "محمدعلی شاه",
+                                                            "born": 1872,
+                                                            "died": 1925,
+                                                            "note": "6th Qajar Shah.",
+                                                            "children": [
+                                                                {
+                                                                    "id": "q-ahmad-shah",
+                                                                    "name": "Ahmad Shah",
+                                                                    "nameFa": "احمد شاه",
+                                                                    "born": 1898,
+                                                                    "died": 1930,
+                                                                    "note": "7th and last Qajar Shah.",
+                                                                    "children": [],
+                                                                    "social": {},
+                                                                    "photo": null
+                                                                }
+                                                            ],
                                                             "social": {},
                                                             "photo": null
                                                         }
@@ -942,20 +943,42 @@ window.SEED_QAJAR_REFERENCE = {
                                     "photo": null
                                 }
                             ],
-                            "social": {},
+                            "social": {
+                                "wikipedia": "https://en.wikipedia.org/wiki/Abbas_Mirza"
+                            },
                             "photo": null
                         }
-                    ],
-                    "social": {
-                        "wikipedia": "https://en.wikipedia.org/wiki/Abbas_Mirza"
-                    },
-                    "photo": null
+                    ]
                 }
-            ],
+            ]
+        },
+        {
+            "id": "q-qajar-branch-unconfirmed",
+            "name": "Qajar dynasty (exact branch not yet confirmed)",
+            "nameFa": "",
+            "born": null,
+            "died": null,
             "social": {},
-            "photo": null
+            "photo": null,
+            "note": "Placeholder grouping node -- not a real person. Ezzat-ed-Dowleh Qajar (below) is confirmed Qajar and confirmed as Farmanfarma's first wife, but her exact parentage within the dynasty is still unconfirmed, so she isn't nested under a specific Qajar Shah here. See her note for details.",
+            "children": [
+                {
+                    "id": "q-ezzat-ed-dowleh",
+                    "name": "Ezzat-ed-Dowleh Qajar (Dovom / 2nd)",
+                    "nameFa": "",
+                    "born": 1872,
+                    "died": 1955,
+                    "social": {},
+                    "photo": null,
+                    "note": "Farmanfarma's first wife -- her birth and death years (1872-1955) are confirmed by the genealogy book, and 1872 matches the wife #1 birth year already recorded on the children in the family tree above. The book records her as \"Ezzat-ed-Dowleh Dovom\" (2nd), distinct from an earlier, unrelated Qajar princess of the same title who really was a daughter of Mohammad Shah and married Amir Kabir (an earlier version of this chart wrongly conflated the two -- corrected here). The book's \"Descent of the Qajar Rulers\" chart also shows a dotted connecting line from her to a note reading \"later wife of Naser al-Din Shah\", near his wife Shokouh-es-Saltaneh -- suggesting she later also became one of Naser al-Din Shah's wives. Her exact place in the Qajar lineage (whose daughter she was) is still not confirmed, so she's kept here provisionally rather than nested under a specific ancestor.",
+                    "spouse": {
+                        "name": "Abdol Hossein Mirza Farmanfarma",
+                        "photo": "images/people/farmanfarma-root.jpg",
+                        "linkToMainTree": "farmanfarma"
+                    },
+                    "children": []
+                }
+            ]
         }
-    ],
-    "social": {},
-    "photo": null
+    ]
 };
