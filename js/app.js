@@ -9,6 +9,7 @@
 
     let tree = loadTree();
     let selectedId = tree.id;
+    let pendingFocusScale = null;
     let byId = new Map();     // id -> node
     let parentOf = new Map(); // id -> parent node (or null for root)
     rebuildIndex();
@@ -146,22 +147,77 @@
     /* ---------------------------------------------------------------- */
 
     const detailPanel = document.getElementById('detail-panel');
+    const detailPhoto = document.getElementById('detail-photo');
     const detailName = document.getElementById('detail-name');
     const detailNameFa = document.getElementById('detail-name-fa');
     const detailDates = document.getElementById('detail-dates');
+    const detailChildNumber = document.getElementById('detail-child-number');
+    const detailMother = document.getElementById('detail-mother');
     const detailNote = document.getElementById('detail-note');
+    const detailDescendants = document.getElementById('detail-descendants');
+    const detailSiblings = document.getElementById('detail-siblings');
+    const detailSiblingsList = document.getElementById('detail-siblings-list');
+
+    function renderAvatar(container, node, sizeClass) {
+        container.innerHTML = '';
+        if (node.photo) {
+            const img = document.createElement('img');
+            img.src = node.photo;
+            img.alt = '';
+            container.appendChild(img);
+        } else {
+            container.textContent = (node.name || '?').trim().charAt(0).toUpperCase();
+        }
+    }
+
+    function siblingsBySameMother(id) {
+        const node = byId.get(id);
+        const parent = parentOf.get(id);
+        if (!node || !parent || !node.mother) return [];
+        return (parent.children || []).filter(c => c.id !== id && c.mother && c.mother === node.mother);
+    }
 
     function renderDetail(id) {
         const node = byId.get(id);
         if (!node) { detailPanel.hidden = true; return; }
+        renderAvatar(detailPhoto, node);
         detailName.textContent = node.name;
         detailNameFa.textContent = node.nameFa || '';
         detailNameFa.hidden = !node.nameFa;
         const dates = [node.born, node.died].filter(d => d !== null && d !== undefined && d !== '');
         detailDates.textContent = dates.length ? `${node.born ?? '?'} – ${node.died ?? '?'}` : '';
         detailDates.hidden = dates.length === 0;
+        detailChildNumber.textContent = node.childNumber ? `Birth order: ${node.childNumber}` : '';
+        detailChildNumber.hidden = !node.childNumber;
+        detailMother.innerHTML = node.mother ? `<strong>Mother:</strong> ${escapeHtml(node.mother)}` : '';
+        detailMother.hidden = !node.mother;
         detailNote.textContent = node.note || '';
         detailNote.hidden = !node.note;
+
+        const descCount = countDescendants(node);
+        if (descCount > 0) {
+            detailDescendants.textContent = `${descCount} descendant${descCount > 1 ? 's' : ''} →`;
+            detailDescendants.hidden = false;
+            detailDescendants.onclick = () => focusSubtree(id);
+        } else {
+            detailDescendants.hidden = true;
+        }
+
+        const siblings = siblingsBySameMother(id);
+        if (siblings.length > 0) {
+            detailSiblingsList.innerHTML = '';
+            siblings.forEach(sib => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = sib.name;
+                btn.addEventListener('click', () => selectPerson(sib.id, true));
+                detailSiblingsList.appendChild(btn);
+            });
+            detailSiblings.hidden = false;
+        } else {
+            detailSiblings.hidden = true;
+        }
+
         detailPanel.hidden = false;
     }
 
@@ -174,9 +230,20 @@
     function selectPerson(id, focusTree) {
         if (!byId.has(id)) return;
         selectedId = id;
+        pendingFocusScale = null;
         renderPosition(id);
         renderDetail(id);
         renderTree(focusTree);
+    }
+
+    function focusSubtree(id) {
+        if (!byId.has(id)) return;
+        const count = countDescendants(byId.get(id));
+        pendingFocusScale = Math.max(1, Math.min(2.5, 3 / Math.sqrt(count + 1)));
+        selectedId = id;
+        renderPosition(id);
+        renderDetail(id);
+        renderTree(true);
     }
 
     /* ---------------------------------------------------------------- */
@@ -227,10 +294,29 @@
             .selectAll('g')
             .data(root.descendants())
             .join('g')
-            .attr('class', d => 'node' + (d.data.id === selectedId ? ' selected' : '') + (pathIds.has(d.data.id) ? ' highlighted' : ''))
+            .attr('class', d => 'node' + (d.data.id === selectedId ? ' selected' : '') + (pathIds.has(d.data.id) ? ' highlighted' : '') + (d.data.photo ? ' has-photo' : ''))
             .attr('transform', d => `rotate(${(d.x * 180 / Math.PI) - 90}) translate(${d.y},0)`)
             .style('cursor', 'pointer')
             .on('click', (event, d) => { event.stopPropagation(); selectPerson(d.data.id, false); });
+
+        const defs = gZoom.append('defs');
+        node.filter(d => !!d.data.photo).each(function (d) {
+            const r = d.data.id === tree.id ? 8 : 5;
+            defs.append('clipPath')
+                .attr('id', `clip-${d.data.id}`)
+                .append('circle')
+                .attr('r', r);
+        });
+
+        node.filter(d => !!d.data.photo)
+            .append('image')
+            .attr('href', d => d.data.photo)
+            .attr('x', d => -(d.data.id === tree.id ? 8 : 5))
+            .attr('y', d => -(d.data.id === tree.id ? 8 : 5))
+            .attr('width', d => (d.data.id === tree.id ? 16 : 10))
+            .attr('height', d => (d.data.id === tree.id ? 16 : 10))
+            .attr('preserveAspectRatio', 'xMidYMid slice')
+            .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
         node.append('circle').attr('r', d => d.data.id === tree.id ? 8 : 5);
 
@@ -244,14 +330,16 @@
         if (focusSelected) {
             const target = root.descendants().find(d => d.data.id === selectedId);
             if (target) {
+                const scale = pendingFocusScale || 1;
                 const angle = target.x - Math.PI / 2;
-                const tx = -Math.cos(angle) * target.y;
-                const ty = -Math.sin(angle) * target.y;
+                const tx = -Math.cos(angle) * target.y * scale;
+                const ty = -Math.sin(angle) * target.y * scale;
                 svg.transition().duration(500).call(
                     zoomBehavior.transform,
-                    d3.zoomIdentity.translate(tx, ty)
+                    d3.zoomIdentity.translate(tx, ty).scale(scale)
                 );
             }
+            pendingFocusScale = null;
         }
     }
 
@@ -271,25 +359,46 @@
     const fieldNameFa = document.getElementById('field-name-fa');
     const fieldBorn = document.getElementById('field-born');
     const fieldDied = document.getElementById('field-died');
+    const fieldChildNumber = document.getElementById('field-child-number');
+    const fieldMother = document.getElementById('field-mother');
     const fieldNote = document.getElementById('field-note');
+    const fieldPhoto = document.getElementById('field-photo');
+    const fieldPhotoPreview = document.getElementById('field-photo-preview');
     const editModalTitle = document.getElementById('edit-modal-title');
 
     let editMode = null; // 'add' | 'edit'
+    let pendingPhoto; // undefined = unchanged, null = cleared, string = new data URL
 
     function openModal(mode) {
         editMode = mode;
+        pendingPhoto = undefined;
         editModalTitle.textContent = mode === 'add' ? 'Add child' : 'Edit person';
         const current = mode === 'edit' ? byId.get(selectedId) : null;
         fieldName.value = current ? current.name : '';
         fieldNameFa.value = current ? (current.nameFa || '') : '';
         fieldBorn.value = current && current.born != null ? current.born : '';
         fieldDied.value = current && current.died != null ? current.died : '';
+        fieldChildNumber.value = current ? (current.childNumber || '') : '';
+        fieldMother.value = current ? (current.mother || '') : '';
         fieldNote.value = current ? (current.note || '') : '';
+        fieldPhoto.value = '';
+        renderAvatar(fieldPhotoPreview, current || { name: fieldName.value || '?' });
         modal.hidden = false;
         fieldName.focus();
     }
 
     function closeModal() { modal.hidden = true; editMode = null; }
+
+    fieldPhoto.addEventListener('change', () => {
+        const file = fieldPhoto.files[0];
+        if (!file) { pendingPhoto = null; return; }
+        const reader = new FileReader();
+        reader.onload = () => {
+            pendingPhoto = reader.result;
+            renderAvatar(fieldPhotoPreview, { photo: pendingPhoto, name: fieldName.value });
+        };
+        reader.readAsDataURL(file);
+    });
 
     document.getElementById('btn-add-child').addEventListener('click', () => openModal('add'));
     document.getElementById('btn-add-root-child').addEventListener('click', () => openModal('add'));
@@ -304,13 +413,16 @@
             nameFa: fieldNameFa.value.trim(),
             born: fieldBorn.value === '' ? null : Number(fieldBorn.value),
             died: fieldDied.value === '' ? null : Number(fieldDied.value),
+            childNumber: fieldChildNumber.value.trim(),
+            mother: fieldMother.value.trim(),
             note: fieldNote.value.trim()
         };
         if (!values.name) return;
+        if (pendingPhoto !== undefined) values.photo = pendingPhoto;
 
         if (editMode === 'add') {
             const parent = byId.get(selectedId);
-            const newNode = { id: slugify(values.name), children: [], ...values };
+            const newNode = { id: slugify(values.name), children: [], photo: null, ...values };
             (parent.children ||= []).push(newNode);
             rebuildIndex();
             saveTree();

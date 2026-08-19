@@ -28,6 +28,7 @@ window.SEED_FAMILY_TREE = {
     nameFa: 'شاهزاده عبدالحسین میرزا فرمانفرما',
     born: 1857,
     died: 1939,
+    photo: null,
     note: 'Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered at least 36 children (sources vary, up to 39) by 8 wives — only the handful below have independently verifiable Wikipedia articles; the rest still need to come from the original chart or family records, since the photo\'s handwriting could not be read reliably. Root of this family tree. Source: Wikipedia.',
     children: [
         {
@@ -36,7 +37,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1890,
             died: 1935,
-            note: '2nd son (mother: Princess Ezzat-ed-Dowleh Qajar). Source: Wikipedia — not yet matched to a name on the original chart.',
+            childNumber: '2nd son',
+            mother: 'Princess Ezzat-ed-Dowleh Qajar',
+            photo: null,
+            note: 'Source: Wikipedia — not yet matched to a name on the original chart.',
             children: []
         },
         {
@@ -45,7 +49,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1890,
             died: 1988,
-            note: '3rd son (mother: Princess Ezzat-ed-Dowleh). Represented Tabriz in the Majles from age 26; brought in American advisors (incl. Colonel Norman Schwarzkopf and Dr Arthur Millspaugh) to reform Iran\'s military, gendarmerie and finances. Source: Wikipedia.',
+            childNumber: '3rd son',
+            mother: 'Princess Ezzat-ed-Dowleh Qajar',
+            photo: null,
+            note: 'Represented Tabriz in the Majles from age 26; brought in American advisors (incl. Colonel Norman Schwarzkopf and Dr Arthur Millspaugh) to reform Iran\'s military, gendarmerie and finances. Source: Wikipedia.',
             children: []
         },
         {
@@ -54,7 +61,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1913,
             died: 2008,
-            note: 'Daughter (mother: Batoul Khanoum). Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women\'s section of Iran\'s Tudeh party, using her grandfather Firouz\'s name politically. Source: Wikipedia.',
+            childNumber: 'daughter',
+            mother: 'Batoul Khanoum',
+            photo: null,
+            note: 'Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women\'s section of Iran\'s Tudeh party, using her grandfather Firouz\'s name politically. Source: Wikipedia.',
             children: []
         },
         {
@@ -63,7 +73,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1914,
             died: null,
-            note: 'Daughter. Married Ali Ettehadieh (1901 Tabriz - 2000 Paris); their children include Mansoureh Ettehadieh (b. 1933). Source: Wikipedia.',
+            childNumber: 'daughter',
+            mother: '',
+            photo: null,
+            note: 'Married Ali Ettehadieh (1901 Tabriz - 2000 Paris); their children include Mansoureh Ettehadieh (b. 1933). Source: Wikipedia.',
             children: []
         },
         {
@@ -72,7 +85,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1920,
             died: 2013,
-            note: 'Son (mother probably Batoul Khanoum, per sourcing on his brother Abdol-Ali - not certain). Architect. Source: Wikipedia.',
+            childNumber: 'son',
+            mother: 'Batoul Khanoum (probable — per sourcing on his brother Abdol-Ali, not certain)',
+            photo: null,
+            note: 'Architect. Source: Wikipedia.',
             children: []
         },
         {
@@ -81,7 +97,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1921,
             died: 2012,
-            note: '15th of the 36 children; 3rd of 9 by her mother Massoumeh Khanum Tafreshi. First Iranian student at USC; pioneer of social work in Iran, founded the Tehran School of Social Work, became known as the "mother of social work" in Iran. Source: Wikipedia.',
+            childNumber: '15th of 36 children (3rd of 9 by her mother)',
+            mother: 'Massoumeh Khanum Tafreshi',
+            photo: null,
+            note: 'First Iranian student at USC; pioneer of social work in Iran, founded the Tehran School of Social Work, became known as the "mother of social work" in Iran. Source: Wikipedia.',
             children: []
         },
         {
@@ -90,7 +109,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1928,
             died: 2015,
-            note: 'Son (mother: Hamdam Khanoum). Governor of the Central Bank of Iran from 1968 (age 40); chief architect of Iran\'s 1960s economic boom. Fled to London in the 1979 revolution. Source: Wikipedia.',
+            childNumber: 'son',
+            mother: 'Hamdam Khanoum',
+            photo: null,
+            note: 'Governor of the Central Bank of Iran from 1968 (age 40); chief architect of Iran\'s 1960s economic boom. Fled to London in the 1979 revolution. Source: Wikipedia.',
             children: []
         },
         {
@@ -99,7 +121,10 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1929,
             died: 2016,
-            note: 'Son (mother: Hamdam Khanoum). Biologist (Reed College BA 1952; Stanford MS/PhD); founded the physiology department at Shiraz University (1961-67), later professor at Rutgers and visiting professor at Princeton. Source: Wikipedia.',
+            childNumber: 'son',
+            mother: 'Hamdam Khanoum',
+            photo: null,
+            note: 'Biologist (Reed College BA 1952; Stanford MS/PhD); founded the physiology department at Shiraz University (1961-67), later professor at Rutgers and visiting professor at Princeton. Source: Wikipedia.',
             children: []
         },
         {
@@ -108,11 +133,14 @@ window.SEED_FAMILY_TREE = {
             nameFa: '',
             born: 1935,
             died: 1973,
-            note: 'Youngest son (mother: Batoul Khanoum). Oxford-educated businessman; co-founded the Naft-e Pars petrochemical company and the Chamber of Industries. Died in a skiing avalanche at Dizin. Source: Wikipedia.',
+            childNumber: 'youngest son',
+            mother: 'Batoul Khanoum',
+            photo: null,
+            note: 'Oxford-educated businessman; co-founded the Naft-e Pars petrochemical company and the Chamber of Industries. Died in a skiing avalanche at Dizin. Source: Wikipedia.',
             children: [
-                { id: 'mariam-abdol-ali', name: 'Mariam Farman Farmaian', nameFa: '', born: null, died: null, note: 'Daughter of Abdol-Ali Mirza. Source: Wikipedia.', children: [] },
-                { id: 'salman-abdol-ali', name: 'Salman Farman Farmaian', nameFa: '', born: null, died: null, note: 'Son of Abdol-Ali Mirza. Source: Wikipedia.', children: [] },
-                { id: 'abu-ali-abdol-ali', name: 'Abu-Ali Farman Farmaian', nameFa: '', born: null, died: null, note: 'Son of Abdol-Ali Mirza. Source: Wikipedia.', children: [] }
+                { id: 'mariam-abdol-ali', name: 'Mariam Farman Farmaian', nameFa: '', born: null, died: null, childNumber: 'daughter', mother: '', photo: null, note: 'Daughter of Abdol-Ali Mirza. Source: Wikipedia.', children: [] },
+                { id: 'salman-abdol-ali', name: 'Salman Farman Farmaian', nameFa: '', born: null, died: null, childNumber: 'son', mother: '', photo: null, note: 'Son of Abdol-Ali Mirza. Source: Wikipedia.', children: [] },
+                { id: 'abu-ali-abdol-ali', name: 'Abu-Ali Farman Farmaian', nameFa: '', born: null, died: null, childNumber: 'son', mother: '', photo: null, note: 'Son of Abdol-Ali Mirza. Source: Wikipedia.', children: [] }
             ]
         }
     ]
