@@ -67,6 +67,7 @@
             <div id="detail-siblings-list"></div>
         </div>
         <div class="detail-actions">
+            <button id="btn-view-profile" type="button" class="primary">View full profile</button>
             <button id="btn-edit" type="button">Edit</button>
             <button id="btn-add-child" type="button">Add child</button>
             <button id="btn-delete" type="button" class="danger">Delete</button>
@@ -83,6 +84,42 @@
         <div id="reference-tree" class="reference-tree"></div>
     </section>
 </main>
+
+<section id="profile-view" class="profile-view" hidden>
+    <div class="profile-card panel">
+        <button id="btn-profile-back" type="button" class="profile-back">← Back to tree</button>
+        <div class="profile-header">
+            <div id="profile-photo" class="profile-photo"></div>
+            <div>
+                <span id="profile-spouse-badge" class="profile-spouse-badge" hidden>Married into the family</span>
+                <h1 id="profile-name"></h1>
+                <p id="profile-name-fa" class="name-fa" dir="rtl"></p>
+                <p id="profile-dates" class="profile-dates"></p>
+                <p id="profile-residence" class="profile-residence"></p>
+            </div>
+        </div>
+
+        <div id="profile-lineage" class="profile-lineage"></div>
+
+        <div class="profile-section">
+            <h2>Biography</h2>
+            <p id="profile-bio"></p>
+        </div>
+
+        <div id="profile-social" class="profile-social"></div>
+
+        <div class="profile-relations">
+            <div class="profile-relation-block">
+                <h2>Parent</h2>
+                <div id="profile-parent"></div>
+            </div>
+            <div class="profile-relation-block">
+                <h2>Children</h2>
+                <div id="profile-children"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div id="edit-modal" class="modal" hidden>
     <div class="modal-content">
@@ -114,7 +151,23 @@
             <label>Mother
                 <input type="text" id="field-mother">
             </label>
-            <label>Notes
+            <label>
+                <input type="checkbox" id="field-is-spouse" style="width:auto; display:inline-block; margin-right:0.4rem;">
+                Married into the family (spouse, not a blood descendant)
+            </label>
+            <label>Place of residence
+                <input type="text" id="field-residence" placeholder="e.g. Tehran, Iran">
+            </label>
+            <label>Website
+                <input type="url" id="field-website" placeholder="https://…">
+            </label>
+            <label>Instagram
+                <input type="text" id="field-instagram" placeholder="@handle or full URL">
+            </label>
+            <label>LinkedIn
+                <input type="text" id="field-linkedin" placeholder="Profile URL">
+            </label>
+            <label>Notes / bio
                 <textarea id="field-note" rows="3"></textarea>
             </label>
             <div class="modal-actions">

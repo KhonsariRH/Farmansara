@@ -114,9 +114,13 @@
         const gen = path.length - 1;
         const person = path[path.length - 1];
 
-        generationLine.textContent = gen === 0
-            ? `${person.name} is the root of the tree.`
-            : `${person.name} is generation ${gen} — a ${ordinalDescendant(gen)} of Prince Abdol Hossein Mirza Farmanfarma.`;
+        if (gen === 0) {
+            generationLine.textContent = `${person.name} is the root of the tree.`;
+        } else if (person.role === 'spouse') {
+            generationLine.textContent = `${person.name} married into the family.`;
+        } else {
+            generationLine.textContent = `${person.name} is generation ${gen} — a ${ordinalDescendant(gen)} of Prince Abdol Hossein Mirza Farmanfarma.`;
+        }
 
         ancestryPathEl.innerHTML = '';
         path.forEach((node, i) => {
@@ -187,10 +191,17 @@
         const dates = [node.born, node.died].filter(d => d !== null && d !== undefined && d !== '');
         detailDates.textContent = dates.length ? `${node.born ?? '?'} – ${node.died ?? '?'}` : '';
         detailDates.hidden = dates.length === 0;
-        detailChildNumber.textContent = node.childNumber ? `Birth order: ${node.childNumber}` : '';
-        detailChildNumber.hidden = !node.childNumber;
-        detailMother.innerHTML = node.mother ? `<strong>Mother:</strong> ${escapeHtml(node.mother)}` : '';
-        detailMother.hidden = !node.mother;
+        if (node.role === 'spouse') {
+            const parent = parentOf.get(id);
+            detailChildNumber.textContent = `Married into the family${parent ? ` — spouse of ${parent.name}` : ''}`;
+            detailChildNumber.hidden = false;
+            detailMother.hidden = true;
+        } else {
+            detailChildNumber.textContent = node.childNumber ? `Birth order: ${node.childNumber}` : '';
+            detailChildNumber.hidden = !node.childNumber;
+            detailMother.innerHTML = node.mother ? `<strong>Mother:</strong> ${escapeHtml(node.mother)}` : '';
+            detailMother.hidden = !node.mother;
+        }
         detailNote.textContent = node.note || '';
         detailNote.hidden = !node.note;
 
@@ -222,6 +233,7 @@
     }
 
     document.getElementById('btn-close-detail').addEventListener('click', () => { detailPanel.hidden = true; });
+    document.getElementById('btn-view-profile').addEventListener('click', () => { location.hash = '#p/' + selectedId; });
 
     /* ---------------------------------------------------------------- */
     /* Selection                                                          */
@@ -361,6 +373,11 @@
     const fieldDied = document.getElementById('field-died');
     const fieldChildNumber = document.getElementById('field-child-number');
     const fieldMother = document.getElementById('field-mother');
+    const fieldIsSpouse = document.getElementById('field-is-spouse');
+    const fieldResidence = document.getElementById('field-residence');
+    const fieldWebsite = document.getElementById('field-website');
+    const fieldInstagram = document.getElementById('field-instagram');
+    const fieldLinkedin = document.getElementById('field-linkedin');
     const fieldNote = document.getElementById('field-note');
     const fieldPhoto = document.getElementById('field-photo');
     const fieldPhotoPreview = document.getElementById('field-photo-preview');
@@ -380,6 +397,12 @@
         fieldDied.value = current && current.died != null ? current.died : '';
         fieldChildNumber.value = current ? (current.childNumber || '') : '';
         fieldMother.value = current ? (current.mother || '') : '';
+        fieldIsSpouse.checked = current ? current.role === 'spouse' : false;
+        fieldResidence.value = current ? (current.residence || '') : '';
+        const social = (current && current.social) || {};
+        fieldWebsite.value = social.website || '';
+        fieldInstagram.value = social.instagram || '';
+        fieldLinkedin.value = social.linkedin || '';
         fieldNote.value = current ? (current.note || '') : '';
         fieldPhoto.value = '';
         renderAvatar(fieldPhotoPreview, current || { name: fieldName.value || '?' });
@@ -415,6 +438,13 @@
             died: fieldDied.value === '' ? null : Number(fieldDied.value),
             childNumber: fieldChildNumber.value.trim(),
             mother: fieldMother.value.trim(),
+            role: fieldIsSpouse.checked ? 'spouse' : 'descendant',
+            residence: fieldResidence.value.trim(),
+            social: {
+                website: fieldWebsite.value.trim(),
+                instagram: fieldInstagram.value.trim(),
+                linkedin: fieldLinkedin.value.trim()
+            },
             note: fieldNote.value.trim()
         };
         if (!values.name) return;
@@ -535,9 +565,135 @@
     }
 
     /* ---------------------------------------------------------------- */
+    /* Profile page (hash-routed, e.g. #p/sattareh-farmanfarmaian)        */
+    /* ---------------------------------------------------------------- */
+
+    const mainEl = document.querySelector('main');
+    const profileView = document.getElementById('profile-view');
+    const profilePhoto = document.getElementById('profile-photo');
+    const profileSpouseBadge = document.getElementById('profile-spouse-badge');
+    const profileName = document.getElementById('profile-name');
+    const profileNameFa = document.getElementById('profile-name-fa');
+    const profileDates = document.getElementById('profile-dates');
+    const profileResidence = document.getElementById('profile-residence');
+    const profileLineage = document.getElementById('profile-lineage');
+    const profileBio = document.getElementById('profile-bio');
+    const profileSocial = document.getElementById('profile-social');
+    const profileParent = document.getElementById('profile-parent');
+    const profileChildren = document.getElementById('profile-children');
+
+    function socialHref(type, value) {
+        if (!value) return null;
+        if (/^https?:\/\//i.test(value)) return value;
+        if (type === 'instagram') return `https://instagram.com/${value.replace(/^@/, '')}`;
+        if (type === 'linkedin') return `https://www.linkedin.com/in/${value.replace(/^@/, '')}`;
+        return `https://${value}`;
+    }
+
+    function renderProfile(id) {
+        const node = byId.get(id);
+        if (!node) { location.hash = ''; return; }
+
+        renderAvatar(profilePhoto, node);
+        profileSpouseBadge.hidden = node.role !== 'spouse';
+        profileName.textContent = node.name;
+        profileNameFa.textContent = node.nameFa || '';
+        profileNameFa.hidden = !node.nameFa;
+        const dates = [node.born, node.died].filter(d => d !== null && d !== undefined && d !== '');
+        profileDates.textContent = dates.length ? `${node.born ?? '?'} – ${node.died ?? '?'}` : '';
+        profileDates.hidden = dates.length === 0;
+        profileResidence.textContent = node.residence || '';
+        profileResidence.hidden = !node.residence;
+
+        const lineageParts = [];
+        if (node.role === 'spouse') {
+            const parent = parentOf.get(id);
+            lineageParts.push(`Married into the family${parent ? ` — spouse of ${escapeHtml(parent.name)}` : ''}.`);
+        } else {
+            if (node.childNumber) lineageParts.push(`Birth order: ${escapeHtml(node.childNumber)}.`);
+            if (node.mother) lineageParts.push(`Mother: ${escapeHtml(node.mother)}.`);
+        }
+        profileLineage.innerHTML = lineageParts.join(' ');
+        profileLineage.hidden = lineageParts.length === 0;
+
+        profileBio.textContent = node.note || 'No biography recorded yet.';
+
+        profileSocial.innerHTML = '';
+        const social = node.social || {};
+        [['website', 'Website'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']].forEach(([key, label]) => {
+            const href = socialHref(key, social[key]);
+            if (!href) return;
+            const a = document.createElement('a');
+            a.href = href;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = label;
+            profileSocial.appendChild(a);
+        });
+
+        const parent = parentOf.get(id);
+        profileParent.innerHTML = '';
+        if (parent) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = parent.name;
+            btn.addEventListener('click', () => { location.hash = '#p/' + parent.id; });
+            profileParent.appendChild(btn);
+        } else {
+            profileParent.innerHTML = '<span class="profile-empty">Root of the tree</span>';
+        }
+
+        profileChildren.innerHTML = '';
+        const children = node.children || [];
+        if (children.length > 0) {
+            children.forEach(child => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = child.name;
+                btn.addEventListener('click', () => { location.hash = '#p/' + child.id; });
+                profileChildren.appendChild(btn);
+            });
+        } else {
+            profileChildren.innerHTML = '<span class="profile-empty">No children recorded yet.</span>';
+        }
+
+        selectedId = id;
+    }
+
+    function showProfileView(id) {
+        renderProfile(id);
+        mainEl.hidden = true;
+        profileView.hidden = false;
+        window.scrollTo(0, 0);
+    }
+
+    function hideProfileView() {
+        profileView.hidden = true;
+        mainEl.hidden = false;
+    }
+
+    document.getElementById('btn-profile-back').addEventListener('click', () => {
+        history.pushState('', document.title, location.pathname + location.search);
+        hideProfileView();
+        selectPerson(selectedId, true);
+    });
+
+    function checkRoute() {
+        const match = /^#p\/(.+)$/.exec(location.hash);
+        if (match && byId.has(decodeURIComponent(match[1]))) {
+            showProfileView(decodeURIComponent(match[1]));
+        } else {
+            hideProfileView();
+        }
+    }
+
+    window.addEventListener('hashchange', checkRoute);
+
+    /* ---------------------------------------------------------------- */
     /* Init                                                               */
     /* ---------------------------------------------------------------- */
 
     renderReferenceTree();
     selectPerson(tree.id, true);
+    checkRoute();
 })();
