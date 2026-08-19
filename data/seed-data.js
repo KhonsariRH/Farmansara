@@ -10,11 +10,11 @@
  *    That record's marriage/spouse claims for this generation were
  *    flagged as unreliable and were deliberately NOT imported -- only
  *    name, birth year, and mother came from it.
- * None of this has been matched back to a specific name/line on the
- * original hand-drawn chart yet -- the fan of ~36 names in that photo is
- * still too small to read reliably. Use the "Add child" editor in the
- * app to keep refining it, e.g. once the original chart or the "Shahzdeh's
- * Tree" family genealogy book can be read directly.
+ * The big radial fan of ~36 names on the original hand-drawn chart is
+ * still too small to read reliably and hasn't been cross-checked against
+ * this data yet. Use the "Add child" editor in the app to keep refining
+ * it, e.g. once the original chart or the "Shahzdeh's Tree" family
+ * genealogy book can be read directly.
  *
  * Each person can have: id, name, nameFa, born, died, photo (path or data
  * URL), residence, social ({wikipedia, website, instagram, linkedin} --
@@ -25,12 +25,13 @@
  *
  * SEED_QAJAR_REFERENCE is the separate reference chart shown on the left
  * of the original document (labelled "Etalon - Base"), transcribed from
- * the clearly legible portion of the photo. The four children under
- * "Salar Dowleh" were illegible in the photo and are left as placeholders
- * for you to fill in. Per Wikipedia, Farmanfarma's actual father was
- * Firuz Mirza Nosrat-ed-Dowleh I, the 16th son of Abbas Mirza — a
- * different line than Salar Dowleh — so this reference chart is still
- * kept separate from the main tree rather than merged in as ancestors.
+ * the legible portion of the photo. It renders as its own top-down
+ * box-and-line chart (see renderQajarChart in app.js). Its
+ * "Firuz Mirza Nosrat-ed-Dowleh I" branch includes Abdol Hossein Mirza
+ * Farmanfarma among its children -- confirmed directly by the original
+ * chart -- with a linkToMainTree id so clicking it jumps to the root of
+ * the interactive tree above. The other four children on that branch are
+ * best-effort readings of hard-to-read handwriting; please confirm.
  */
 
 window.SEED_FAMILY_TREE = {
@@ -42,7 +43,7 @@ window.SEED_FAMILY_TREE = {
     "photo": "images/people/farmanfarma-root.jpg",
     "residence": "Tehran, Persia",
     "social": {},
-    "note": "Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered at least 36 children (sources vary, up to 39) by 8 wives — only the handful below have independently verifiable Wikipedia articles; the rest still need to come from the original chart or family records, since the photo's handwriting could not be read reliably. Root of this family tree. Source: Wikipedia.",
+    "note": "Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered at least 36 children (sources vary, up to 39) by 8 wives — only some children below have independently verifiable Wikipedia articles or a family genealogy record; the rest of the original chart's ~36-name fan is still too small to read reliably. His parentage under Firuz Mirza Nosrat-ed-Dowleh I is now confirmed directly by the original chart's reference branch (see the Qajar dynasty chart below). Root of this family tree. Source: Wikipedia + original document.",
     "children": [
         {
             "id": "abbas-mirza-farman-farmaian",
@@ -815,55 +816,74 @@ window.SEED_QAJAR_REFERENCE = {
                     "note": "Crown Prince; died before he could reign.",
                     "children": [
                         {
-                            "id": "q-salar-dowleh",
-                            "name": "Prince Mirza Hassan Gholi Mirza (Salar Dowleh)",
-                            "nameFa": "میرزا حسنقلی میرزا (سالار دوله)",
-                            "born": null,
-                            "died": null,
-                            "note": "Names of his four children were illegible in the source photo — edit these placeholders once confirmed.",
+                            "id": "q-firuz-mirza-nosrat-ed-dowleh",
+                            "name": "Firuz Mirza Nosrat-ed-Dowleh I",
+                            "nameFa": "فیروز میرزا نصرت‌الدوله",
+                            "born": 1817,
+                            "died": 1886,
+                            "note": "16th son of Abbas Mirza. Qajar prince, military commander and administrator. Father of Abdol Hossein Mirza Farmanfarma -- confirmed directly by this branch of the original chart. Source: Wikipedia + original document.",
                             "children": [
                                 {
-                                    "id": "q-salar-dowleh-child-1",
-                                    "name": "(unread — edit me)",
+                                    "id": "q-firuz-child-1",
+                                    "name": "E. Majid Hasan Dowleh",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
-                                    "note": "",
+                                    "social": {},
+                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
                                     "children": [],
-                                    "social": {}
+                                    "photo": null
                                 },
                                 {
-                                    "id": "q-salar-dowleh-child-2",
-                                    "name": "(unread — edit me)",
+                                    "id": "q-abdol-hossein-farmanfarma-ref",
+                                    "name": "Abdol Hossein Mirza Farmanfarma",
                                     "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "note": "",
+                                    "born": 1857,
+                                    "died": 1939,
+                                    "social": {},
+                                    "note": "This is the root of the interactive family tree above -- click to jump there.",
                                     "children": [],
-                                    "social": {}
+                                    "linkToMainTree": "farmanfarma",
+                                    "photo": null
                                 },
                                 {
-                                    "id": "q-salar-dowleh-child-3",
-                                    "name": "(unread — edit me)",
+                                    "id": "q-firuz-child-3",
+                                    "name": "Massoumeh Kalantar",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
-                                    "note": "",
+                                    "social": {},
+                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
                                     "children": [],
-                                    "social": {}
+                                    "photo": null
                                 },
                                 {
-                                    "id": "q-salar-dowleh-child-4",
-                                    "name": "(unread — edit me)",
+                                    "id": "q-firuz-child-4",
+                                    "name": "Hazrat Olia",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
-                                    "note": "",
+                                    "social": {},
+                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
                                     "children": [],
-                                    "social": {}
+                                    "photo": null
+                                },
+                                {
+                                    "id": "q-firuz-child-5",
+                                    "name": "Noshee Soltaneh",
+                                    "nameFa": "",
+                                    "born": null,
+                                    "died": null,
+                                    "social": {},
+                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
+                                    "children": [],
+                                    "photo": null
                                 }
                             ],
-                            "social": {}
+                            "social": {
+                                "wikipedia": "https://en.wikipedia.org/wiki/Firuz_Mirza"
+                            },
+                            "photo": null
                         },
                         {
                             "id": "q-mohammad-shah",
@@ -905,28 +925,36 @@ window.SEED_QAJAR_REFERENCE = {
                                                             "died": 1930,
                                                             "note": "7th and last Qajar Shah.",
                                                             "children": [],
-                                                            "social": {}
+                                                            "social": {},
+                                                            "photo": null
                                                         }
                                                     ],
-                                                    "social": {}
+                                                    "social": {},
+                                                    "photo": null
                                                 }
                                             ],
-                                            "social": {}
+                                            "social": {},
+                                            "photo": null
                                         }
                                     ],
-                                    "social": {}
+                                    "social": {},
+                                    "photo": null
                                 }
                             ],
-                            "social": {}
+                            "social": {},
+                            "photo": null
                         }
                     ],
                     "social": {
                         "wikipedia": "https://en.wikipedia.org/wiki/Abbas_Mirza"
-                    }
+                    },
+                    "photo": null
                 }
             ],
-            "social": {}
+            "social": {},
+            "photo": null
         }
     ],
-    "social": {}
+    "social": {},
+    "photo": null
 };

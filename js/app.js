@@ -537,35 +537,106 @@
     });
 
     /* ---------------------------------------------------------------- */
-    /* Qajar reference chart (static, read-only tree render)             */
+    /* Qajar reference chart: top-down box-and-line org chart, D3-laid-out */
     /* ---------------------------------------------------------------- */
 
-    function renderReferenceTree() {
-        const container = document.getElementById('reference-tree');
+    function renderQajarChart() {
+        const container = document.getElementById('qajar-chart');
         container.innerHTML = '';
-        container.appendChild(buildRefList(window.SEED_QAJAR_REFERENCE));
-    }
 
-    function buildRefList(node) {
-        const ul = document.createElement('ul');
-        const li = document.createElement('li');
-        const dates = [node.born, node.died].filter(d => d !== null && d !== undefined) ;
-        li.innerHTML = `<span class="ref-node">
-            <span class="ref-name">${escapeHtml(node.name)}</span>
-            ${node.nameFa ? `<span class="ref-name-fa">${escapeHtml(node.nameFa)}</span>` : ''}
-            ${dates.length ? `<span class="ref-dates">(${node.born ?? '?'}–${node.died ?? '?'})</span>` : ''}
-            ${node.social && node.social.wikipedia ? `<a class="ref-dates" href="${escapeHtml(node.social.wikipedia)}" target="_blank" rel="noopener noreferrer">Wikipedia</a>` : ''}
-        </span>`;
-        if (node.note) {
-            const note = document.createElement('div');
-            note.className = 'ref-dates';
-            note.style.marginTop = '0.15rem';
-            note.textContent = node.note;
-            li.appendChild(note);
-        }
-        (node.children || []).forEach(child => li.appendChild(buildRefList(child)));
-        ul.appendChild(li);
-        return ul;
+        const nodeWidth = 160;
+        const nodeHeight = 130;
+
+        const root = d3.hierarchy(window.SEED_QAJAR_REFERENCE);
+        d3.tree().nodeSize([nodeWidth, nodeHeight])(root);
+
+        let minX = Infinity, maxX = -Infinity, maxY = 0;
+        root.each(d => {
+            minX = Math.min(minX, d.x);
+            maxX = Math.max(maxX, d.x);
+            maxY = Math.max(maxY, d.y);
+        });
+        const offsetX = -minX + nodeWidth / 2 + 20;
+        const totalWidth = (maxX - minX) + nodeWidth + 40;
+        const totalHeight = maxY + nodeHeight + 20;
+
+        container.style.width = totalWidth + 'px';
+        container.style.height = totalHeight + 'px';
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('class', 'qajar-links');
+        svg.setAttribute('width', totalWidth);
+        svg.setAttribute('height', totalHeight);
+        container.appendChild(svg);
+
+        root.links().forEach(link => {
+            const sx = link.source.x + offsetX, sy = link.source.y + 20 + 84;
+            const tx = link.target.x + offsetX, ty = link.target.y + 20;
+            const midY = (sy + ty) / 2;
+            const path = document.createElementNS(svgNS, 'path');
+            path.setAttribute('class', 'qajar-link');
+            path.setAttribute('d', `M${sx},${sy} V${midY} H${tx} V${ty}`);
+            svg.appendChild(path);
+        });
+
+        root.each(d => {
+            const node = d.data;
+            const isLink = !!node.linkToMainTree;
+            const div = document.createElement('div');
+            div.className = 'qajar-node' + (isLink ? ' linkable' : '');
+            div.style.left = (d.x + offsetX - nodeWidth / 2) + 'px';
+            div.style.top = (d.y + 20) + 'px';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'qajar-node-avatar';
+            renderAvatar(avatar, node);
+            div.appendChild(avatar);
+
+            const name = document.createElement('div');
+            name.className = 'qajar-node-name';
+            name.textContent = node.name;
+            div.appendChild(name);
+
+            if (node.nameFa) {
+                const nameFa = document.createElement('div');
+                nameFa.className = 'qajar-node-name-fa';
+                nameFa.dir = 'rtl';
+                nameFa.textContent = node.nameFa;
+                div.appendChild(nameFa);
+            }
+
+            const dates = [node.born, node.died].filter(v => v !== null && v !== undefined);
+            if (dates.length) {
+                const datesEl = document.createElement('div');
+                datesEl.className = 'qajar-node-dates';
+                datesEl.textContent = `${node.born ?? '?'}–${node.died ?? '?'}`;
+                div.appendChild(datesEl);
+            }
+
+            if (node.social && node.social.wikipedia) {
+                const a = document.createElement('a');
+                a.className = 'qajar-node-wiki';
+                a.href = node.social.wikipedia;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.textContent = 'Wikipedia';
+                a.addEventListener('click', (e) => e.stopPropagation());
+                div.appendChild(a);
+            }
+
+            if (isLink) {
+                div.title = 'Click to jump to the interactive tree above';
+                div.addEventListener('click', () => {
+                    selectPerson(node.linkToMainTree, true);
+                    mainEl.scrollIntoView({ behavior: 'smooth' });
+                });
+            } else if (node.note) {
+                div.title = node.note;
+            }
+
+            container.appendChild(div);
+        });
     }
 
     /* ---------------------------------------------------------------- */
@@ -701,7 +772,7 @@
     /* Init                                                               */
     /* ---------------------------------------------------------------- */
 
-    renderReferenceTree();
+    renderQajarChart();
     selectPerson(tree.id, true);
     checkRoute();
 })();
