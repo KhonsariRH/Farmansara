@@ -265,6 +265,53 @@
     const canvas = document.getElementById('tree-canvas');
     let svg, gZoom, zoomBehavior;
 
+    // Wife-group colors: a distinct color per wife, applied to G1 children (and,
+    // via their ancestry, their descendants) on the round tree only -- full
+    // formal names/mother text elsewhere are untouched.
+    const WIFE_COLORS = ['#2a9d8f', '#e76f51', '#457b9d', '#e9c46a', '#6a4c93', '#3a86ff', '#bc6c25'];
+
+    function wifeIndexOf(g1Node) {
+        const m = /\(wife #(\d+)/.exec((g1Node && g1Node.mother) || '');
+        return m ? parseInt(m[1], 10) : null;
+    }
+
+    function wifeColorForNode(id) {
+        const path = ancestryPath(id);
+        if (path.length < 2) return null; // the root itself has no wife group
+        const idx = wifeIndexOf(path[1]);
+        return idx ? WIFE_COLORS[(idx - 1) % WIFE_COLORS.length] : null;
+    }
+
+    function renderWifeLegend() {
+        const legend = document.getElementById('wife-legend');
+        const seen = new Map();
+        tree.children.forEach((c) => {
+            const idx = wifeIndexOf(c);
+            if (idx && !seen.has(idx)) {
+                seen.set(idx, c.mother.replace(/\s*\(wife #\d+.*\)$/, ''));
+            }
+        });
+        legend.innerHTML = '';
+        [...seen.entries()].sort((a, b) => a[0] - b[0]).forEach(([idx, name]) => {
+            const item = document.createElement('span');
+            item.className = 'wife-legend-item';
+            item.innerHTML = `<span class="wife-legend-swatch" style="background:${WIFE_COLORS[(idx - 1) % WIFE_COLORS.length]}"></span>${escapeHtml(name)}`;
+            legend.appendChild(item);
+        });
+    }
+
+    // Trim the repetitive shared surname/title so labels on the crowded round
+    // tree stay legible; full formal names remain everywhere else (search,
+    // detail panel, profile pages, exports).
+    const DROP_LEADING_WORDS = new Set(['prince', 'princess']);
+    const DROP_TRAILING_WORDS = new Set(['farmanfarmaian', 'farman-farmaian', 'farman', 'farmaian', 'farmanfarma', 'firouz']);
+    function shortDisplayName(fullName) {
+        const words = fullName.replace(/\s*\(.*?\)\s*$/, '').trim().split(/\s+/);
+        while (words.length > 1 && DROP_LEADING_WORDS.has(words[0].toLowerCase())) words.shift();
+        while (words.length > 1 && DROP_TRAILING_WORDS.has(words[words.length - 1].toLowerCase().replace(/[^a-z-]/g, ''))) words.pop();
+        return words.join(' ') || fullName;
+    }
+
     function initSvg() {
         canvas.innerHTML = '';
         svg = d3.select(canvas).append('svg');
@@ -283,6 +330,7 @@
         if (!svg) initSvg();
         svg.attr('viewBox', [-width / 2, -height / 2, width, height]);
         gZoom.selectAll('*').remove();
+        renderWifeLegend();
 
         const root = d3.hierarchy(tree);
         const treeLayout = d3.tree()
@@ -300,6 +348,7 @@
             .data(root.links())
             .join('path')
             .attr('class', d => 'link' + (pathIds.has(d.source.data.id) && pathIds.has(d.target.data.id) ? ' highlighted' : ''))
+            .style('stroke', d => (pathIds.has(d.source.data.id) && pathIds.has(d.target.data.id)) ? null : wifeColorForNode(d.target.data.id))
             .attr('d', linkGen);
 
         const node = gZoom.append('g')
@@ -330,14 +379,16 @@
             .attr('preserveAspectRatio', 'xMidYMid slice')
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
-        node.append('circle').attr('r', d => d.data.id === tree.id ? 8 : 5);
+        node.append('circle')
+            .attr('r', d => d.data.id === tree.id ? 8 : 5)
+            .style('stroke', d => d.data.id === selectedId ? null : wifeColorForNode(d.data.id));
 
         node.append('text')
             .attr('dy', '0.31em')
             .attr('x', d => (d.x < Math.PI === !d.children) ? 8 : -8)
             .attr('text-anchor', d => (d.x < Math.PI === !d.children) ? 'start' : 'end')
             .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
-            .text(d => d.data.name);
+            .text(d => shortDisplayName(d.data.name));
 
         if (focusSelected) {
             const target = root.descendants().find(d => d.data.id === selectedId);

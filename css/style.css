@@ -178,6 +178,17 @@ button.primary:hover { background: #a2005c; }
 button.danger { background: var(--primary); color: var(--danger); border: 1px solid var(--danger); }
 button.danger:hover { background: #fbe6e6; }
 
+.wife-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.78rem;
+    color: var(--accent-soft);
+}
+.wife-legend-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+.wife-legend-swatch { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
 .tree-canvas {
     flex: 1;
     min-height: 560px;
