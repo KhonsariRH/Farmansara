@@ -38,7 +38,8 @@ h1, h2 {
     color: var(--gold-light);
     padding: 1.5rem 2rem;
 }
-.crest { color: var(--gold); flex-shrink: 0; }
+.crest { flex-shrink: 0; display: flex; }
+.crest img { height: 64px; width: auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35)); }
 .header-text h1 { margin: 0; font-size: 1.6rem; color: #fff; }
 .subtitle { margin: 0.25rem 0 0; opacity: 0.85; font-style: italic; }
 
@@ -230,6 +231,8 @@ button.danger:hover { background: #fbe6e6; }
 .detail-dates { color: #7a6a4f; font-weight: 600; margin: 0.25rem 0; }
 .detail-note { font-size: 0.92rem; color: #4a4038; }
 .detail-actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+
+.inline-crest { height: 1.4em; width: auto; vertical-align: -0.35em; margin-right: 0.5rem; }
 
 /* Reference chart */
 .reference-note { color: #6b5d45; font-size: 0.9rem; margin-top: -0.25rem; }
