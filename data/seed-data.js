@@ -835,18 +835,6 @@ window.SEED_QAJAR_REFERENCE = {
                                     "photo": null
                                 },
                                 {
-                                    "id": "q-abdol-hossein-farmanfarma-ref",
-                                    "name": "Abdol Hossein Mirza Farmanfarma",
-                                    "nameFa": "",
-                                    "born": 1857,
-                                    "died": 1939,
-                                    "social": {},
-                                    "note": "This is the root of the interactive family tree above -- click to jump there.",
-                                    "children": [],
-                                    "linkToMainTree": "farmanfarma",
-                                    "photo": null
-                                },
-                                {
                                     "id": "q-firuz-child-3",
                                     "name": "Massoumeh Kalantar",
                                     "nameFa": "",
