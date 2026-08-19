@@ -785,6 +785,34 @@ window.SEED_QAJAR_REFERENCE = {
     "note": "Founder of the Qajar dynasty.",
     "children": [
         {
+            "id": "q-qajar-branch-unconfirmed",
+            "name": "Qajar dynasty (exact branch not yet confirmed)",
+            "nameFa": "",
+            "born": null,
+            "died": null,
+            "social": {},
+            "photo": null,
+            "note": "Placeholder grouping node -- not a real person. Ezzat-ed-Dowleh Qajar (below) is confirmed Qajar and confirmed as Farmanfarma's first wife, but her exact parentage within the dynasty is still unconfirmed, so she isn't nested under a specific Qajar Shah here. See her note for details.",
+            "children": [
+                {
+                    "id": "q-ezzat-ed-dowleh",
+                    "name": "Ezzat-ed-Dowleh Qajar (Dovom / 2nd)",
+                    "nameFa": "",
+                    "born": 1872,
+                    "died": null,
+                    "social": {},
+                    "photo": null,
+                    "note": "Farmanfarma's first wife -- her birth year (1872) matches the wife #1 birth year already recorded on the children in the family tree above. The genealogy book records her as \"Ezzat-ed-Dowleh Dovom\" (2nd), distinct from an earlier, unrelated Qajar princess of the same title who really was a daughter of Mohammad Shah (an earlier version of this chart wrongly conflated the two -- corrected here). The book also shows a dotted connecting line from her to a note reading roughly \"later wife of Naser al-Din Shah\", but the exact nature of that connection and her precise place in the Qajar lineage weren't legible enough in the photo to transcribe with confidence. Placed here provisionally pending a clearer photo of that page.",
+                    "spouse": {
+                        "name": "Abdol Hossein Mirza Farmanfarma",
+                        "photo": "images/people/farmanfarma-root.jpg",
+                        "linkToMainTree": "farmanfarma"
+                    },
+                    "children": []
+                }
+            ]
+        },
+        {
             "id": "q-fath-ali-shah",
             "name": "Fath-Ali Shah",
             "nameFa": "فتح‌علی شاه",
@@ -866,22 +894,6 @@ window.SEED_QAJAR_REFERENCE = {
                             "died": 1848,
                             "note": "3rd Qajar Shah.",
                             "children": [
-                                {
-                                    "id": "q-ezzat-ed-dowleh",
-                                    "name": "Ezzat-ed-Dowleh Qajar",
-                                    "nameFa": "",
-                                    "born": null,
-                                    "died": null,
-                                    "social": {},
-                                    "photo": null,
-                                    "note": "Daughter of Mohammad Shah; half-sister of Naser al-Din Shah. Married Abdol Hossein Mirza Farmanfarma as his first wife, linking this Qajar line directly to the root of the interactive family tree above.",
-                                    "spouse": {
-                                        "name": "Abdol Hossein Mirza Farmanfarma",
-                                        "photo": "images/people/farmanfarma-root.jpg",
-                                        "linkToMainTree": "farmanfarma"
-                                    },
-                                    "children": []
-                                },
                                 {
                                     "id": "q-naser-al-din-shah",
                                     "name": "Naser al-Din Shah",
