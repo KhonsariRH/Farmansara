@@ -2,20 +2,24 @@
  * Seed data for the Farmanfarma Family Tree app.
  *
  * SEED_FAMILY_TREE is the actual family tree, rooted at Prince Abdol
- * Hossein Mirza Farmanfarma. The handwriting on the original chart's fan
- * of ~36 descendants couldn't be read reliably from the photo, so instead
- * this seeds the people who have independently verifiable English
- * Wikipedia articles (or, for a couple of recent relatives, photos and
- * facts supplied directly and cross-checked against web sources), each
- * noted with its source. None of these have been matched back to a
- * specific name/line on the original chart yet — that cross-check, and
- * the many children without their own articles, still need to come from
- * the original document or family records. Use the "Add child" editor in
- * the app to keep building it out.
+ * Hossein Mirza Farmanfarma. It combines two kinds of sources:
+ *  - People with independently verifiable English Wikipedia articles,
+ *    each noted "Source: Wikipedia" (richer bios, photos where available).
+ *  - The rest of Farmanfarma's children, from a family genealogy record
+ *    (via Encyclopaedia Iranica) giving name/birth year/mother per wife.
+ *    That record's marriage/spouse claims for this generation were
+ *    flagged as unreliable and were deliberately NOT imported -- only
+ *    name, birth year, and mother came from it.
+ * None of this has been matched back to a specific name/line on the
+ * original hand-drawn chart yet -- the fan of ~36 names in that photo is
+ * still too small to read reliably. Use the "Add child" editor in the
+ * app to keep refining it, e.g. once the original chart or the "Shahzdeh's
+ * Tree" family genealogy book can be read directly.
  *
  * Each person can have: id, name, nameFa, born, died, photo (path or data
- * URL), residence, social ({website, instagram, linkedin}), childNumber,
- * mother, role ('descendant' or 'spouse' — spouses married into the
+ * URL), residence, social ({wikipedia, website, instagram, linkedin} --
+ * show wikipedia first when present, other links otherwise), childNumber,
+ * mother, role ('descendant' or 'spouse' -- spouses married into the
  * family and are attached under their partner rather than being blood
  * descendants), note (used as the bio on their profile page), children.
  *
@@ -50,7 +54,9 @@ window.SEED_FAMILY_TREE = {
             "mother": "Princess Ezzat-ed-Dowleh Qajar",
             "photo": null,
             "residence": "",
-            "social": {},
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Abbas_Mirza_Farman_Farmaian"
+            },
             "note": "Source: Wikipedia — not yet matched to a name on the original chart.",
             "children": [],
             "role": "descendant"
@@ -67,7 +73,9 @@ window.SEED_FAMILY_TREE = {
             "note": "Represented Tabriz in the Majles from age 26; brought in American advisors (incl. Colonel Norman Schwarzkopf and Dr Arthur Millspaugh) to reform Iran's military, gendarmerie and finances. Source: Wikipedia.",
             "children": [],
             "residence": "Tabriz, Iran",
-            "social": {},
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Mohammad_Vali_Mirza_Farman_Farmaian"
+            },
             "role": "descendant"
         },
         {
@@ -77,7 +85,7 @@ window.SEED_FAMILY_TREE = {
             "born": 1913,
             "died": 2008,
             "childNumber": "daughter",
-            "mother": "Batoul Khanoum",
+            "mother": "Batoul Khanum Ahshami",
             "photo": null,
             "note": "Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women's section of Iran's Tudeh party, using her grandfather Firouz's name politically. Source: Wikipedia.",
             "children": [],
@@ -95,7 +103,23 @@ window.SEED_FAMILY_TREE = {
             "mother": "",
             "photo": null,
             "note": "Married Ali Ettehadieh (1901 Tabriz - 2000 Paris); their children include Mansoureh Ettehadieh (b. 1933). Source: Wikipedia.",
-            "children": [],
+            "children": [
+                {
+                    "id": "mansoureh-ettehadieh",
+                    "name": "Mansoureh Ettehadieh",
+                    "nameFa": "",
+                    "born": 1933,
+                    "died": null,
+                    "childNumber": "daughter",
+                    "mother": "",
+                    "photo": null,
+                    "residence": "",
+                    "social": {},
+                    "role": "descendant",
+                    "note": "Daughter of Homa Farman-Farmaian and Ali Ettehadieh. Source: Wikipedia (via Homa's page).",
+                    "children": []
+                }
+            ],
             "residence": "",
             "social": {},
             "role": "descendant"
@@ -106,13 +130,15 @@ window.SEED_FAMILY_TREE = {
             "nameFa": "",
             "born": 1920,
             "died": 2013,
-            "childNumber": "son",
-            "mother": "Batoul Khanoum (probable — per sourcing on his brother Abdol-Ali, not certain)",
+            "childNumber": "4th child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
             "photo": "images/people/abdol-aziz-mirza-farmanfarmaian.jpg",
-            "note": "Architect. Source: Wikipedia.",
+            "note": "Architect. Source: Wikipedia. Mother confirmed via a family genealogy record (Encyclopaedia Iranica).",
             "children": [],
             "residence": "Palma de Mallorca, Spain",
-            "social": {},
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Abdol-Aziz_Mirza_Farmanfarmaian"
+            },
             "role": "descendant"
         },
         {
@@ -127,7 +153,9 @@ window.SEED_FAMILY_TREE = {
             "note": "First Iranian student at USC; pioneer of social work in Iran, founded the Tehran School of Social Work, became known as the \"mother of social work\" in Iran. Source: Wikipedia.",
             "children": [],
             "residence": "Los Angeles, USA",
-            "social": {},
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Sattareh_Farmanfarmaian"
+            },
             "role": "descendant"
         },
         {
@@ -137,7 +165,7 @@ window.SEED_FAMILY_TREE = {
             "born": 1928,
             "died": 2015,
             "childNumber": "son",
-            "mother": "Hamdam Khanoum",
+            "mother": "Hamdam Khanum Talai",
             "photo": null,
             "note": "Governor of the Central Bank of Iran from 1968 (age 40); chief architect of Iran's 1960s economic boom. Fled to London in the 1979 revolution. Source: Wikipedia.",
             "children": [],
@@ -152,7 +180,7 @@ window.SEED_FAMILY_TREE = {
             "born": 1929,
             "died": 2016,
             "childNumber": "son",
-            "mother": "Hamdam Khanoum",
+            "mother": "Hamdam Khanum Talai",
             "photo": "images/people/allah-verdi-mirza-farman-farmaian.jpg",
             "note": "Biologist (Reed College BA 1952; Stanford MS/PhD); founded the physiology department at Shiraz University (1961-67), later professor at Rutgers and visiting professor at Princeton. Source: Wikipedia.",
             "children": [],
@@ -167,7 +195,7 @@ window.SEED_FAMILY_TREE = {
             "born": 1935,
             "died": 1973,
             "childNumber": "youngest son",
-            "mother": "Batoul Khanoum",
+            "mother": "Batoul Khanum Ahshami",
             "photo": null,
             "note": "Oxford-educated businessman; co-founded the Naft-e Pars petrochemical company and the Chamber of Industries. Died in a skiing avalanche at Dizin. Source: Wikipedia.",
             "children": [
@@ -218,22 +246,24 @@ window.SEED_FAMILY_TREE = {
                 }
             ],
             "residence": "",
-            "social": {},
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Abdol-Ali_Mirza_Farman_Farmaian"
+            },
             "role": "descendant"
         },
         {
             "id": "manucher-mirza-farman-farmaian",
             "name": "Manucher Mirza Farman Farmaian",
             "nameFa": "",
-            "born": null,
+            "born": 1916,
             "died": null,
-            "childNumber": "son",
-            "mother": "",
+            "childNumber": "3rd child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
             "photo": null,
             "residence": "",
             "social": {},
             "role": "descendant",
-            "note": "Qajar prince; author of \"Blood and Oil: A Memoir of a Persian Prince\" (with Roxane Farmanfarmaian). Source: Wikipedia (via his daughter Roxane's page) — no independent article found yet, dates unconfirmed.",
+            "note": "Qajar prince; author of \"Blood and Oil: A Memoir of a Persian Prince\" (with Roxane Farmanfarmaian). Source: Wikipedia (via his daughter Roxane's page) — no independent article found yet, dates unconfirmed. Per a family genealogy record (Encyclopaedia Iranica), born 1916, mother Batoul Khanum Ahshami.",
             "children": [
                 {
                     "id": "roxane-farmanfarmaian",
@@ -258,15 +288,15 @@ window.SEED_FAMILY_TREE = {
             "id": "abolbashar-mirza-farman-farmaian",
             "name": "Abolbashar Mirza Farman Farmaian",
             "nameFa": "",
-            "born": null,
+            "born": 1922,
             "died": 1991,
-            "childNumber": "son",
-            "mother": "",
+            "childNumber": "5th child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
             "photo": null,
             "residence": "",
             "social": {},
             "role": "descendant",
-            "note": "International lawyer and investor. Source: Wikidata / Wikipedia (via his wife Monir's page) — birth year and other details unconfirmed.",
+            "note": "International lawyer and investor. Source: Wikidata / Wikipedia (via his wife Monir's page) — birth year and other details unconfirmed. Per a family genealogy record (Encyclopaedia Iranica), born 1922, mother Batoul Khanum Ahshami.",
             "children": [
                 {
                     "id": "monir-shahroudy-farmanfarmaian",
@@ -279,13 +309,482 @@ window.SEED_FAMILY_TREE = {
                     "photo": "images/people/monir-shahroudy-farmanfarmaian.jpg",
                     "residence": "Tehran, Iran (also lived in New York, USA)",
                     "social": {
-                        "website": "https://en.wikipedia.org/wiki/Monir_Shahroudy_Farmanfarmaian"
+                        "wikipedia": "https://en.wikipedia.org/wiki/Monir_Shahroudy_Farmanfarmaian"
                     },
                     "role": "spouse",
                     "note": "Married into the family in 1957 (not a blood descendant of Farmanfarma) — married Abolbashar Mirza Farman Farmaian. One of Iran's most celebrated visual artists, known internationally for geometric mirror-mosaic sculptures blending Persian architectural motifs with postwar abstraction. Trained as a fashion illustrator at Parsons School of Design in New York. She and Abolbashar had one daughter, Zima. Source: Wikipedia.",
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "firouz-nosrat-ed-dowleh-iii",
+            "name": "Prince Firouz Nosrat-ed-Dowleh III",
+            "nameFa": "",
+            "born": 1889,
+            "died": null,
+            "childNumber": "1st child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": "images/people/firouz-nosrat-ed-dowleh-iii.jpg",
+            "residence": "",
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Firouz_Nosrat-ed-Dowleh_III"
+            },
+            "role": "descendant",
+            "note": "Farmanfarma's eldest son. Carried on the \"Nosrat-ed-Dowleh\" title from his grandfather Firuz Mirza Nosrat-ed-Dowleh I. Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "iradj-firouz-tentative",
+            "name": "Prince Iradj Firouz (tentative identification)",
+            "nameFa": "",
+            "born": null,
+            "died": null,
+            "childNumber": "5th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": "images/people/iradj-firouz-tentative.jpg",
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "UNCONFIRMED: photo captioned only \"son number 3\" -- tentatively matched to Prince Iradj Firouz as the 3rd son (counting sons only) listed under Ezzat-ed-Dowleh Qajar in a family genealogy record. Please confirm or correct via Edit. Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "mozaffar-firouz",
+            "name": "Prince Mozaffar Firouz",
+            "nameFa": "",
+            "born": 1906,
+            "died": null,
+            "childNumber": "2nd child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "vida-firouz",
+            "name": "Princess Vida Firouz",
+            "nameFa": "",
+            "born": null,
+            "died": null,
+            "childNumber": "3rd child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "lili-firouz",
+            "name": "Princess Lili Firouz",
+            "nameFa": "",
+            "born": null,
+            "died": null,
+            "childNumber": "4th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "sharoukh-firouz",
+            "name": "Prince Sharoukh Firouz",
+            "nameFa": "",
+            "born": null,
+            "died": null,
+            "childNumber": "6th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "mohammad-hossein-mirza-firouz",
+            "name": "Prince Mohammad Hossein Mirza Firouz",
+            "nameFa": "",
+            "born": 1894,
+            "died": null,
+            "childNumber": "10th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {
+                "wikipedia": "https://en.wikipedia.org/wiki/Mohammad_Hossein_Mirza_Firouz"
+            },
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "nezam-ed-din-farman-farmaian",
+            "name": "Prince Nezam-ed-Din Farman Farmaian",
+            "nameFa": "",
+            "born": 1899,
+            "died": null,
+            "childNumber": "11th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "mohammad-jaffar-farman-farmaian",
+            "name": "Prince Mohammad Ja'ffar Farman Farmaian",
+            "nameFa": "",
+            "born": 1901,
+            "died": null,
+            "childNumber": "12th child of Ezzat-ed-Dowleh Qajar",
+            "mother": "Ezzat-ed-Dowleh Qajar",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "bodagh-farman-farmaian",
+            "name": "Princess Bodagh Farman Farmaian",
+            "nameFa": "",
+            "born": 1909,
+            "died": null,
+            "childNumber": "1st child of Mah Bagum Khanum",
+            "mother": "Mah Bagum Khanum",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "sabar-farman-farmaian",
+            "name": "Prince Sabar Farman Farmaian",
+            "nameFa": "",
+            "born": 1912,
+            "died": null,
+            "childNumber": "1st child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "jabbareh-farman-farmaian",
+            "name": "Princess Jabbareh Farman Farmaian",
+            "nameFa": "",
+            "born": 1916,
+            "died": null,
+            "childNumber": "2nd child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "farough-farman-farmaian",
+            "name": "Prince Farough Farman Farmaian",
+            "nameFa": "",
+            "born": 1925,
+            "died": null,
+            "childNumber": "4th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "ayesheh-farman-farmaian",
+            "name": "Princess Ayesheh (Homerah) Farman Farmaian",
+            "nameFa": "",
+            "born": 1928,
+            "died": null,
+            "childNumber": "5th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "ghaffar-farman-farmaian",
+            "name": "Prince Ghaffar Farman Farmaian",
+            "nameFa": "",
+            "born": 1930,
+            "died": null,
+            "childNumber": "6th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "soraya-farman-farmaian",
+            "name": "Princess Soraya Farman Farmaian",
+            "nameFa": "",
+            "born": 1931,
+            "died": null,
+            "childNumber": "7th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "haroun-al-rashid-farman-farmaian",
+            "name": "Prince Haroun-al-Rashid Farman Farmaian",
+            "nameFa": "",
+            "born": 1933,
+            "died": null,
+            "childNumber": "8th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "khorshid-farman-farmaian",
+            "name": "Princess Khorshid Farman Farmaian",
+            "nameFa": "",
+            "born": 1937,
+            "died": null,
+            "childNumber": "9th child of Massoumeh Khanum Tafreshi",
+            "mother": "Massoumeh Khanum Tafreshi",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "mehrmah-farman-farmaian",
+            "name": "Princess MehrMah Farman Farmaian",
+            "nameFa": "",
+            "born": 1915,
+            "died": null,
+            "childNumber": "2nd child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "leyla-farman-farmaian",
+            "name": "Princess Leyla Farman Farmaian",
+            "nameFa": "",
+            "born": 1925,
+            "died": null,
+            "childNumber": "6th child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "haideh-farman-farmaian",
+            "name": "Princess Haideh Farman Farmaian",
+            "nameFa": "",
+            "born": 1927,
+            "died": null,
+            "childNumber": "7th child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "cyrus-farman-farmaian",
+            "name": "Prince Cyrus Farman Farmaian",
+            "nameFa": "",
+            "born": 1929,
+            "died": null,
+            "childNumber": "8th child of Batoul Khanum Ahshami",
+            "mother": "Batoul Khanum Ahshami",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "mahsama-farman-farmaian",
+            "name": "Princess Mahsama Farman Farmaian",
+            "nameFa": "",
+            "born": 1918,
+            "died": null,
+            "childNumber": "1st child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "jamshid-farman-farmaian",
+            "name": "Prince Jamshid Farman Farmaian",
+            "nameFa": "",
+            "born": 1919,
+            "died": null,
+            "childNumber": "2nd child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "kaveh-farman-farmaian",
+            "name": "Prince Kaveh Farman Farmaian",
+            "nameFa": "",
+            "born": 1920,
+            "died": null,
+            "childNumber": "3rd child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "ali-naghi-farman-farmaian",
+            "name": "Prince Ali Naghi Farman Farmaian",
+            "nameFa": "",
+            "born": 1923,
+            "died": null,
+            "childNumber": "4th child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "alidad-farman-farmaian",
+            "name": "Prince Alidad Farman Farmaian",
+            "nameFa": "",
+            "born": 1924,
+            "died": null,
+            "childNumber": "5th child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "shahzadi-bilqis-khanum-farman-farmaian",
+            "name": "Princess Shahzadi Bilqis Khanum Farman Farmaian",
+            "nameFa": "",
+            "born": 1926,
+            "died": null,
+            "childNumber": "6th child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "hafez-farman-farmaian",
+            "name": "Prince Hafez Farman Farmaian",
+            "nameFa": "",
+            "born": 1927,
+            "died": null,
+            "childNumber": "7th child of Fatemeh Khanum Alinaghi (Shirazi)",
+            "mother": "Fatemeh Khanum Alinaghi (Shirazi)",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "karimdad-farman-farmaian",
+            "name": "Prince Karimdad Farman Farmaian",
+            "nameFa": "",
+            "born": 1923,
+            "died": null,
+            "childNumber": "1st child of Akhtarzaman Hormozian",
+            "mother": "Akhtarzaman Hormozian",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
+        },
+        {
+            "id": "tari-verdi-farman-farmaian",
+            "name": "Prince Tari Verdi Farman Farmaian",
+            "nameFa": "",
+            "born": 1931,
+            "died": null,
+            "childNumber": "3rd child of Hamdam Khanum Talai",
+            "mother": "Hamdam Khanum Talai",
+            "photo": null,
+            "residence": "",
+            "social": {},
+            "role": "descendant",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "children": []
         }
     ],
     "role": "descendant"
@@ -330,7 +829,8 @@ window.SEED_QAJAR_REFERENCE = {
                                     "born": null,
                                     "died": null,
                                     "note": "",
-                                    "children": []
+                                    "children": [],
+                                    "social": {}
                                 },
                                 {
                                     "id": "q-salar-dowleh-child-2",
@@ -339,7 +839,8 @@ window.SEED_QAJAR_REFERENCE = {
                                     "born": null,
                                     "died": null,
                                     "note": "",
-                                    "children": []
+                                    "children": [],
+                                    "social": {}
                                 },
                                 {
                                     "id": "q-salar-dowleh-child-3",
@@ -348,7 +849,8 @@ window.SEED_QAJAR_REFERENCE = {
                                     "born": null,
                                     "died": null,
                                     "note": "",
-                                    "children": []
+                                    "children": [],
+                                    "social": {}
                                 },
                                 {
                                     "id": "q-salar-dowleh-child-4",
@@ -357,9 +859,11 @@ window.SEED_QAJAR_REFERENCE = {
                                     "born": null,
                                     "died": null,
                                     "note": "",
-                                    "children": []
+                                    "children": [],
+                                    "social": {}
                                 }
-                            ]
+                            ],
+                            "social": {}
                         },
                         {
                             "id": "q-mohammad-shah",
@@ -400,19 +904,29 @@ window.SEED_QAJAR_REFERENCE = {
                                                             "born": 1898,
                                                             "died": 1930,
                                                             "note": "7th and last Qajar Shah.",
-                                                            "children": []
+                                                            "children": [],
+                                                            "social": {}
                                                         }
-                                                    ]
+                                                    ],
+                                                    "social": {}
                                                 }
-                                            ]
+                                            ],
+                                            "social": {}
                                         }
-                                    ]
+                                    ],
+                                    "social": {}
                                 }
-                            ]
+                            ],
+                            "social": {}
                         }
-                    ]
+                    ],
+                    "social": {
+                        "wikipedia": "https://en.wikipedia.org/wiki/Abbas_Mirza"
+                    }
                 }
-            ]
+            ],
+            "social": {}
         }
-    ]
+    ],
+    "social": {}
 };

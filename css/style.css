@@ -13,6 +13,11 @@
 
 * { box-sizing: border-box; }
 
+/* Any element toggled via the `hidden` attribute must actually hide, even
+   when another rule here sets `display` on it unconditionally (author
+   rules otherwise beat the browser's built-in `[hidden]{display:none}`). */
+[hidden] { display: none !important; }
+
 body {
     margin: 0;
     background: var(--bg);
@@ -47,7 +52,7 @@ h1, h2 {
 /* Layout */
 main {
     display: grid;
-    grid-template-columns: minmax(280px, 340px) 1fr;
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
     gap: 1.25rem;
     padding: 1.25rem;
     max-width: 1400px;
@@ -67,8 +72,10 @@ main {
 .reference-panel { grid-column: 1 / -1; }
 
 @media (max-width: 880px) {
-    main { grid-template-columns: 1fr; }
-    .tree-panel { grid-row: auto; }
+    main { grid-template-columns: minmax(0, 1fr); }
+    .search-panel, .tree-panel, .detail-panel, .reference-panel { grid-column: 1; min-width: 0; }
+    .tree-panel { grid-row: auto; min-height: 480px; }
+    .tree-canvas { min-height: 420px; min-width: 0; }
 }
 
 /* Search */
@@ -293,7 +300,6 @@ button.danger:hover { background: #fbe6e6; }
     justify-content: center;
     z-index: 100;
 }
-.modal[hidden] { display: none; }
 .modal-content {
     background: var(--primary);
     border-radius: var(--radius);

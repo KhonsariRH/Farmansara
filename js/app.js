@@ -375,6 +375,7 @@
     const fieldMother = document.getElementById('field-mother');
     const fieldIsSpouse = document.getElementById('field-is-spouse');
     const fieldResidence = document.getElementById('field-residence');
+    const fieldWikipedia = document.getElementById('field-wikipedia');
     const fieldWebsite = document.getElementById('field-website');
     const fieldInstagram = document.getElementById('field-instagram');
     const fieldLinkedin = document.getElementById('field-linkedin');
@@ -400,6 +401,7 @@
         fieldIsSpouse.checked = current ? current.role === 'spouse' : false;
         fieldResidence.value = current ? (current.residence || '') : '';
         const social = (current && current.social) || {};
+        fieldWikipedia.value = social.wikipedia || '';
         fieldWebsite.value = social.website || '';
         fieldInstagram.value = social.instagram || '';
         fieldLinkedin.value = social.linkedin || '';
@@ -441,6 +443,7 @@
             role: fieldIsSpouse.checked ? 'spouse' : 'descendant',
             residence: fieldResidence.value.trim(),
             social: {
+                wikipedia: fieldWikipedia.value.trim(),
                 website: fieldWebsite.value.trim(),
                 instagram: fieldInstagram.value.trim(),
                 linkedin: fieldLinkedin.value.trim()
@@ -551,6 +554,7 @@
             <span class="ref-name">${escapeHtml(node.name)}</span>
             ${node.nameFa ? `<span class="ref-name-fa">${escapeHtml(node.nameFa)}</span>` : ''}
             ${dates.length ? `<span class="ref-dates">(${node.born ?? '?'}–${node.died ?? '?'})</span>` : ''}
+            ${node.social && node.social.wikipedia ? `<a class="ref-dates" href="${escapeHtml(node.social.wikipedia)}" target="_blank" rel="noopener noreferrer">Wikipedia</a>` : ''}
         </span>`;
         if (node.note) {
             const note = document.createElement('div');
@@ -620,7 +624,11 @@
 
         profileSocial.innerHTML = '';
         const social = node.social || {};
-        [['website', 'Website'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']].forEach(([key, label]) => {
+        // Rule: if a Wikipedia link is on file, lead with that alone; otherwise show whatever other links exist.
+        const linkTypes = social.wikipedia
+            ? [['wikipedia', 'Wikipedia']]
+            : [['website', 'Website'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']];
+        linkTypes.forEach(([key, label]) => {
             const href = socialHref(key, social[key]);
             if (!href) return;
             const a = document.createElement('a');
