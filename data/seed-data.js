@@ -810,12 +810,12 @@ window.SEED_QAJAR_REFERENCE = {
                             "children": [
                                 {
                                     "id": "q-firuz-child-1",
-                                    "name": "E. Majid Hasan Dowleh",
+                                    "name": "Eskandar (Nosrat-ed-Dowleh)",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
                                     "social": {},
-                                    "note": "Best-effort reading of the original chart's handwriting -- please confirm or correct.",
+                                    "note": "Son of Firuz Mirza Nosrat-ed-Dowleh I -- a brother of Abdol Hossein Mirza Farmanfarma. Full name/title and dates still to be confirmed.",
                                     "children": [],
                                     "photo": null
                                 },
@@ -866,6 +866,22 @@ window.SEED_QAJAR_REFERENCE = {
                             "died": 1848,
                             "note": "3rd Qajar Shah.",
                             "children": [
+                                {
+                                    "id": "q-ezzat-ed-dowleh",
+                                    "name": "Ezzat-ed-Dowleh Qajar",
+                                    "nameFa": "",
+                                    "born": null,
+                                    "died": null,
+                                    "social": {},
+                                    "photo": null,
+                                    "note": "Daughter of Mohammad Shah; half-sister of Naser al-Din Shah. Married Abdol Hossein Mirza Farmanfarma as his first wife, linking this Qajar line directly to the root of the interactive family tree above.",
+                                    "spouse": {
+                                        "name": "Abdol Hossein Mirza Farmanfarma",
+                                        "photo": "images/people/farmanfarma-root.jpg",
+                                        "linkToMainTree": "farmanfarma"
+                                    },
+                                    "children": []
+                                },
                                 {
                                     "id": "q-naser-al-din-shah",
                                     "name": "Naser al-Din Shah",

@@ -297,6 +297,8 @@ button.danger:hover { background: #fbe6e6; }
 .qajar-chart { position: relative; margin: 0 auto; }
 .qajar-links { position: absolute; top: 0; left: 0; pointer-events: none; }
 .qajar-link { fill: none; stroke: #cfd3d5; stroke-width: 1.5px; }
+.qajar-marriage-link { stroke: var(--accent-soft); stroke-dasharray: 3 3; }
+.qajar-spouse-node .qajar-node-name { font-style: italic; }
 .qajar-node { position: absolute; width: 152px; text-align: center; padding: 0 4px; }
 .qajar-node-avatar {
     width: 52px;

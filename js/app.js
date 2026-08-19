@@ -599,7 +599,11 @@
         const nodeHeight = 130;
 
         const root = d3.hierarchy(window.SEED_QAJAR_REFERENCE);
-        d3.tree().nodeSize([nodeWidth, nodeHeight])(root);
+        const hasAnySpouse = root.descendants().some(d => !!d.data.spouse);
+        d3.tree()
+            .nodeSize([nodeWidth, nodeHeight])
+            .separation((a, b) => (a.parent === b.parent ? 1 : 2) + ((a.data.spouse || b.data.spouse) ? 1.5 : 0))
+            (root);
 
         let minX = Infinity, maxX = -Infinity, maxY = 0;
         root.each(d => {
@@ -608,7 +612,7 @@
             maxY = Math.max(maxY, d.y);
         });
         const offsetX = -minX + nodeWidth / 2 + 20;
-        const totalWidth = (maxX - minX) + nodeWidth + 40;
+        const totalWidth = (maxX - minX) + nodeWidth + 40 + (hasAnySpouse ? nodeWidth + 30 : 0);
         const totalHeight = maxY + nodeHeight + 20;
 
         container.style.width = totalWidth + 'px';
@@ -687,6 +691,47 @@
             }
 
             container.appendChild(div);
+
+            // Spouse box: rendered beside this node, connected by a short
+            // horizontal "married" line rather than a parent-child link, since
+            // this represents a marriage, not descent.
+            if (node.spouse) {
+                const spouse = node.spouse;
+                const boxLeft = d.x + offsetX - nodeWidth / 2;
+                const spouseLeft = boxLeft + nodeWidth + 20;
+                const spouseIsLink = !!spouse.linkToMainTree;
+
+                const marriageLine = document.createElementNS(svgNS, 'path');
+                marriageLine.setAttribute('class', 'qajar-link qajar-marriage-link');
+                const midY = d.y + 20 + 26;
+                marriageLine.setAttribute('d', `M${boxLeft + nodeWidth},${midY} H${spouseLeft}`);
+                svg.appendChild(marriageLine);
+
+                const sDiv = document.createElement('div');
+                sDiv.className = 'qajar-node qajar-spouse-node' + (spouseIsLink ? ' linkable' : '');
+                sDiv.style.left = spouseLeft + 'px';
+                sDiv.style.top = (d.y + 20) + 'px';
+
+                const sAvatar = document.createElement('div');
+                sAvatar.className = 'qajar-node-avatar';
+                renderAvatar(sAvatar, spouse);
+                sDiv.appendChild(sAvatar);
+
+                const sName = document.createElement('div');
+                sName.className = 'qajar-node-name';
+                sName.textContent = spouse.name;
+                sDiv.appendChild(sName);
+
+                if (spouseIsLink) {
+                    sDiv.title = 'Click to jump to the interactive tree above';
+                    sDiv.addEventListener('click', () => {
+                        selectPerson(spouse.linkToMainTree, true);
+                        mainEl.scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+
+                container.appendChild(sDiv);
+            }
         });
     }
 
