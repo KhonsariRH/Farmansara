@@ -12,6 +12,46 @@
 </head>
 <body>
 
+<div id="gate-overlay" class="gate-overlay">
+    <form id="gate-form" class="gate-form">
+        <img src="images/crest-lion-sun.png" alt="" class="gate-crest">
+        <h1>Farmansara</h1>
+        <p>This is a private family site. Enter the password to continue.</p>
+        <input type="password" id="gate-password" placeholder="Password" autocomplete="current-password" autofocus>
+        <p id="gate-error" class="gate-error" hidden>That's not the right password.</p>
+        <button type="submit" class="primary">Enter</button>
+    </form>
+</div>
+<script>
+(() => {
+    'use strict';
+    // Not real security -- this is a static site, so the full page and its
+    // data are always downloaded to the browser regardless of this check.
+    // It just keeps casual visitors and search engines out.
+    const GATE_KEY = 'ffGateOK.v1';
+    const PASSWORD = 'Gstaadabad';
+    const overlay = document.getElementById('gate-overlay');
+    const form = document.getElementById('gate-form');
+    const input = document.getElementById('gate-password');
+    const error = document.getElementById('gate-error');
+
+    if (sessionStorage.getItem(GATE_KEY) === '1') {
+        overlay.hidden = true;
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (input.value === PASSWORD) {
+            sessionStorage.setItem(GATE_KEY, '1');
+            overlay.hidden = true;
+        } else {
+            error.hidden = false;
+            input.select();
+        }
+    });
+})();
+</script>
+
 <header class="site-header">
     <div class="crest" aria-hidden="true">
         <img src="images/crest-lion-sun.png" alt="" width="64" height="70">

@@ -18,6 +18,40 @@
 
 * { box-sizing: border-box; }
 
+.gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+.gate-form {
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: min(360px, 100%);
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.gate-crest { height: 56px; width: auto; margin: 0 auto 0.75rem; display: block; }
+.gate-form h1 { margin: 0 0 0.5rem; font-size: 1.5rem; }
+.gate-form p { margin: 0 0 1rem; color: var(--accent-soft); font-size: 0.9rem; }
+.gate-form input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--light-grey);
+    background: var(--primary);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+    margin-bottom: 0.75rem;
+}
+.gate-form .primary { width: 100%; padding: 0.65rem; font-size: 0.95rem; }
+.gate-error { color: var(--danger) !important; }
+
 /* Any element toggled via the `hidden` attribute must actually hide, even
    when another rule here sets `display` on it unconditionally (author
    rules otherwise beat the browser's built-in `[hidden]{display:none}`). */
