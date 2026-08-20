@@ -243,6 +243,7 @@
         if (!byId.has(id)) return;
         selectedId = id;
         pendingFocusScale = null;
+        ensureClusterExpanded(id);
         renderPosition(id);
         renderDetail(id);
         renderTree(focusTree);
@@ -253,6 +254,7 @@
         const count = countDescendants(byId.get(id));
         pendingFocusScale = Math.max(1, Math.min(2.5, 3 / Math.sqrt(count + 1)));
         selectedId = id;
+        ensureClusterExpanded(id);
         renderPosition(id);
         renderDetail(id);
         renderTree(true);
@@ -296,8 +298,59 @@
             const item = document.createElement('span');
             item.className = 'wife-legend-item';
             item.innerHTML = `<span class="wife-legend-swatch" style="background:${WIFE_COLORS[(idx - 1) % WIFE_COLORS.length]}"></span>${escapeHtml(name)}`;
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', () => {
+                expandedClusters.add(`wife-cluster-${idx}`);
+                renderTree(false);
+            });
             legend.appendChild(item);
         });
+    }
+
+    /* On narrow screens, 40+ siblings fanned out in one ring overlap badly
+       no matter how they're colored -- group them by wife into collapsible
+       clusters instead, each expandable by tap. Desktop keeps the full fan. */
+    let expandedClusters = new Set();
+    function isMobileCanvas() {
+        return (canvas.clientWidth || 600) < 700;
+    }
+    function buildDisplayTree() {
+        if (!isMobileCanvas()) return tree;
+        const clusters = new Map(); // wife index -> cluster node
+        const passthrough = [];
+        (tree.children || []).forEach((child) => {
+            const idx = wifeIndexOf(child);
+            if (!idx) { passthrough.push(child); return; }
+            if (!clusters.has(idx)) {
+                clusters.set(idx, {
+                    id: `wife-cluster-${idx}`,
+                    isCluster: true,
+                    wifeIndex: idx,
+                    name: child.mother.replace(/\s*\(wife #\d+.*\)$/, ''),
+                    realChildren: [],
+                });
+            }
+            clusters.get(idx).realChildren.push(child);
+        });
+        const clusterNodes = [...clusters.values()].sort((a, b) => a.wifeIndex - b.wifeIndex).map((c) => ({
+            ...c,
+            children: expandedClusters.has(c.id) ? c.realChildren : [],
+        }));
+        return { ...tree, children: [...clusterNodes, ...passthrough] };
+    }
+    function colorForRenderNode(d) {
+        if (d.data.isCluster) return WIFE_COLORS[(d.data.wifeIndex - 1) % WIFE_COLORS.length];
+        return wifeColorForNode(d.data.id);
+    }
+    // When jumping to a person (search, sibling/child links, descendants
+    // button) on a narrow screen, make sure their wife cluster is expanded
+    // first, or they won't exist in the collapsed display tree to focus on.
+    function ensureClusterExpanded(id) {
+        if (!isMobileCanvas()) return;
+        const path = ancestryPath(id);
+        if (path.length < 2) return;
+        const idx = wifeIndexOf(path[1]);
+        if (idx) expandedClusters.add(`wife-cluster-${idx}`);
     }
 
     // Trim the repetitive shared surname/title so labels on the crowded round
@@ -332,10 +385,17 @@
         gZoom.selectAll('*').remove();
         renderWifeLegend();
 
-        const root = d3.hierarchy(tree).sort((a, b) => (wifeIndexOf(a.data) || 0) - (wifeIndexOf(b.data) || 0));
+        const root = d3.hierarchy(buildDisplayTree()).sort((a, b) => (wifeIndexOf(a.data) || 0) - (wifeIndexOf(b.data) || 0));
         const treeLayout = d3.tree()
             .size([2 * Math.PI, radius])
-            .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth || 1);
+            .separation((a, b) => {
+                // Children of an expanded wife-cluster get generous, flat spacing --
+                // depth-based shrinking made sense when everyone shared the circle at
+                // once, but now they're the only populated wedge, with plenty of room
+                // freed up by the still-collapsed clusters around them.
+                if (a.parent === b.parent) return (a.parent && a.parent.data.isCluster) ? 2.2 : 1;
+                return 2 / (a.depth || 1);
+            });
         treeLayout(root);
 
         const pathIds = new Set(ancestryPath(selectedId).map(n => n.id));
@@ -348,17 +408,30 @@
             .data(root.links())
             .join('path')
             .attr('class', d => 'link' + (pathIds.has(d.source.data.id) && pathIds.has(d.target.data.id) ? ' highlighted' : ''))
-            .style('stroke', d => (pathIds.has(d.source.data.id) && pathIds.has(d.target.data.id)) ? null : wifeColorForNode(d.target.data.id))
+            .style('stroke', d => (pathIds.has(d.source.data.id) && pathIds.has(d.target.data.id)) ? null : colorForRenderNode(d.target))
             .attr('d', linkGen);
 
         const node = gZoom.append('g')
             .selectAll('g')
             .data(root.descendants())
             .join('g')
-            .attr('class', d => 'node' + (d.data.id === selectedId ? ' selected' : '') + (pathIds.has(d.data.id) ? ' highlighted' : '') + (d.data.photo ? ' has-photo' : ''))
+            .attr('class', d => 'node'
+                + (d.data.id === selectedId ? ' selected' : '')
+                + (pathIds.has(d.data.id) ? ' highlighted' : '')
+                + (d.data.photo ? ' has-photo' : '')
+                + (d.data.isCluster ? ' wife-cluster' : ''))
             .attr('transform', d => `rotate(${(d.x * 180 / Math.PI) - 90}) translate(${d.y},0)`)
             .style('cursor', 'pointer')
-            .on('click', (event, d) => { event.stopPropagation(); selectPerson(d.data.id, false); });
+            .on('click', (event, d) => {
+                event.stopPropagation();
+                if (d.data.isCluster) {
+                    if (expandedClusters.has(d.data.id)) expandedClusters.delete(d.data.id);
+                    else expandedClusters.add(d.data.id);
+                    renderTree(false);
+                } else {
+                    selectPerson(d.data.id, false);
+                }
+            });
 
         const defs = gZoom.append('defs');
         node.filter(d => !!d.data.photo).each(function (d) {
@@ -380,16 +453,20 @@
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
         node.append('circle')
-            .attr('r', d => d.data.id === tree.id ? 8 : 5)
-            .style('stroke', d => d.data.id === selectedId ? null : wifeColorForNode(d.data.id));
+            .attr('r', d => d.data.isCluster ? 9 : (d.data.id === tree.id ? 8 : 5))
+            .style('fill', d => d.data.isCluster ? colorForRenderNode(d) : null)
+            .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d));
 
         node.append('text')
             .attr('dy', '0.31em')
             .attr('x', d => (d.x < Math.PI === !d.children) ? 8 : -8)
             .attr('text-anchor', d => (d.x < Math.PI === !d.children) ? 'start' : 'end')
             .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
-            .style('fill', d => d.data.id === selectedId ? null : wifeColorForNode(d.data.id))
-            .text(d => shortDisplayName(d.data.name));
+            .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
+            .style('font-weight', d => d.data.isCluster ? '700' : null)
+            .text(d => d.data.isCluster
+                ? `${shortDisplayName(d.data.name)} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
+                : shortDisplayName(d.data.name));
 
         if (focusSelected) {
             const target = root.descendants().find(d => d.data.id === selectedId);
