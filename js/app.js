@@ -469,10 +469,30 @@
         canvas.innerHTML = '';
         svg = d3.select(canvas).append('svg');
         gZoom = svg.append('g').attr('class', 'zoom-layer');
-        zoomBehavior = d3.zoom().scaleExtent([0.3, 3]).on('zoom', (event) => {
+        // A big pinned-open tree can need a lot more room than the screen --
+        // let people zoom out further to see it all, not just further in.
+        zoomBehavior = d3.zoom().scaleExtent([0.12, 3]).on('zoom', (event) => {
             gZoom.attr('transform', event.transform);
         });
         svg.call(zoomBehavior);
+    }
+
+    // Same string the label <text> below renders -- shared so the width
+    // estimate used for layout never drifts from what's actually drawn.
+    function labelTextFor(d) {
+        return d.data.isCluster
+            ? `${shortDisplayName(d.data.name).replace(/\bKhanum\b\s*/gi, '')} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
+            : shortDisplayName(d.data.name);
+    }
+    // Rough glyph width for the 11px label font -- doesn't need to be exact,
+    // just a safe-sized upper bound so the collision pass below never
+    // under-reserves room for a label.
+    function estimateLabelPx(d) {
+        const perChar = d.data.isCluster ? 7.8 : 6.8;
+        return labelTextFor(d).length * perChar + 16;
+    }
+    function radialPoint(angle, r) {
+        return [r * Math.sin(angle), -r * Math.cos(angle)];
     }
 
     function renderTree(focusSelected) {
@@ -485,40 +505,71 @@
         gZoom.selectAll('*').remove();
         renderWifeLegend();
 
+        // No crossing lines and no overlapping labels is a hard rule, not
+        // just a starting spacing -- so the angle each node gets is laid out
+        // like a sunburst chart (d3.partition()), not a free-form tree. Every
+        // node's angular slice is, by construction, entirely contained
+        // inside its own parent's slice, sized proportionally to how many
+        // visible leaves it has, so one heavily-opened branch (e.g. a wife's
+        // 9 shown children) can take a wide share of the circle without ever
+        // reaching into an unrelated branch's territory. That containment is
+        // what a plain width-aware tree layout *can't* promise: a node whose
+        // children fan out wide can still sit at a single point itself, so a
+        // straight (or curved) line out to one of those children can sweep
+        // across another branch's space even though no two node POSITIONS
+        // actually overlap. Fixed, non-overlapping wedges rule that out
+        // entirely -- neither nodes nor the links between them can ever
+        // leave the wedge their whole lineage was given.
         const root = d3.hierarchy(buildDisplayTree()).sort((a, b) => (wifeIndexOf(a.data) || 0) - (wifeIndexOf(b.data) || 0));
-        const treeLayout = d3.tree()
-            .size([2 * Math.PI, radius])
-            .separation((a, b) => {
-                // Children of an expanded wife-cluster get generous, flat spacing --
-                // depth-based shrinking made sense when everyone shared the circle at
-                // once, but now they're the only populated wedge, with plenty of room
-                // freed up by the still-collapsed clusters around them. The top-level
-                // cluster dots themselves also need a guaranteed minimum gap: with
-                // horizontal (non-rotated) labels there's no self-avoidance from
-                // pointing away from the circle, so tight angular spacing means
-                // labels stack directly on each other rather than fanning apart.
-                if (a.parent === b.parent) return (a.parent && a.parent.data.isCluster) ? 1.1 : 2.8;
-                return 2 / (a.depth || 1);
-            });
-        treeLayout(root);
+        root.count(); // d.value = number of visible leaves under each node (>=1)
+        d3.partition().size([2 * Math.PI, 1])(root);
+        root.each(d => { d.x = (d.x0 + d.x1) / 2; d.sliceWidth = d.x1 - d.x0; });
 
-        // d3.tree() spaces depths evenly across the full radius, so the
-        // collapsed-cluster ring (depth 1) gets squeezed toward the center
-        // whenever an expanded cluster adds two more depth levels below it --
-        // exactly when it most needs room. Give depth 1 a fixed, generous
-        // radius regardless of how deep the tree goes, and spread whatever's
-        // left evenly across the remaining depths.
         const maxDepth = Math.max(1, d3.max(root.descendants(), d => d.depth));
-        const ring1Radius = Math.min(radius * 0.4, 150);
-        root.each(d => {
-            if (d.depth === 0) d.y = 0;
-            else if (d.depth === 1) d.y = ring1Radius;
-            else d.y = ring1Radius + (d.depth - 1) * (radius - ring1Radius) / Math.max(1, maxDepth - 1);
-        });
+        const baseRing1Radius = Math.min(radius * 0.4, 150);
+        function baselineRingRadius(depth) {
+            if (depth <= 1) return baseRing1Radius;
+            return baseRing1Radius + (depth - 1) * (radius - baseRing1Radius) / Math.max(1, maxDepth - 1);
+        }
+        const RING_GAP_PADDING = 14;
+        const SLICE_SAFETY = 1.3; // buffer since a label only needs to fit ~half its slice, not the whole thing
+        const byDepth = d3.group(root.descendants(), d => d.depth);
+
+        // Labels render horizontally, not radially, so a label can reach
+        // sideways into a whole different ring -- not just crowd its own.
+        // Track the widest label at each depth (root included) so the ring
+        // spacing below can guarantee neighbouring rings stay out of reach
+        // of each other too.
+        const maxWidthByDepth = new Map();
+        for (let depth = 0; depth <= maxDepth; depth++) {
+            const nodes = byDepth.get(depth) || [];
+            maxWidthByDepth.set(depth, nodes.reduce((m, d) => Math.max(m, estimateLabelPx(d)), 0));
+        }
+
+        const ringRadius = new Map([[0, 0]]);
+        for (let depth = 1; depth <= maxDepth; depth++) {
+            const nodes = byDepth.get(depth) || [];
+            // wide enough that every node's own label fits inside the wedge
+            // partition() already gave it, so it can never reach a neighbour's.
+            const minForSliceFit = nodes.reduce((m, d) => Math.max(m, (estimateLabelPx(d) * SLICE_SAFETY) / Math.max(d.sliceWidth, 1e-6)), 0);
+            const minForRingGap = ringRadius.get(depth - 1) + maxWidthByDepth.get(depth - 1) + maxWidthByDepth.get(depth) + RING_GAP_PADDING;
+            ringRadius.set(depth, Math.max(baselineRingRadius(depth), minForSliceFit, minForRingGap));
+        }
+        root.each(d => { d.y = ringRadius.get(d.depth) || 0; });
 
         const pathIds = new Set(ancestryPath(selectedId).map(n => n.id));
 
-        const linkGen = d3.linkRadial().angle(d => d.x).radius(d => d.y);
+        // Straight radial segments, not d3's default bump curve -- a bump
+        // curve bulges outward between two polar points and can visually
+        // cross into a neighbouring branch's wedge even when the underlying
+        // tree has no actual crossing; a straight line never leaves the
+        // angular wedge d3.tree() already guaranteed doesn't overlap anyone
+        // else's.
+        const linkGen = d => {
+            const [sx, sy] = radialPoint(d.source.x, d.source.y);
+            const [tx, ty] = radialPoint(d.target.x, d.target.y);
+            return `M${sx},${sy}L${tx},${ty}`;
+        };
 
         gZoom.append('g')
             .attr('fill', 'none')
@@ -608,9 +659,7 @@
             .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
             .style('font-weight', d => d.data.isCluster ? '700' : null)
             .style('pointer-events', 'all') // hit-test the label's full box, not just painted glyph pixels
-            .text(d => d.data.isCluster
-                ? `${shortDisplayName(d.data.name).replace(/\bKhanum\b\s*/gi, '')} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
-                : shortDisplayName(d.data.name));
+            .text(d => labelTextFor(d));
 
         // Cluster labels are the main visible thing to tap, but they're long
         // rotated text trailing 100+ px away from the small dot -- cover that
