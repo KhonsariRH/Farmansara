@@ -397,10 +397,23 @@
                 const angle = target.x - Math.PI / 2;
                 const tx = -Math.cos(angle) * target.y * scale;
                 const ty = -Math.sin(angle) * target.y * scale;
-                svg.transition().duration(500).call(
-                    zoomBehavior.transform,
-                    d3.zoomIdentity.translate(tx, ty).scale(scale)
-                );
+                const current = d3.zoomTransform(svg.node());
+                const isNoop = Math.abs(current.x - tx) < 0.5 && Math.abs(current.y - ty) < 0.5 && Math.abs(current.k - scale) < 0.01;
+                if (isNoop) {
+                    // The target transform matches the current view exactly (e.g. clicking
+                    // the root's own "N descendants" button, whose subtree is already the
+                    // whole visible tree) -- a transition to identical values is invisible,
+                    // so pulse instead to confirm the click actually did something.
+                    svg.transition().duration(180)
+                        .call(zoomBehavior.transform, d3.zoomIdentity.translate(tx, ty).scale(scale * 0.92))
+                        .transition().duration(320)
+                        .call(zoomBehavior.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+                } else {
+                    svg.transition().duration(500).call(
+                        zoomBehavior.transform,
+                        d3.zoomIdentity.translate(tx, ty).scale(scale)
+                    );
+                }
             }
             pendingFocusScale = null;
         }
