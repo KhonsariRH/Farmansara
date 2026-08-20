@@ -1107,8 +1107,8 @@ window.SEED_FAMILY_TREE = {
                                     "children": []
                                 },
                                 {
-                                    "id": "gino-khonsari-i2212",
-                                    "name": "Gino Khonsari",
+                                    "id": "giv-khonsari-i2212",
+                                    "name": "Giv Khonsari",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
@@ -1119,7 +1119,7 @@ window.SEED_FAMILY_TREE = {
                                     "residence": "",
                                     "social": {},
                                     "role": "descendant",
-                                    "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                    "note": "Position transcribed from the genealogy book's index (code shown below); name confirmed by family. Not yet cross-checked against the book's content pages, so birth/death years may need confirming.",
                                     "children": []
                                 }
                             ]
