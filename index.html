@@ -42,11 +42,6 @@
             <h2>Interactive tree</h2>
             <div class="tree-toolbar-actions">
                 <button id="btn-zoom-reset" type="button">Reset view</button>
-                <button id="btn-add-root-child" type="button">+ Add child to selected</button>
-                <button id="btn-export" type="button">Export JSON</button>
-                <button id="btn-import" type="button">Import JSON</button>
-                <button id="btn-reset-data" type="button" class="danger">Reset to seed data</button>
-                <input type="file" id="import-file" accept="application/json" hidden>
             </div>
         </div>
         <div id="wife-legend" class="wife-legend"></div>
@@ -69,9 +64,6 @@
         </div>
         <div class="detail-actions">
             <button id="btn-view-profile" type="button" class="primary">View full profile</button>
-            <button id="btn-edit" type="button">Edit</button>
-            <button id="btn-add-child" type="button">Add child</button>
-            <button id="btn-delete" type="button" class="danger">Delete</button>
         </div>
     </aside>
 
@@ -125,68 +117,8 @@
     </div>
 </section>
 
-<div id="edit-modal" class="modal" hidden>
-    <div class="modal-content">
-        <h2 id="edit-modal-title">Edit person</h2>
-        <form id="edit-form">
-            <div class="photo-preview-row">
-                <div id="field-photo-preview" class="photo-preview"></div>
-                <label style="margin-bottom:0; flex:1;">Photo
-                    <input type="file" id="field-photo" accept="image/*">
-                </label>
-            </div>
-            <label>Name (English)
-                <input type="text" id="field-name" required>
-            </label>
-            <label>Name (Persian)
-                <input type="text" id="field-name-fa" dir="rtl">
-            </label>
-            <div class="field-row">
-                <label>Born
-                    <input type="number" id="field-born">
-                </label>
-                <label>Died
-                    <input type="number" id="field-died">
-                </label>
-            </div>
-            <label>Birth order (e.g. "2nd son", "15th of 36")
-                <input type="text" id="field-child-number">
-            </label>
-            <label>Mother
-                <input type="text" id="field-mother">
-            </label>
-            <label>
-                <input type="checkbox" id="field-is-spouse" style="width:auto; display:inline-block; margin-right:0.4rem;">
-                Married into the family (spouse, not a blood descendant)
-            </label>
-            <label>Place of residence
-                <input type="text" id="field-residence" placeholder="e.g. Tehran, Iran">
-            </label>
-            <label>Wikipedia (shown instead of the links below, if set)
-                <input type="url" id="field-wikipedia" placeholder="https://en.wikipedia.org/wiki/…">
-            </label>
-            <label>Website
-                <input type="url" id="field-website" placeholder="https://…">
-            </label>
-            <label>Instagram
-                <input type="text" id="field-instagram" placeholder="@handle or full URL">
-            </label>
-            <label>LinkedIn
-                <input type="text" id="field-linkedin" placeholder="Profile URL">
-            </label>
-            <label>Notes / bio
-                <textarea id="field-note" rows="3"></textarea>
-            </label>
-            <div class="modal-actions">
-                <button type="button" id="btn-cancel-edit">Cancel</button>
-                <button type="submit" class="primary">Save</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 <footer class="site-footer">
-    <p>Data is stored in your browser (localStorage). Use <strong>Export JSON</strong> regularly to back up your work.</p>
+    <p>A reference site for the family of Prince Abdol Hossein Mirza Farmanfarma.</p>
 </footer>
 
 <script src="js/d3.v7.min.js"></script>

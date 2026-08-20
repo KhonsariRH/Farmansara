@@ -101,7 +101,7 @@ window.SEED_FAMILY_TREE = {
             "born": 1914,
             "died": null,
             "childNumber": "11th of 38 children with a recorded birth year, 3rd daughter (41 recorded children total; born 1914)",
-            "mother": "",
+            "mother": "A Qajar princess, granddaughter of Abbas Mirza through his second son -- her own name not yet recorded, so not matched to one of Farmanfarma's 7 numbered wives.",
             "photo": null,
             "note": "Married Ali Ettehadieh (1901 Tabriz - 2000 Paris); their children include Mansoureh Ettehadieh (b. 1933). Source: Wikipedia.",
             "children": [

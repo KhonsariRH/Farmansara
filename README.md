@@ -19,39 +19,38 @@ browsers, since all data and scripts are local files.)
 
 ## Using the app
 
+This is a read-only reference site — there's no way to add, edit, or delete
+anyone from the browser. All content comes from `data/seed-data.js`; edit
+that file directly (see below) to make changes.
+
 - **Search** — type a name in the box on the left. Click a result to see
   their generation, the full ancestry path back to Farmanfarma, and to jump
   to them in the tree.
 - **Tree view** — click and drag to pan, scroll to zoom, click any node to
   select it. The path from the selected person back to the root is
-  highlighted in gold.
-- **Editing** — select a person, then use **Add child**, **Edit**, or
-  **Delete** to build out the tree. Changes are saved automatically to your
-  browser's local storage.
-- **Export / Import JSON** — use **Export JSON** regularly to save a backup
-  file of your work. **Import JSON** loads a previously exported file back
-  in (or lets you hand-edit the tree in a text editor and reload it).
-- **Reset to seed data** — wipes your local edits and restores the original
-  starter data below.
+  highlighted in gold. On narrow screens the tree groups Farmanfarma's
+  children into tappable wife clusters to stay legible; tap a cluster (or
+  the wife legend) to expand it.
+- **Profile pages** — click "View full profile" on a selected person for
+  their bio, photo, residence, links, and parent/children navigation.
 
 ## About the seed data
 
 The source document (a hand-drawn chart) is only reliably legible in one
 place: the reference genealogy on the left side, labelled "Etalon – Base",
-tracing the Qajar dynasty from Agha Mohammad Khan down to Ahmad Shah, plus
-the "Salar Dowleh" branch off Abbas Mirza. That chain is transcribed as-is
-in `data/seed-data.js` under `SEED_QAJAR_REFERENCE`, rendered as a
-read-only reference chart at the bottom of the page. Four children under
-Salar Dowleh were illegible in the photo and are left as clearly marked
-placeholders.
+tracing the Qajar dynasty from Agha Mohammad Khan down to Ahmad Shah. That
+chain is transcribed in `data/seed-data.js` under `SEED_QAJAR_REFERENCE`,
+rendered as a read-only reference chart at the bottom of the page, and has
+since been corrected and extended against a physical family genealogy book
+("Shahzdeh's Tree").
 
-The actual Farmanfarma family tree (`SEED_FAMILY_TREE`) starts with just
-the root person — Prince Abdol Hossein Mirza Farmanfarma (1857–1939) — since
-the descendants fan out across the chart in handwriting too small to
-transcribe reliably from a photo. Use the in-app editor (or edit
-`data/seed-data.js` directly) to fill it in from the original document.
+The actual Farmanfarma family tree (`SEED_FAMILY_TREE`) is rooted at
+Prince Abdol Hossein Mirza Farmanfarma (1857–1939) and is filled in from a
+mix of Wikipedia, a family genealogy record (via Encyclopaedia Iranica),
+and the "Shahzdeh's Tree" book — see the doc comment at the top of
+`data/seed-data.js` for the full sourcing notes.
 
-### Editing the seed data directly
+### Editing the seed data
 
 `data/seed-data.js` defines two plain JS objects. Each person looks like:
 
@@ -67,8 +66,8 @@ transcribe reliably from a photo. Use the in-app editor (or edit
 }
 ```
 
-Edit this file and reload the page (or use **Reset to seed data** in the
-app) to pick up your changes as the new starting point.
+Edit this file directly and reload the page to see the changes; there is no
+in-app editor.
 
 ## Deploying
 

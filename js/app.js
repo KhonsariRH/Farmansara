@@ -1,34 +1,21 @@
 (() => {
     'use strict';
 
-    const STORAGE_KEY = 'ffTree.v1';
-
     /* ---------------------------------------------------------------- */
-    /* State                                                             */
+    /* State -- this is a read-only reference site, so the tree is always */
+    /* the seed data as shipped; nothing here mutates or persists it.     */
     /* ---------------------------------------------------------------- */
 
-    let tree = loadTree();
+    function structuredCloneCompat(obj) {
+        return typeof structuredClone === 'function' ? structuredClone(obj) : JSON.parse(JSON.stringify(obj));
+    }
+
+    let tree = structuredCloneCompat(window.SEED_FAMILY_TREE);
     let selectedId = tree.id;
     let pendingFocusScale = null;
     let byId = new Map();     // id -> node
     let parentOf = new Map(); // id -> parent node (or null for root)
     rebuildIndex();
-
-    function loadTree() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try { return JSON.parse(saved); } catch (e) { /* fall through */ }
-        }
-        return structuredCloneCompat(window.SEED_FAMILY_TREE);
-    }
-
-    function saveTree() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(tree));
-    }
-
-    function structuredCloneCompat(obj) {
-        return typeof structuredClone === 'function' ? structuredClone(obj) : JSON.parse(JSON.stringify(obj));
-    }
 
     function rebuildIndex() {
         byId = new Map();
@@ -48,13 +35,6 @@
             node = parentOf.get(node.id);
         }
         return path;
-    }
-
-    function slugify(name) {
-        const base = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'person';
-        let id = base, n = 1;
-        while (byId.has(id)) { id = `${base}-${++n}`; }
-        return id;
     }
 
     /* ---------------------------------------------------------------- */
@@ -555,180 +535,9 @@
 
     window.addEventListener('resize', () => renderTree(false));
 
-    /* ---------------------------------------------------------------- */
-    /* Editor: add / edit / delete                                       */
-    /* ---------------------------------------------------------------- */
-
-    const modal = document.getElementById('edit-modal');
-    const editForm = document.getElementById('edit-form');
-    const fieldName = document.getElementById('field-name');
-    const fieldNameFa = document.getElementById('field-name-fa');
-    const fieldBorn = document.getElementById('field-born');
-    const fieldDied = document.getElementById('field-died');
-    const fieldChildNumber = document.getElementById('field-child-number');
-    const fieldMother = document.getElementById('field-mother');
-    const fieldIsSpouse = document.getElementById('field-is-spouse');
-    const fieldResidence = document.getElementById('field-residence');
-    const fieldWikipedia = document.getElementById('field-wikipedia');
-    const fieldWebsite = document.getElementById('field-website');
-    const fieldInstagram = document.getElementById('field-instagram');
-    const fieldLinkedin = document.getElementById('field-linkedin');
-    const fieldNote = document.getElementById('field-note');
-    const fieldPhoto = document.getElementById('field-photo');
-    const fieldPhotoPreview = document.getElementById('field-photo-preview');
-    const editModalTitle = document.getElementById('edit-modal-title');
-
-    let editMode = null; // 'add' | 'edit'
-    let pendingPhoto; // undefined = unchanged, null = cleared, string = new data URL
-
-    function openModal(mode) {
-        editMode = mode;
-        pendingPhoto = undefined;
-        editModalTitle.textContent = mode === 'add' ? 'Add child' : 'Edit person';
-        const current = mode === 'edit' ? byId.get(selectedId) : null;
-        fieldName.value = current ? current.name : '';
-        fieldNameFa.value = current ? (current.nameFa || '') : '';
-        fieldBorn.value = current && current.born != null ? current.born : '';
-        fieldDied.value = current && current.died != null ? current.died : '';
-        fieldChildNumber.value = current ? (current.childNumber || '') : '';
-        fieldMother.value = current ? (current.mother || '') : '';
-        fieldIsSpouse.checked = current ? current.role === 'spouse' : false;
-        fieldResidence.value = current ? (current.residence || '') : '';
-        const social = (current && current.social) || {};
-        fieldWikipedia.value = social.wikipedia || '';
-        fieldWebsite.value = social.website || '';
-        fieldInstagram.value = social.instagram || '';
-        fieldLinkedin.value = social.linkedin || '';
-        fieldNote.value = current ? (current.note || '') : '';
-        fieldPhoto.value = '';
-        renderAvatar(fieldPhotoPreview, current || { name: fieldName.value || '?' });
-        modal.hidden = false;
-        fieldName.focus();
-    }
-
-    function closeModal() { modal.hidden = true; editMode = null; }
-
-    fieldPhoto.addEventListener('change', () => {
-        const file = fieldPhoto.files[0];
-        if (!file) { pendingPhoto = null; return; }
-        const reader = new FileReader();
-        reader.onload = () => {
-            pendingPhoto = reader.result;
-            renderAvatar(fieldPhotoPreview, { photo: pendingPhoto, name: fieldName.value });
-        };
-        reader.readAsDataURL(file);
-    });
-
-    document.getElementById('btn-add-child').addEventListener('click', () => openModal('add'));
-    document.getElementById('btn-add-root-child').addEventListener('click', () => openModal('add'));
-    document.getElementById('btn-edit').addEventListener('click', () => openModal('edit'));
-    document.getElementById('btn-cancel-edit').addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    editForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const values = {
-            name: fieldName.value.trim(),
-            nameFa: fieldNameFa.value.trim(),
-            born: fieldBorn.value === '' ? null : Number(fieldBorn.value),
-            died: fieldDied.value === '' ? null : Number(fieldDied.value),
-            childNumber: fieldChildNumber.value.trim(),
-            mother: fieldMother.value.trim(),
-            role: fieldIsSpouse.checked ? 'spouse' : 'descendant',
-            residence: fieldResidence.value.trim(),
-            social: {
-                wikipedia: fieldWikipedia.value.trim(),
-                website: fieldWebsite.value.trim(),
-                instagram: fieldInstagram.value.trim(),
-                linkedin: fieldLinkedin.value.trim()
-            },
-            note: fieldNote.value.trim()
-        };
-        if (!values.name) return;
-        if (pendingPhoto !== undefined) values.photo = pendingPhoto;
-
-        if (editMode === 'add') {
-            const parent = byId.get(selectedId);
-            const newNode = { id: slugify(values.name), children: [], photo: null, ...values };
-            (parent.children ||= []).push(newNode);
-            rebuildIndex();
-            saveTree();
-            selectPerson(newNode.id, true);
-        } else if (editMode === 'edit') {
-            const node = byId.get(selectedId);
-            Object.assign(node, values);
-            saveTree();
-            selectPerson(selectedId, false);
-        }
-        closeModal();
-    });
-
-    document.getElementById('btn-delete').addEventListener('click', () => {
-        if (selectedId === tree.id) { alert("The root person (Farmanfarma) can't be deleted."); return; }
-        const node = byId.get(selectedId);
-        const count = countDescendants(node);
-        const msg = count > 0
-            ? `Delete "${node.name}" and their ${count} descendant${count > 1 ? 's' : ''}?`
-            : `Delete "${node.name}"?`;
-        if (!confirm(msg)) return;
-
-        const parent = parentOf.get(selectedId);
-        parent.children = parent.children.filter(c => c.id !== selectedId);
-        rebuildIndex();
-        saveTree();
-        detailPanel.hidden = true;
-        selectPerson(parent.id, true);
-    });
-
     function countDescendants(node) {
         return (node.children || []).reduce((acc, c) => acc + 1 + countDescendants(c), 0);
     }
-
-    /* ---------------------------------------------------------------- */
-    /* Export / import / reset                                           */
-    /* ---------------------------------------------------------------- */
-
-    document.getElementById('btn-export').addEventListener('click', () => {
-        const blob = new Blob([JSON.stringify(tree, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'family-tree.json';
-        a.click();
-        URL.revokeObjectURL(url);
-    });
-
-    const importFileInput = document.getElementById('import-file');
-    document.getElementById('btn-import').addEventListener('click', () => importFileInput.click());
-    importFileInput.addEventListener('change', () => {
-        const file = importFileInput.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-            try {
-                const data = JSON.parse(reader.result);
-                if (!data.id || !data.name) throw new Error('Missing id/name at root');
-                tree = data;
-                rebuildIndex();
-                saveTree();
-                selectPerson(tree.id, true);
-            } catch (err) {
-                alert('That file does not look like a valid family tree JSON export.\n\n' + err.message);
-            }
-        };
-        reader.readAsText(file);
-        importFileInput.value = '';
-    });
-
-    document.getElementById('btn-reset-data').addEventListener('click', () => {
-        if (!confirm('This clears your locally saved edits and reloads the original seed data. Export a backup first if you want to keep your changes. Continue?')) return;
-        localStorage.removeItem(STORAGE_KEY);
-        tree = structuredCloneCompat(window.SEED_FAMILY_TREE);
-        rebuildIndex();
-        selectedId = tree.id;
-        detailPanel.hidden = true;
-        selectPerson(tree.id, true);
-    });
 
     /* ---------------------------------------------------------------- */
     /* Qajar reference chart: top-down box-and-line org chart, D3-laid-out */
@@ -1012,6 +821,10 @@
     /* ---------------------------------------------------------------- */
 
     renderQajarChart();
-    selectPerson(tree.id, true);
+    // Select the root for the tree/detail panel, but skip renderPosition --
+    // "X is the root of the tree, with X starred below" is just noise before
+    // anyone has actually searched for someone.
+    renderDetail(tree.id);
+    renderTree(false);
     checkRoute();
 })();
