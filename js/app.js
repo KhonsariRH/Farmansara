@@ -201,7 +201,7 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.textContent = sib.name;
-                btn.addEventListener('click', () => selectPerson(sib.id, true));
+                btn.addEventListener('click', () => addPerson(sib.id, true));
                 detailSiblingsList.appendChild(btn);
             });
             detailSiblings.hidden = false;
@@ -219,11 +219,26 @@
     /* Selection                                                          */
     /* ---------------------------------------------------------------- */
 
+    // A fresh look at someone -- shows only their own path from Farmanfarma,
+    // dropping any other paths that were pinned before.
     function selectPerson(id, focusTree) {
         if (!byId.has(id)) return;
         selectedId = id;
         pendingFocusScale = null;
-        ensureClusterExpanded(id);
+        resetPins(id);
+        renderPosition(id);
+        renderDetail(id);
+        renderTree(focusTree);
+    }
+
+    // Adds someone alongside whatever's already pinned -- used when browsing
+    // from one relative's profile to another, so the tree accumulates their
+    // paths instead of losing what was already there.
+    function addPerson(id, focusTree) {
+        if (!byId.has(id)) return;
+        selectedId = id;
+        pendingFocusScale = null;
+        addPin(id);
         renderPosition(id);
         renderDetail(id);
         renderTree(focusTree);
@@ -234,7 +249,8 @@
         const count = countDescendants(byId.get(id));
         pendingFocusScale = Math.max(1, Math.min(2.5, 3 / Math.sqrt(count + 1)));
         selectedId = id;
-        ensureClusterExpanded(id);
+        addPin(id);
+        fullyExpandedIds.add(id);
         renderPosition(id);
         renderDetail(id);
         renderTree(true);
@@ -297,7 +313,7 @@
         legend.classList.toggle('is-tappable', isMobileCanvas());
         [...seen.entries()].sort((a, b) => a[0] - b[0]).forEach(([idx, name]) => {
             const clusterId = `wife-cluster-${idx}`;
-            const expanded = expandedClusters.has(clusterId);
+            const expanded = browsingClusterId === clusterId;
             const item = document.createElement('button');
             item.type = 'button';
             item.className = 'wife-legend-item' + (expanded ? ' expanded' : '');
@@ -316,40 +332,75 @@
        colored or how wide the canvas is -- group them by wife into
        collapsible clusters instead, each expandable by tap, on every screen
        size. Names must never overlap, full stop. */
-    let expandedClusters = new Set();
     function isMobileCanvas() {
         return true;
     }
-    // Only one cluster open at a time -- two large clusters expanded together
-    // can still crowd the middle of the wheel even with horizontal labels, so
-    // opening a new one always closes whichever was open before it.
+    // The tree only ever draws the *paths* of people you've actually looked
+    // at, not whole sibling groups -- selecting someone shows only their line
+    // from Farmanfarma down to them (plus their own direct children, so you
+    // can see who they had); browsing through relatives' profiles adds each
+    // one's path alongside what's already there, so the tree accumulates as
+    // you explore instead of forcing one lineage open at a time.
+    let pinnedIds = new Set();
+    // "N descendants" additionally unfolds a person's whole subtree, not just
+    // their direct kids -- tracked separately since it's a deliberate,
+    // heavier action distinct from ordinary path pinning.
+    let fullyExpandedIds = new Set();
+    // A single wife-cluster can also be opened as a flat browse list (tap the
+    // cluster dot or its legend row) independent of any pinned path -- one at
+    // a time, since two full sibling groups open together still crowd the
+    // wheel even with horizontal labels.
+    let browsingClusterId = null;
+    function resetPins(id) {
+        pinnedIds = new Set([id]);
+        fullyExpandedIds = new Set();
+        browsingClusterId = null;
+    }
+    function addPin(id) {
+        pinnedIds.add(id);
+    }
     function toggleCluster(clusterId) {
-        if (expandedClusters.has(clusterId)) {
-            expandedClusters.delete(clusterId);
-        } else {
-            expandedClusters.clear();
-            expandedClusters.add(clusterId);
-        }
+        browsingClusterId = (browsingClusterId === clusterId) ? null : clusterId;
     }
     const UNATTRIBUTED_CLUSTER_ID = 'wife-cluster-unattributed';
-    // Below the wife-cluster level, ANY node with real children is collapsed
-    // by default too -- otherwise a deep branch (grandchildren, great-
-    // grandchildren) dumps every descendant onto the wheel the moment its
-    // cluster opens. A node's own children only appear once its own id is in
-    // expandedClusters (grown via ensureClusterExpanded or a direct tap).
-    function processDeep(node) {
-        const hasKids = !!(node.children && node.children.length);
+    function computeVisibleIds() {
+        const ids = new Set([tree.id]);
+        pinnedIds.forEach((pid) => {
+            if (!byId.has(pid)) return;
+            ancestryPath(pid).forEach((n) => ids.add(n.id));
+            // Reveal a pinned person's own direct children too (so their line
+            // shows who they had) -- but not a nested spouse, who isn't a
+            // descendant and shouldn't read as one.
+            (byId.get(pid).children || []).filter((c) => c.role !== 'spouse').forEach((c) => ids.add(c.id));
+        });
+        fullyExpandedIds.forEach((pid) => {
+            if (!byId.has(pid)) return;
+            (function walk(n) { ids.add(n.id); (n.children || []).forEach(walk); })(byId.get(pid));
+        });
+        return ids;
+    }
+    // Builds the display copy of a real subtree, keeping only nodes in
+    // `visible` and recording how many were left out at each level.
+    function buildVisibleSubtree(node, visible) {
         const clone = { ...node };
-        if (hasKids && expandedClusters.has(node.id)) {
-            clone.children = node.children.map(processDeep);
-        } else {
-            clone.children = [];
-            clone._hiddenChildCount = hasKids ? node.children.length : 0;
-        }
+        const kids = (node.children || []).filter((c) => visible.has(c.id));
+        clone.children = kids.map((c) => buildVisibleSubtree(c, visible));
+        clone._hiddenChildCount = (node.children ? node.children.length : 0) - kids.length;
         return clone;
     }
+    // A cluster being actively browsed shows its whole G1 sibling list flat
+    // (no grandchildren) regardless of pins; otherwise it shows only the
+    // pinned child(ren) -- each recursed into their own visible subtree.
+    function clusterChildren(realChildren, clusterId, visible) {
+        if (browsingClusterId === clusterId) {
+            return realChildren.map((ch) => visible.has(ch.id)
+                ? buildVisibleSubtree(ch, visible)
+                : { ...ch, children: [], _hiddenChildCount: (ch.children || []).length });
+        }
+        return realChildren.filter((ch) => visible.has(ch.id)).map((ch) => buildVisibleSubtree(ch, visible));
+    }
     function buildDisplayTree() {
-        if (!isMobileCanvas()) return tree;
+        const visible = computeVisibleIds();
         const clusters = new Map(); // wife index -> cluster node
         const passthrough = [];
         (tree.children || []).forEach((child) => {
@@ -369,7 +420,7 @@
         });
         const clusterNodes = [...clusters.values()].sort((a, b) => a.wifeIndex - b.wifeIndex).map((c) => ({
             ...c,
-            children: expandedClusters.has(c.id) ? c.realChildren.map(processDeep) : [],
+            children: clusterChildren(c.realChildren, c.id, visible),
         }));
         // Children with no recorded mother (e.g. still-unattributed Wikipedia
         // entries) get their own cluster too, instead of sitting loose next to
@@ -382,7 +433,7 @@
                 wifeIndex: null,
                 name: 'Mother not recorded',
                 realChildren: passthrough,
-                children: expandedClusters.has(UNATTRIBUTED_CLUSTER_ID) ? passthrough.map(processDeep) : [],
+                children: clusterChildren(passthrough, UNATTRIBUTED_CLUSTER_ID, visible),
             });
         }
         return { ...tree, children: [...clusterNodes, ...extra] };
@@ -390,25 +441,6 @@
     function colorForRenderNode(d) {
         if (d.data.isCluster) return d.data.wifeIndex ? WIFE_COLORS[(d.data.wifeIndex - 1) % WIFE_COLORS.length] : '#9a9a9a';
         return wifeColorForNode(d.data.id);
-    }
-    // When jumping to a person (search, sibling/child links, descendants
-    // button) on a narrow screen, make sure their wife cluster is expanded
-    // first, or they won't exist in the collapsed display tree to focus on.
-    // Makes id (and, if it has children, id itself) visible in the collapsed
-    // display tree: expands its wife cluster plus every ancestor between the
-    // cluster and id, closing any other open cluster/branch along the way so
-    // only this one lineage is ever unfolded at once.
-    function ensureClusterExpanded(id) {
-        if (!isMobileCanvas()) return;
-        const path = ancestryPath(id); // [root, g1, ..., id's node]
-        if (path.length < 2) return;
-        const idx = wifeIndexOf(path[1]);
-        const clusterId = idx ? `wife-cluster-${idx}` : UNATTRIBUTED_CLUSTER_ID;
-        expandedClusters.clear();
-        expandedClusters.add(clusterId);
-        // Expand every ancestor from the G1 child down to (and including) id
-        // itself, so id's own children -- if any -- are visible too.
-        for (let i = 1; i < path.length; i++) expandedClusters.add(path[i].id);
     }
 
     // Trim the repetitive shared surname/title so labels on the crowded round
@@ -529,7 +561,13 @@
                 .attr('r', photoRadius(d));
         });
 
+        // Photos must stay upright regardless of where they sit on the wheel --
+        // the enclosing node is rotated to its angular position, so counter-
+        // rotate a wrapper group by the same amount (the same trick used for
+        // the text labels below) rather than letting the portrait itself tilt.
         node.filter(d => !!d.data.photo)
+            .append('g')
+            .attr('transform', d => d.data.id === tree.id ? null : `rotate(${90 - (d.x * 180 / Math.PI)})`)
             .append('image')
             .attr('href', d => d.data.photo)
             .attr('x', d => -photoRadius(d))
@@ -539,10 +577,14 @@
             .attr('preserveAspectRatio', 'xMidYMid slice')
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
+        // The frame ring needs a bold stroke on photo nodes -- a hairline
+        // reads as swallowed by a dark vintage portrait and looks like a
+        // solid black disc rather than a coloured frame around it.
         node.append('circle')
             .attr('r', d => d.data.isCluster ? 13 : (d.data.id === tree.id ? 8 : 5))
             .style('fill', d => (d.data.isCluster && !d.data.photo) ? colorForRenderNode(d) : null)
-            .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d));
+            .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d))
+            .style('stroke-width', d => d.data.photo ? '3px' : null);
 
         // Labels stay upright and horizontal everywhere, never following the
         // wheel's rotation -- sideways or upside-down text was the whole
@@ -604,13 +646,17 @@
     }
 
     document.getElementById('btn-zoom-reset').addEventListener('click', () => {
+        resetPins(selectedId);
+        renderTree(false);
         if (svg && zoomBehavior) svg.transition().duration(300).call(zoomBehavior.transform, d3.zoomIdentity);
     });
 
     window.addEventListener('resize', () => renderTree(false));
 
+    // Spouses married into the family aren't descendants -- don't count them.
     function countDescendants(node) {
-        return (node.children || []).reduce((acc, c) => acc + 1 + countDescendants(c), 0);
+        return (node.children || []).filter((c) => c.role !== 'spouse')
+            .reduce((acc, c) => acc + 1 + countDescendants(c), 0);
     }
 
     /* ---------------------------------------------------------------- */
@@ -781,6 +827,8 @@
     const profileSiblingsBlock = document.getElementById('profile-siblings-block');
     const profileSiblingsHeading = document.getElementById('profile-siblings-heading');
     const profileSiblings = document.getElementById('profile-siblings');
+    const profileSpouseBlock = document.getElementById('profile-spouse-block');
+    const profileSpouse = document.getElementById('profile-spouse');
 
     function socialHref(type, value) {
         if (!value) return null;
@@ -865,8 +913,24 @@
             profileParent.innerHTML = '<span class="profile-empty">Root of the tree</span>';
         }
 
+        const allKids = node.children || [];
+        const spouses = allKids.filter(c => c.role === 'spouse');
+        profileSpouse.innerHTML = '';
+        if (spouses.length > 0) {
+            spouses.forEach(sp => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = sp.name;
+                btn.addEventListener('click', () => { location.hash = '#p/' + sp.id; });
+                profileSpouse.appendChild(btn);
+            });
+            profileSpouseBlock.hidden = false;
+        } else {
+            profileSpouseBlock.hidden = true;
+        }
+
         profileChildren.innerHTML = '';
-        const children = node.children || [];
+        const children = allKids.filter(c => c.role !== 'spouse');
         if (children.length > 0) {
             children.forEach(child => {
                 const btn = document.createElement('button');
@@ -883,6 +947,10 @@
     }
 
     function showProfileView(id) {
+        // Browsing to someone's profile pins their path onto the tree too,
+        // so it's still there -- alongside whoever else was already pinned --
+        // when you go back.
+        addPin(id);
         renderProfile(id);
         mainEl.hidden = true;
         profileView.hidden = false;
@@ -897,7 +965,11 @@
     document.getElementById('btn-profile-back').addEventListener('click', () => {
         history.pushState('', document.title, location.pathname + location.search);
         hideProfileView();
-        selectPerson(selectedId, true);
+        // Don't reset here -- everyone whose profile was visited along the
+        // way stays pinned, so their paths are all still on the tree.
+        renderPosition(selectedId);
+        renderDetail(selectedId);
+        renderTree(true);
     });
 
     function checkRoute() {
