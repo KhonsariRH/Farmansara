@@ -299,12 +299,13 @@
         });
     }
 
-    /* On narrow screens, 40+ siblings fanned out in one ring overlap badly
-       no matter how they're colored -- group them by wife into collapsible
-       clusters instead, each expandable by tap. Desktop keeps the full fan. */
+    /* 40+ siblings fanned out in one ring overlap badly no matter how they're
+       colored or how wide the canvas is -- group them by wife into
+       collapsible clusters instead, each expandable by tap, on every screen
+       size. Names must never overlap, full stop. */
     let expandedClusters = new Set();
     function isMobileCanvas() {
-        return (canvas.clientWidth || 600) < 700;
+        return true;
     }
     const UNATTRIBUTED_CLUSTER_ID = 'wife-cluster-unattributed';
     function buildDisplayTree() {
@@ -427,7 +428,7 @@
                 + (pathIds.has(d.data.id) ? ' highlighted' : '')
                 + (d.data.photo ? ' has-photo' : '')
                 + (d.data.isCluster ? ' wife-cluster' : ''))
-            .attr('transform', d => `rotate(${(d.x * 180 / Math.PI) - 90}) translate(${d.y},0)`)
+            .attr('transform', d => d.data.id === tree.id ? 'translate(0,0)' : `rotate(${(d.x * 180 / Math.PI) - 90}) translate(${d.y},0)`)
             .style('cursor', 'pointer')
             .on('click', (event, d) => {
                 event.stopPropagation();
@@ -476,9 +477,9 @@
 
         node.append('text')
             .attr('dy', '0.31em')
-            .attr('x', d => (d.x < Math.PI === !d.children) ? 8 : -8)
-            .attr('text-anchor', d => (d.x < Math.PI === !d.children) ? 'start' : 'end')
-            .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
+            .attr('x', d => d.data.id === tree.id ? 12 : ((d.x < Math.PI === !d.children) ? 8 : -8))
+            .attr('text-anchor', d => d.data.id === tree.id ? 'start' : ((d.x < Math.PI === !d.children) ? 'start' : 'end'))
+            .attr('transform', d => d.data.id === tree.id ? null : ((d.x >= Math.PI) ? 'rotate(180)' : null))
             .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
             .style('font-weight', d => d.data.isCluster ? '700' : null)
             .style('pointer-events', 'all') // hit-test the label's full box, not just painted glyph pixels

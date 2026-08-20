@@ -307,9 +307,9 @@ window.SEED_FAMILY_TREE = {
             "id": "firouz-nosrat-ed-dowleh-iii",
             "name": "Prince Firouz Nosrat-ed-Dowleh III",
             "nameFa": "",
-            "born": 1889,
+            "born": 1887,
             "died": 1937,
-            "childNumber": "1st of 38 children with a recorded birth year, 1st son (41 recorded children total; born 1889)",
+            "childNumber": "1st of 38 children with a recorded birth year, 1st son (41 recorded children total; born 1887 per the genealogy book, which takes precedence over the earlier Iranica-sourced 1889)",
             "mother": "Ezzat-ed-Dowleh Qajar (wife #1 of 8 recorded wives)",
             "photo": "images/people/firouz-nosrat-ed-dowleh-iii.jpg",
             "residence": "",
@@ -317,7 +317,7 @@ window.SEED_FAMILY_TREE = {
                 "wikipedia": "https://en.wikipedia.org/wiki/Firouz_Nosrat-ed-Dowleh_III"
             },
             "role": "descendant",
-            "note": "Farmanfarma's eldest son. Carried on the \"Nosrat-ed-Dowleh\" title from his grandfather Firuz Mirza Nosrat-ed-Dowleh I. Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica); death year 1937 confirmed by the genealogy book, which also records that he died in one of Reza Shah Pahlavi's prisons and gives his birth year as 1887 (2-year discrepancy with the Iranica record, unresolved). Married at least twice: Dafne-e-Mahsouk Dafari (m. 1904-1906) and Ehteramel Moluk Barzin (m. 1935, d.1969). The children below -- Mozaffar Firouz, Lili Firouz and Sharoukh Firouz -- were previously listed as Farmanfarma's own direct children (per the Iranica record), but the book shows they're actually his grandchildren through this son; their birth years (1905-1925) also wouldn't fit as children of Ezzat-ed-Dowleh (b.1872) anyway, corroborating the correction.",
+            "note": "Farmanfarma's eldest son. Carried on the \"Nosrat-ed-Dowleh\" title from his grandfather Firuz Mirza Nosrat-ed-Dowleh I. Name and mother from a family genealogy record (via Encyclopaedia Iranica); birth year (1887) and death year (1937) from the genealogy book, which takes precedence over Iranica where they conflict -- Iranica had given 1889. The book also records that he died in one of Reza Shah Pahlavi's prisons. Married at least twice: Dafne-e-Mahsouk Dafari (m. 1904-1906) and Ehteramel Moluk Barzin (m. 1935, d.1969). The children below -- Mozaffar Firouz, Lili Firouz and Sharoukh Firouz -- were previously listed as Farmanfarma's own direct children (per the Iranica record), but the book shows they're actually his grandchildren through this son; their birth years (1905-1925) also wouldn't fit as children of Ezzat-ed-Dowleh (b.1872) anyway, corroborating the correction.",
             "children": [
                 {
                     "id": "mozaffar-firouz",
