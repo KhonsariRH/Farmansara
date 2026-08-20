@@ -1107,8 +1107,8 @@ window.SEED_FAMILY_TREE = {
                                     "children": []
                                 },
                                 {
-                                    "id": "giv-khonsari-i2212",
-                                    "name": "Giv Khonsari",
+                                    "id": "guiv-khonsari-i2212",
+                                    "name": "Guiv Khonsari",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
