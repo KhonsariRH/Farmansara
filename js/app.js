@@ -293,14 +293,26 @@
                 seen.set(idx, c.mother.replace(/\s*\(wife #\d+.*\)$/, ''));
             }
         });
+        const counts = new Map();
+        tree.children.forEach((c) => {
+            const idx = wifeIndexOf(c);
+            if (idx) counts.set(idx, (counts.get(idx) || 0) + 1);
+        });
         legend.innerHTML = '';
+        legend.classList.toggle('is-tappable', isMobileCanvas());
         [...seen.entries()].sort((a, b) => a[0] - b[0]).forEach(([idx, name]) => {
-            const item = document.createElement('span');
-            item.className = 'wife-legend-item';
-            item.innerHTML = `<span class="wife-legend-swatch" style="background:${WIFE_COLORS[(idx - 1) % WIFE_COLORS.length]}"></span>${escapeHtml(name)}`;
-            item.style.cursor = 'pointer';
+            const clusterId = `wife-cluster-${idx}`;
+            const expanded = expandedClusters.has(clusterId);
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'wife-legend-item' + (expanded ? ' expanded' : '');
+            item.innerHTML = `<span class="wife-legend-swatch" style="background:${WIFE_COLORS[(idx - 1) % WIFE_COLORS.length]}"></span>`
+                + `<span class="wife-legend-name">${escapeHtml(name)}</span>`
+                + (isMobileCanvas() ? `<span class="wife-legend-count">${counts.get(idx) || 0}</span><span class="wife-legend-chevron">${expanded ? '⌄' : '›'}</span>` : '');
             item.addEventListener('click', () => {
-                expandedClusters.add(`wife-cluster-${idx}`);
+                if (!isMobileCanvas()) return;
+                if (expandedClusters.has(clusterId)) expandedClusters.delete(clusterId);
+                else expandedClusters.add(clusterId);
                 renderTree(false);
             });
             legend.appendChild(item);
@@ -314,6 +326,7 @@
     function isMobileCanvas() {
         return (canvas.clientWidth || 600) < 700;
     }
+    const UNATTRIBUTED_CLUSTER_ID = 'wife-cluster-unattributed';
     function buildDisplayTree() {
         if (!isMobileCanvas()) return tree;
         const clusters = new Map(); // wife index -> cluster node
@@ -336,10 +349,24 @@
             ...c,
             children: expandedClusters.has(c.id) ? c.realChildren : [],
         }));
-        return { ...tree, children: [...clusterNodes, ...passthrough] };
+        // Children with no recorded mother (e.g. still-unattributed Wikipedia
+        // entries) get their own cluster too, instead of sitting loose next to
+        // the root looking like they belong there structurally.
+        const extra = [];
+        if (passthrough.length) {
+            extra.push({
+                id: UNATTRIBUTED_CLUSTER_ID,
+                isCluster: true,
+                wifeIndex: null,
+                name: 'Mother not recorded',
+                realChildren: passthrough,
+                children: expandedClusters.has(UNATTRIBUTED_CLUSTER_ID) ? passthrough : [],
+            });
+        }
+        return { ...tree, children: [...clusterNodes, ...extra] };
     }
     function colorForRenderNode(d) {
-        if (d.data.isCluster) return WIFE_COLORS[(d.data.wifeIndex - 1) % WIFE_COLORS.length];
+        if (d.data.isCluster) return d.data.wifeIndex ? WIFE_COLORS[(d.data.wifeIndex - 1) % WIFE_COLORS.length] : '#9a9a9a';
         return wifeColorForNode(d.data.id);
     }
     // When jumping to a person (search, sibling/child links, descendants
@@ -350,7 +377,7 @@
         const path = ancestryPath(id);
         if (path.length < 2) return;
         const idx = wifeIndexOf(path[1]);
-        if (idx) expandedClusters.add(`wife-cluster-${idx}`);
+        expandedClusters.add(idx ? `wife-cluster-${idx}` : UNATTRIBUTED_CLUSTER_ID);
     }
 
     // Trim the repetitive shared surname/title so labels on the crowded round
@@ -433,6 +460,16 @@
                 }
             });
 
+        // An invisible, generously-sized tap target per node -- the visible
+        // circle (as small as 5px) plus a rotated text label with gaps between
+        // glyphs is too fiddly a hit area for a real finger, especially for
+        // cluster nodes that must be tappable to get anywhere on mobile.
+        node.append('circle')
+            .attr('class', 'node-hit-target')
+            .attr('r', d => d.data.isCluster ? 22 : 14)
+            .attr('fill', 'transparent')
+            .style('pointer-events', 'all');
+
         const defs = gZoom.append('defs');
         node.filter(d => !!d.data.photo).each(function (d) {
             const r = d.data.id === tree.id ? 8 : 5;
@@ -464,9 +501,24 @@
             .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
             .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
             .style('font-weight', d => d.data.isCluster ? '700' : null)
+            .style('pointer-events', 'all') // hit-test the label's full box, not just painted glyph pixels
             .text(d => d.data.isCluster
                 ? `${shortDisplayName(d.data.name)} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
                 : shortDisplayName(d.data.name));
+
+        // Cluster labels are the main visible thing to tap, but they're long
+        // rotated text trailing 100+ px away from the small dot -- cover that
+        // whole span too, or a tap on the label itself (the natural thing to
+        // tap) silently misses everything and does nothing.
+        node.filter(d => d.data.isCluster).append('rect')
+            .attr('class', 'node-hit-target')
+            .attr('x', d => (d.x < Math.PI === !d.children) ? 0 : -230)
+            .attr('y', -16)
+            .attr('width', 230)
+            .attr('height', 32)
+            .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
+            .attr('fill', 'transparent')
+            .style('pointer-events', 'all');
 
         if (focusSelected) {
             const target = root.descendants().find(d => d.data.id === selectedId);
