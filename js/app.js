@@ -250,7 +250,18 @@
     // Wife-group colors: a distinct color per wife, applied to G1 children (and,
     // via their ancestry, their descendants) on the round tree only -- full
     // formal names/mother text elsewhere are untouched.
-    const WIFE_COLORS = ['#2a9d8f', '#e76f51', '#457b9d', '#e9c46a', '#6a4c93', '#3a86ff', '#bc6c25'];
+    const WIFE_COLORS = ['#2a9d8f', '#e76f51', '#457b9d', '#e9c46a', '#6a4c93', '#3a86ff', '#bc6c25', '#8a5a44'];
+    // Portraits cropped from the genealogy book's per-wife biography pages.
+    const WIFE_PHOTOS = {
+        1: 'images/wives/ezzat-ed-dowleh.jpg',
+        2: 'images/wives/mah-bagum.jpg',
+        3: 'images/wives/massoumeh-tafreshi.jpg',
+        4: 'images/wives/batoul-ahshami.jpg',
+        5: 'images/wives/fatemeh-alinaghi.jpg',
+        6: 'images/wives/akhtarzaman-hormozian.jpg',
+        7: 'images/wives/hamdam-talai.jpg',
+        8: 'images/wives/batoul-chizar-doost.jpg',
+    };
 
     function wifeIndexOf(g1Node) {
         const m = /\(wife #(\d+)/.exec((g1Node && g1Node.mother) || '');
@@ -346,6 +357,7 @@
                     isCluster: true,
                     wifeIndex: idx,
                     name: child.mother.replace(/\s*\(wife #\d+.*\)$/, ''),
+                    photo: WIFE_PHOTOS[idx] || null,
                     realChildren: [],
                 });
             }
@@ -502,28 +514,29 @@
             .attr('fill', 'transparent')
             .style('pointer-events', 'all');
 
+        const photoRadius = d => d.data.id === tree.id ? 8 : (d.data.isCluster ? 9 : 5);
+
         const defs = gZoom.append('defs');
         node.filter(d => !!d.data.photo).each(function (d) {
-            const r = d.data.id === tree.id ? 8 : 5;
             defs.append('clipPath')
                 .attr('id', `clip-${d.data.id}`)
                 .append('circle')
-                .attr('r', r);
+                .attr('r', photoRadius(d));
         });
 
         node.filter(d => !!d.data.photo)
             .append('image')
             .attr('href', d => d.data.photo)
-            .attr('x', d => -(d.data.id === tree.id ? 8 : 5))
-            .attr('y', d => -(d.data.id === tree.id ? 8 : 5))
-            .attr('width', d => (d.data.id === tree.id ? 16 : 10))
-            .attr('height', d => (d.data.id === tree.id ? 16 : 10))
+            .attr('x', d => -photoRadius(d))
+            .attr('y', d => -photoRadius(d))
+            .attr('width', d => photoRadius(d) * 2)
+            .attr('height', d => photoRadius(d) * 2)
             .attr('preserveAspectRatio', 'xMidYMid slice')
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
         node.append('circle')
             .attr('r', d => d.data.isCluster ? 9 : (d.data.id === tree.id ? 8 : 5))
-            .style('fill', d => d.data.isCluster ? colorForRenderNode(d) : null)
+            .style('fill', d => (d.data.isCluster && !d.data.photo) ? colorForRenderNode(d) : null)
             .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d));
 
         // Labels stay upright and horizontal everywhere, never following the

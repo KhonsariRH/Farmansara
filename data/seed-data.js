@@ -35,6 +35,8 @@
  */
 
 
+
+
 window.SEED_FAMILY_TREE = {
     "id": "farmanfarma",
     "name": "Prince Abdol Hossein Mirza Farmanfarma",
@@ -142,8 +144,8 @@ window.SEED_FAMILY_TREE = {
                     "note": "Daughter of Firouz Nosrat-ed-Dowleh III (previously misplaced here as Farmanfarma's own direct daughter via the Iranica record -- corrected using the genealogy book, \"Descendants of Khanum Ezzat-ed-Dowleh and Abdol Hossein Mirza Farman Farma\", p.77). Photo from the same page. Married Houshangue Nayer Nouri (1912-1983) in 1940. Their children include Kioumars Nayer Nouri (b.1966, m. Helen Rebecca Yiasoumi, children Borna Firouz and Kalil Nayer Nouri) and Touradj Nayer Nouri (b.1941, m.1966 Laura MacNaughton, children include Nazanine Nayer Nouri b.1968 and Dara Nayer Nouri) -- not all individually added as entries yet.",
                     "children": [
                         {
-                            "id": "michel-boquentin-i123",
-                            "name": "Michel Boquentin",
+                            "id": "firouzeh-nayer-nouri-i123",
+                            "name": "Firouzeh Nayer Nouri",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -153,9 +155,25 @@ window.SEED_FAMILY_TREE = {
                             "photo": null,
                             "residence": "",
                             "social": {},
-                            "role": "spouse",
-                            "note": "Married into the family. Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                            "role": "descendant",
+                            "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                             "children": [
+                                {
+                                    "id": "michel-boquentin-i123a",
+                                    "name": "Michel Boquentin",
+                                    "nameFa": "",
+                                    "born": null,
+                                    "died": null,
+                                    "bookCode": "I123a",
+                                    "childNumber": "",
+                                    "mother": "",
+                                    "photo": null,
+                                    "residence": "",
+                                    "social": {},
+                                    "role": "spouse",
+                                    "note": "Married into the family. Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                    "children": []
+                                },
                                 {
                                     "id": "yassamine-massoumeh-boquentin-i1231",
                                     "name": "Yassamine Massoumeh Boquentin",
@@ -222,8 +240,8 @@ window.SEED_FAMILY_TREE = {
                                     "children": []
                                 },
                                 {
-                                    "id": "nazanine-nayer-nouri-i1211",
-                                    "name": "Nazanine Nayer Nouri",
+                                    "id": "kioumars-nayer-nouri-i1211",
+                                    "name": "Kioumars Nayer Nouri",
                                     "nameFa": "",
                                     "born": null,
                                     "died": null,
@@ -237,12 +255,61 @@ window.SEED_FAMILY_TREE = {
                                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                                     "children": [
                                         {
-                                            "id": "richard-j-nolan-i1211a",
+                                            "id": "borna-firouz-nayer-nouri-i12111",
+                                            "name": "Borna Firouz Nayer Nouri",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "bookCode": "I12111",
+                                            "childNumber": "",
+                                            "mother": "",
+                                            "photo": null,
+                                            "residence": "",
+                                            "social": {},
+                                            "role": "descendant",
+                                            "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                            "children": []
+                                        },
+                                        {
+                                            "id": "kalil-nayer-nouri-i12112",
+                                            "name": "Kalil Nayer Nouri",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "bookCode": "I12112",
+                                            "childNumber": "",
+                                            "mother": "",
+                                            "photo": null,
+                                            "residence": "",
+                                            "social": {},
+                                            "role": "descendant",
+                                            "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "nazanine-nayer-nouri-i1212",
+                                    "name": "Nazanine Nayer Nouri",
+                                    "nameFa": "",
+                                    "born": null,
+                                    "died": null,
+                                    "bookCode": "I1212",
+                                    "childNumber": "",
+                                    "mother": "",
+                                    "photo": null,
+                                    "residence": "",
+                                    "social": {},
+                                    "role": "descendant",
+                                    "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                    "children": [
+                                        {
+                                            "id": "richard-j-nolan-i1212a",
                                             "name": "Richard J. Nolan",
                                             "nameFa": "",
                                             "born": null,
                                             "died": null,
-                                            "bookCode": "I1211a",
+                                            "bookCode": "I1212a",
                                             "childNumber": "",
                                             "mother": "",
                                             "photo": null,
@@ -251,14 +318,46 @@ window.SEED_FAMILY_TREE = {
                                             "role": "spouse",
                                             "note": "Married into the family. Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                                             "children": []
+                                        },
+                                        {
+                                            "id": "lili-victoria-nolan-i12121",
+                                            "name": "Lili Victoria Nolan",
+                                            "nameFa": "",
+                                            "born": null,
+                                            "died": null,
+                                            "bookCode": "I12121",
+                                            "childNumber": "",
+                                            "mother": "",
+                                            "photo": null,
+                                            "residence": "",
+                                            "social": {},
+                                            "role": "descendant",
+                                            "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                            "children": []
                                         }
                                     ]
+                                },
+                                {
+                                    "id": "dara-nayer-nouri-i1213",
+                                    "name": "Dara Nayer Nouri",
+                                    "nameFa": "",
+                                    "born": null,
+                                    "died": null,
+                                    "bookCode": "I1213",
+                                    "childNumber": "",
+                                    "mother": "",
+                                    "photo": null,
+                                    "residence": "",
+                                    "social": {},
+                                    "role": "descendant",
+                                    "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
+                                    "children": []
                                 }
                             ]
                         },
                         {
-                            "id": "massoumeh-boquentin-i122",
-                            "name": "Massoumeh Boquentin",
+                            "id": "faezeh-nayer-nouri-i122",
+                            "name": "Faezeh Nayer Nouri",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -5322,7 +5421,7 @@ window.SEED_FAMILY_TREE = {
             "died": null,
             "bookCode": "VII1",
             "childNumber": "",
-            "mother": "",
+            "mother": "Hamdam Khanum Talai (wife #7 of 8 recorded wives)",
             "photo": null,
             "residence": "",
             "social": {},
@@ -5650,7 +5749,7 @@ window.SEED_FAMILY_TREE = {
             "died": null,
             "bookCode": "VIII1",
             "childNumber": "",
-            "mother": "",
+            "mother": "Batoul Khanum Chizar Doost (wife #8 of 8 recorded wives)",
             "photo": null,
             "residence": "",
             "social": {},
@@ -5731,7 +5830,7 @@ window.SEED_FAMILY_TREE = {
             "died": null,
             "bookCode": "VIII2",
             "childNumber": "",
-            "mother": "",
+            "mother": "Batoul Khanum Chizar Doost (wife #8 of 8 recorded wives)",
             "photo": null,
             "residence": "",
             "social": {},
@@ -5981,7 +6080,7 @@ window.SEED_QAJAR_REFERENCE = {
                                                             "born": 1872,
                                                             "died": 1955,
                                                             "social": {},
-                                                            "photo": null,
+                                                            "photo": "images/wives/ezzat-ed-dowleh.jpg",
                                                             "note": "Daughter of Mozaffar ad-Din Shah, granddaughter of Naser al-Din Shah -- confirmed by the genealogy book's own biography page for her (distinct from an earlier, unrelated Qajar princess of the same title who really was a daughter of Mohammad Shah and married Amir Kabir; an earlier version of this chart wrongly conflated the two). Married Farmanfarma in 1887 as his first, and for over 20 years only, wife, and bore him six sons. After the Qajar dynasty fell she used \"Mozaffari\" as her surname.",
                                                             "spouse": {
                                                                 "name": "Abdol Hossein Mirza Farmanfarma",
