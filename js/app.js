@@ -363,44 +363,54 @@
         browsingClusterId = (browsingClusterId === clusterId) ? null : clusterId;
     }
     const UNATTRIBUTED_CLUSTER_ID = 'wife-cluster-unattributed';
-    function computeVisibleIds() {
+    // Nodes lying on the route to a pin (every ancestor plus the pinned
+    // person themself). Reaching a node this way opens it -- but "open" means
+    // showing ALL of its children, siblings included, never just the one
+    // being followed. Drilling only continues into whichever child is
+    // itself on this same set.
+    function computeOnPathIds() {
         const ids = new Set([tree.id]);
         pinnedIds.forEach((pid) => {
             if (!byId.has(pid)) return;
             ancestryPath(pid).forEach((n) => ids.add(n.id));
-            // Reveal a pinned person's own direct children too (so their line
-            // shows who they had) -- but not a nested spouse, who isn't a
-            // descendant and shouldn't read as one.
-            (byId.get(pid).children || []).filter((c) => c.role !== 'spouse').forEach((c) => ids.add(c.id));
         });
+        return ids;
+    }
+    // "N descendants" force-opens a whole subtree regardless of the path
+    // rule above -- every descendant of a fully-expanded person is visible.
+    function computeFullyExpandedIds() {
+        const ids = new Set();
         fullyExpandedIds.forEach((pid) => {
             if (!byId.has(pid)) return;
             (function walk(n) { ids.add(n.id); (n.children || []).forEach(walk); })(byId.get(pid));
         });
         return ids;
     }
-    // Builds the display copy of a real subtree, keeping only nodes in
-    // `visible` and recording how many were left out at each level.
-    function buildVisibleSubtree(node, visible) {
+    // Builds the display copy of a real subtree. `node` is already open, so
+    // every one of its children is kept (siblings never disappear); a child
+    // only keeps its own children if it's on the path/fully-expanded set
+    // too, otherwise it renders as a closed leaf with a hidden-count.
+    function buildVisibleSubtree(node, onPath, fullSet) {
         const clone = { ...node };
-        const kids = (node.children || []).filter((c) => visible.has(c.id));
-        clone.children = kids.map((c) => buildVisibleSubtree(c, visible));
-        clone._hiddenChildCount = (node.children ? node.children.length : 0) - kids.length;
+        const kids = node.children || [];
+        clone.children = kids.map((c) => (onPath.has(c.id) || fullSet.has(c.id))
+            ? buildVisibleSubtree(c, onPath, fullSet)
+            : { ...c, children: [], _hiddenChildCount: (c.children || []).length });
         return clone;
     }
-    // A cluster being actively browsed shows its whole G1 sibling list flat
-    // (no grandchildren) regardless of pins; otherwise it shows only the
-    // pinned child(ren) -- each recursed into their own visible subtree.
-    function clusterChildren(realChildren, clusterId, visible) {
-        if (browsingClusterId === clusterId) {
-            return realChildren.map((ch) => visible.has(ch.id)
-                ? buildVisibleSubtree(ch, visible)
-                : { ...ch, children: [], _hiddenChildCount: (ch.children || []).length });
-        }
-        return realChildren.filter((ch) => visible.has(ch.id)).map((ch) => buildVisibleSubtree(ch, visible));
+    // A cluster opens (full flat sibling list) if it's being actively
+    // browsed, or if any of its G1 kids is on the path to a pin -- each kid
+    // then keeps drilling only if it's on that same path itself.
+    function clusterChildren(realChildren, clusterId, onPath, fullSet) {
+        const isOpen = browsingClusterId === clusterId || realChildren.some((ch) => onPath.has(ch.id) || fullSet.has(ch.id));
+        if (!isOpen) return [];
+        return realChildren.map((ch) => (onPath.has(ch.id) || fullSet.has(ch.id))
+            ? buildVisibleSubtree(ch, onPath, fullSet)
+            : { ...ch, children: [], _hiddenChildCount: (ch.children || []).length });
     }
     function buildDisplayTree() {
-        const visible = computeVisibleIds();
+        const onPath = computeOnPathIds();
+        const fullSet = computeFullyExpandedIds();
         const clusters = new Map(); // wife index -> cluster node
         const passthrough = [];
         (tree.children || []).forEach((child) => {
@@ -420,7 +430,7 @@
         });
         const clusterNodes = [...clusters.values()].sort((a, b) => a.wifeIndex - b.wifeIndex).map((c) => ({
             ...c,
-            children: clusterChildren(c.realChildren, c.id, visible),
+            children: clusterChildren(c.realChildren, c.id, onPath, fullSet),
         }));
         // Children with no recorded mother (e.g. still-unattributed Wikipedia
         // entries) get their own cluster too, instead of sitting loose next to
@@ -433,7 +443,7 @@
                 wifeIndex: null,
                 name: 'Mother not recorded',
                 realChildren: passthrough,
-                children: clusterChildren(passthrough, UNATTRIBUTED_CLUSTER_ID, visible),
+                children: clusterChildren(passthrough, UNATTRIBUTED_CLUSTER_ID, onPath, fullSet),
             });
         }
         return { ...tree, children: [...clusterNodes, ...extra] };
