@@ -1,13 +1,18 @@
 :root {
+    /* Palette and type scale adapted from growthnform's design tokens
+       (source/brand/tokens.css) to give Farmansara the same visual family. */
     --primary: #ffffff;
-    --bg: #f3f4f4;
-    --ink: #252626;
-    --ink-dark: #161a1d;
-    --accent: #c80073;
-    --accent-soft: #8996a0;
-    --light-grey: #ececec;
+    --bg: #faf9f7;
+    --ink: #1a1a1a;
+    --ink-dark: #0d0d0d;
+    --accent: #1a3a2e;
+    --accent-ink: #faf9f7;
+    --accent-soft: #6b6b6b;
+    --light-grey: #e3e0da;
     --danger: #b3261e;
-    --radius: 10px;
+    --radius: 4px;
+    --font-display: ui-serif, Georgia, serif;
+    --font-text: system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: 16px;
 }
 
@@ -22,13 +27,14 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-text);
     line-height: 1.6;
 }
 
-h1, h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.15;
 }
 
 .name-fa, [dir="rtl"] {
@@ -165,16 +171,16 @@ button {
     font-family: inherit;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
-    border-radius: 25px;
-    border: none;
-    background: var(--ink);
-    color: var(--primary);
+    border-radius: var(--radius);
+    border: 1px solid var(--light-grey);
+    background: var(--primary);
+    color: var(--ink);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s, border-color 0.15s;
 }
-button:hover { background: var(--accent-soft); }
-button.primary { background: var(--accent); color: #fff; }
-button.primary:hover { background: #a2005c; }
+button:hover { background: var(--light-grey); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.primary:hover { background: #234f3d; border-color: #234f3d; }
 button.danger { background: var(--primary); color: var(--danger); border: 1px solid var(--danger); }
 button.danger:hover { background: #fbe6e6; }
 
@@ -208,12 +214,12 @@ button.danger:hover { background: #fbe6e6; }
     transition: r 0.15s, fill 0.15s;
 }
 .node.selected circle { fill: var(--accent); stroke: var(--ink-dark); stroke-width: 2.5px; }
-.node.highlighted circle { fill: #f3c9de; }
-.node:hover circle { fill: #f3c9de; }
+.node.highlighted circle { fill: #d7e2db; }
+.node:hover circle { fill: #d7e2db; }
 .node.has-photo circle { fill: none; }
 .node.has-photo.selected circle, .node.has-photo.highlighted circle, .node.has-photo:hover circle { fill: none; stroke-width: 2.5px; }
 .node text {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-text);
     font-size: 11px;
     fill: var(--ink);
     pointer-events: none;
@@ -273,10 +279,10 @@ button.danger:hover { background: #fbe6e6; }
     color: var(--accent);
     background: none;
     border: 1px solid var(--accent);
-    border-radius: 25px;
+    border-radius: var(--radius);
     padding: 0.35rem 0.85rem;
 }
-.detail-descendants:hover { background: #fbe4f0; }
+.detail-descendants:hover { background: #eaf0ec; }
 .detail-siblings { margin-top: 0.75rem; font-size: 0.88rem; }
 .detail-siblings-label { font-weight: 600; display: block; margin-bottom: 0.3rem; }
 .detail-siblings button {
@@ -412,7 +418,7 @@ button.danger:hover { background: #fbe6e6; }
     font-size: 0.75rem;
     font-weight: 600;
     padding: 0.2rem 0.7rem;
-    border-radius: 25px;
+    border-radius: var(--radius);
     margin-bottom: 0.5rem;
 }
 #profile-name { margin: 0; font-size: 1.9rem; }
@@ -434,7 +440,7 @@ button.danger:hover { background: #fbe6e6; }
     background: var(--ink);
     color: #fff;
     padding: 0.45rem 1.1rem;
-    border-radius: 25px;
+    border-radius: var(--radius);
     font-size: 0.85rem;
     text-decoration: none;
 }
