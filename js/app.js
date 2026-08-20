@@ -332,7 +332,7 @@
         gZoom.selectAll('*').remove();
         renderWifeLegend();
 
-        const root = d3.hierarchy(tree);
+        const root = d3.hierarchy(tree).sort((a, b) => (wifeIndexOf(a.data) || 0) - (wifeIndexOf(b.data) || 0));
         const treeLayout = d3.tree()
             .size([2 * Math.PI, radius])
             .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth || 1);
@@ -388,6 +388,7 @@
             .attr('x', d => (d.x < Math.PI === !d.children) ? 8 : -8)
             .attr('text-anchor', d => (d.x < Math.PI === !d.children) ? 'start' : 'end')
             .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
+            .style('fill', d => d.data.id === selectedId ? null : wifeColorForNode(d.data.id))
             .text(d => shortDisplayName(d.data.name));
 
         if (focusSelected) {
