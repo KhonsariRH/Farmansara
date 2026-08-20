@@ -342,11 +342,11 @@ window.SEED_FAMILY_TREE = {
                     "died": 1982,
                     "childNumber": "",
                     "mother": "Dafne-e-Mahsouk Dafari (1884-1933, m. 1904-1906)",
-                    "photo": null,
+                    "photo": "images/people/mozaffar-firouz.jpg",
                     "residence": "",
                     "social": {},
                     "role": "descendant",
-                    "note": "Son of Firouz Nosrat-ed-Dowleh III (previously misplaced here as Farmanfarma's own direct son via the Iranica record -- corrected using the genealogy book, \"Descendants of Khanum Ezzat-ed-Dowleh and Abdol Hossein Mirza Farman Farma\", p.76).",
+                    "note": "Son of Firouz Nosrat-ed-Dowleh III (previously misplaced here as Farmanfarma's own direct son via the Iranica record -- corrected using the genealogy book, \"Descendants of Khanum Ezzat-ed-Dowleh and Abdol Hossein Mirza Farman Farma\", p.76). Photo from the same page.",
                     "children": [
                         {
                             "id": "vida-firouz",
@@ -356,11 +356,11 @@ window.SEED_FAMILY_TREE = {
                             "died": null,
                             "childNumber": "",
                             "mother": "Mahin Dowlatshahi (b.1920, m. 1938)",
-                            "photo": null,
+                            "photo": "images/people/vida-firouz.jpg",
                             "residence": "",
                             "social": {},
                             "role": "descendant",
-                            "note": "Daughter of Prince Mozaffar Firouz (previously misplaced as Farmanfarma's own direct daughter via the Iranica record -- corrected using the genealogy book, p.76). The book also shows a \"Mohammad Reza Rezai\" (b.1965) connected to her -- likely her son, though the exact relationship wasn't fully legible in the photo; not yet added as a separate entry pending confirmation.",
+                            "note": "Daughter of Prince Mozaffar Firouz (previously misplaced as Farmanfarma's own direct daughter via the Iranica record -- corrected using the genealogy book, p.76). Married Mohammad Reza Rezai (b.1965) in 1991, per the book. Photo from the same page.",
                             "children": []
                         }
                     ]
@@ -373,11 +373,11 @@ window.SEED_FAMILY_TREE = {
                     "died": null,
                     "childNumber": "",
                     "mother": "Ehteramel Moluk Barzin (m. 1935, d.1969)",
-                    "photo": null,
+                    "photo": "images/people/lili-firouz.jpg",
                     "residence": "",
                     "social": {},
                     "role": "descendant",
-                    "note": "Daughter of Firouz Nosrat-ed-Dowleh III (previously misplaced here as Farmanfarma's own direct daughter via the Iranica record -- corrected using the genealogy book, \"Descendants of Khanum Ezzat-ed-Dowleh and Abdol Hossein Mirza Farman Farma\", p.77). Married Houshangue Nayer Nouri (1912-1983) in 1940. Their children include Touradj Nayer Nouri (b.1941, m. Laura MacNaughton), Faezeh Nayer Nouri (b.1945) and Firouzeh Nayer Nouri (b.1945) per the book -- not all individually transcribed yet, and further grandchildren (Nazanine, Kasra, Dara, Borna Nayer Nouri and others) appear on pp.76-78 but weren't legible enough to add with confidence.",
+                    "note": "Daughter of Firouz Nosrat-ed-Dowleh III (previously misplaced here as Farmanfarma's own direct daughter via the Iranica record -- corrected using the genealogy book, \"Descendants of Khanum Ezzat-ed-Dowleh and Abdol Hossein Mirza Farman Farma\", p.77). Photo from the same page. Married Houshangue Nayer Nouri (1912-1983) in 1940. Their children include Kioumars Nayer Nouri (b.1966, m. Helen Rebecca Yiasoumi, children Borna Firouz and Kalil Nayer Nouri) and Touradj Nayer Nouri (b.1941, m.1966 Laura MacNaughton, children include Nazanine Nayer Nouri b.1968 and Dara Nayer Nouri) -- not all individually added as entries yet.",
                     "children": []
                 },
                 {
@@ -527,11 +527,11 @@ window.SEED_FAMILY_TREE = {
             "died": null,
             "childNumber": "30th of 38 children with a recorded birth year, 11th daughter (41 recorded children total; born 1928)",
             "mother": "Massoumeh Khanum Tafreshi (wife #3 of 7 recorded wives)",
-            "photo": null,
+            "photo": "images/people/ayesheh-farman-farmaian.jpg",
             "residence": "",
             "social": {},
             "role": "descendant",
-            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). Photo and marriage confirmed by the genealogy book (\"Descendants of Massoumeh Khanum and Abdol Hossein Mirza Farman Farma\", pp.126-127): married Ali Asghar Mahlouji (b.1919) in 1952. Their children include Zoreh Mahlouji (b.1953, m.1978 Mohammed Gholi \"Elise\" Majd), Lalleh Mahlouji (b.1954, m.1988 Fardad Kazemzadeh) and Mohammad Jaffar \"Dadi\" Mahlouji (b.1957) -- not yet added as individual entries.",
             "children": []
         },
         {
