@@ -485,6 +485,8 @@ button.danger:hover { background: #fbe6e6; }
     margin: 0 0.4rem 0.4rem 0;
 }
 .profile-relation-block button:hover { background: #dfe2e3; }
+.profile-relation-block button:disabled { background: var(--accent); color: var(--accent-ink); cursor: default; }
+.profile-relation-block button:disabled:hover { background: var(--accent); }
 .profile-empty { color: var(--accent-soft); font-style: italic; font-size: 0.9rem; }
 
 @media (max-width: 600px) {

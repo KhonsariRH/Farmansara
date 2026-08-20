@@ -238,6 +238,10 @@
         renderPosition(id);
         renderDetail(id);
         renderTree(true);
+        // On mobile the detail panel and tree canvas are stacked, not side by
+        // side -- without this, tapping "N descendants" updates the tree
+        // off-screen below and looks like the button does nothing at all.
+        if (isMobileCanvas()) canvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     /* ---------------------------------------------------------------- */
@@ -510,11 +514,12 @@
         // cluster nodes that must be tappable to get anywhere on mobile.
         node.append('circle')
             .attr('class', 'node-hit-target')
-            .attr('r', d => d.data.isCluster ? 22 : 14)
+            .attr('r', d => d.data.isCluster ? 28 : 14)
             .attr('fill', 'transparent')
+            .style('stroke', 'none')
             .style('pointer-events', 'all');
 
-        const photoRadius = d => d.data.id === tree.id ? 8 : (d.data.isCluster ? 9 : 5);
+        const photoRadius = d => d.data.id === tree.id ? 8 : (d.data.isCluster ? 13 : 5);
 
         const defs = gZoom.append('defs');
         node.filter(d => !!d.data.photo).each(function (d) {
@@ -535,7 +540,7 @@
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
         node.append('circle')
-            .attr('r', d => d.data.isCluster ? 9 : (d.data.id === tree.id ? 8 : 5))
+            .attr('r', d => d.data.isCluster ? 13 : (d.data.id === tree.id ? 8 : 5))
             .style('fill', d => (d.data.isCluster && !d.data.photo) ? colorForRenderNode(d) : null)
             .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d));
 
@@ -773,6 +778,9 @@
     const profileSocial = document.getElementById('profile-social');
     const profileParent = document.getElementById('profile-parent');
     const profileChildren = document.getElementById('profile-children');
+    const profileSiblingsBlock = document.getElementById('profile-siblings-block');
+    const profileSiblingsHeading = document.getElementById('profile-siblings-heading');
+    const profileSiblings = document.getElementById('profile-siblings');
 
     function socialHref(type, value) {
         if (!value) return null;
@@ -826,6 +834,24 @@
             a.textContent = label;
             profileSocial.appendChild(a);
         });
+
+        const siblings = siblingsBySameMother(id);
+        if (siblings.length > 0 && node.mother) {
+            const wifeName = node.mother.replace(/\s*\(wife #\d+.*\)$/, '');
+            profileSiblingsHeading.textContent = `Siblings via ${wifeName} (${siblings.length + 1} children)`;
+            profileSiblings.innerHTML = '';
+            [node, ...siblings].forEach(sib => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = sib.name;
+                if (sib.id === id) btn.disabled = true;
+                else btn.addEventListener('click', () => { location.hash = '#p/' + sib.id; });
+                profileSiblings.appendChild(btn);
+            });
+            profileSiblingsBlock.hidden = false;
+        } else {
+            profileSiblingsBlock.hidden = true;
+        }
 
         const parent = parentOf.get(id);
         profileParent.innerHTML = '';
