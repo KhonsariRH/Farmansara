@@ -290,9 +290,7 @@
                 + `<span class="wife-legend-name">${escapeHtml(name)}</span>`
                 + (isMobileCanvas() ? `<span class="wife-legend-count">${counts.get(idx) || 0}</span><span class="wife-legend-chevron">${expanded ? '⌄' : '›'}</span>` : '');
             item.addEventListener('click', () => {
-                if (!isMobileCanvas()) return;
-                if (expandedClusters.has(clusterId)) expandedClusters.delete(clusterId);
-                else expandedClusters.add(clusterId);
+                toggleCluster(clusterId);
                 renderTree(false);
             });
             legend.appendChild(item);
@@ -307,7 +305,34 @@
     function isMobileCanvas() {
         return true;
     }
+    // Only one cluster open at a time -- two large clusters expanded together
+    // can still crowd the middle of the wheel even with horizontal labels, so
+    // opening a new one always closes whichever was open before it.
+    function toggleCluster(clusterId) {
+        if (expandedClusters.has(clusterId)) {
+            expandedClusters.delete(clusterId);
+        } else {
+            expandedClusters.clear();
+            expandedClusters.add(clusterId);
+        }
+    }
     const UNATTRIBUTED_CLUSTER_ID = 'wife-cluster-unattributed';
+    // Below the wife-cluster level, ANY node with real children is collapsed
+    // by default too -- otherwise a deep branch (grandchildren, great-
+    // grandchildren) dumps every descendant onto the wheel the moment its
+    // cluster opens. A node's own children only appear once its own id is in
+    // expandedClusters (grown via ensureClusterExpanded or a direct tap).
+    function processDeep(node) {
+        const hasKids = !!(node.children && node.children.length);
+        const clone = { ...node };
+        if (hasKids && expandedClusters.has(node.id)) {
+            clone.children = node.children.map(processDeep);
+        } else {
+            clone.children = [];
+            clone._hiddenChildCount = hasKids ? node.children.length : 0;
+        }
+        return clone;
+    }
     function buildDisplayTree() {
         if (!isMobileCanvas()) return tree;
         const clusters = new Map(); // wife index -> cluster node
@@ -328,7 +353,7 @@
         });
         const clusterNodes = [...clusters.values()].sort((a, b) => a.wifeIndex - b.wifeIndex).map((c) => ({
             ...c,
-            children: expandedClusters.has(c.id) ? c.realChildren : [],
+            children: expandedClusters.has(c.id) ? c.realChildren.map(processDeep) : [],
         }));
         // Children with no recorded mother (e.g. still-unattributed Wikipedia
         // entries) get their own cluster too, instead of sitting loose next to
@@ -341,7 +366,7 @@
                 wifeIndex: null,
                 name: 'Mother not recorded',
                 realChildren: passthrough,
-                children: expandedClusters.has(UNATTRIBUTED_CLUSTER_ID) ? passthrough : [],
+                children: expandedClusters.has(UNATTRIBUTED_CLUSTER_ID) ? passthrough.map(processDeep) : [],
             });
         }
         return { ...tree, children: [...clusterNodes, ...extra] };
@@ -353,12 +378,21 @@
     // When jumping to a person (search, sibling/child links, descendants
     // button) on a narrow screen, make sure their wife cluster is expanded
     // first, or they won't exist in the collapsed display tree to focus on.
+    // Makes id (and, if it has children, id itself) visible in the collapsed
+    // display tree: expands its wife cluster plus every ancestor between the
+    // cluster and id, closing any other open cluster/branch along the way so
+    // only this one lineage is ever unfolded at once.
     function ensureClusterExpanded(id) {
         if (!isMobileCanvas()) return;
-        const path = ancestryPath(id);
+        const path = ancestryPath(id); // [root, g1, ..., id's node]
         if (path.length < 2) return;
         const idx = wifeIndexOf(path[1]);
-        expandedClusters.add(idx ? `wife-cluster-${idx}` : UNATTRIBUTED_CLUSTER_ID);
+        const clusterId = idx ? `wife-cluster-${idx}` : UNATTRIBUTED_CLUSTER_ID;
+        expandedClusters.clear();
+        expandedClusters.add(clusterId);
+        // Expand every ancestor from the G1 child down to (and including) id
+        // itself, so id's own children -- if any -- are visible too.
+        for (let i = 1; i < path.length; i++) expandedClusters.add(path[i].id);
     }
 
     // Trim the repetitive shared surname/title so labels on the crowded round
@@ -400,11 +434,29 @@
                 // Children of an expanded wife-cluster get generous, flat spacing --
                 // depth-based shrinking made sense when everyone shared the circle at
                 // once, but now they're the only populated wedge, with plenty of room
-                // freed up by the still-collapsed clusters around them.
-                if (a.parent === b.parent) return (a.parent && a.parent.data.isCluster) ? 2.2 : 1;
+                // freed up by the still-collapsed clusters around them. The top-level
+                // cluster dots themselves also need a guaranteed minimum gap: with
+                // horizontal (non-rotated) labels there's no self-avoidance from
+                // pointing away from the circle, so tight angular spacing means
+                // labels stack directly on each other rather than fanning apart.
+                if (a.parent === b.parent) return (a.parent && a.parent.data.isCluster) ? 1.1 : 2.8;
                 return 2 / (a.depth || 1);
             });
         treeLayout(root);
+
+        // d3.tree() spaces depths evenly across the full radius, so the
+        // collapsed-cluster ring (depth 1) gets squeezed toward the center
+        // whenever an expanded cluster adds two more depth levels below it --
+        // exactly when it most needs room. Give depth 1 a fixed, generous
+        // radius regardless of how deep the tree goes, and spread whatever's
+        // left evenly across the remaining depths.
+        const maxDepth = Math.max(1, d3.max(root.descendants(), d => d.depth));
+        const ring1Radius = Math.min(radius * 0.4, 150);
+        root.each(d => {
+            if (d.depth === 0) d.y = 0;
+            else if (d.depth === 1) d.y = ring1Radius;
+            else d.y = ring1Radius + (d.depth - 1) * (radius - ring1Radius) / Math.max(1, maxDepth - 1);
+        });
 
         const pathIds = new Set(ancestryPath(selectedId).map(n => n.id));
 
@@ -433,8 +485,7 @@
             .on('click', (event, d) => {
                 event.stopPropagation();
                 if (d.data.isCluster) {
-                    if (expandedClusters.has(d.data.id)) expandedClusters.delete(d.data.id);
-                    else expandedClusters.add(d.data.id);
+                    toggleCluster(d.data.id);
                     renderTree(false);
                 } else {
                     selectPerson(d.data.id, false);
@@ -475,16 +526,20 @@
             .style('fill', d => d.data.isCluster ? colorForRenderNode(d) : null)
             .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d));
 
+        // Labels stay upright and horizontal everywhere, never following the
+        // wheel's rotation -- sideways or upside-down text was the whole
+        // problem. Counter-rotate each label by the negative of its node's
+        // own rotation so it renders flat regardless of where it sits.
         node.append('text')
             .attr('dy', '0.31em')
             .attr('x', d => d.data.id === tree.id ? 12 : ((d.x < Math.PI === !d.children) ? 8 : -8))
             .attr('text-anchor', d => d.data.id === tree.id ? 'start' : ((d.x < Math.PI === !d.children) ? 'start' : 'end'))
-            .attr('transform', d => d.data.id === tree.id ? null : ((d.x >= Math.PI) ? 'rotate(180)' : null))
+            .attr('transform', d => d.data.id === tree.id ? null : `rotate(${90 - (d.x * 180 / Math.PI)})`)
             .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
             .style('font-weight', d => d.data.isCluster ? '700' : null)
             .style('pointer-events', 'all') // hit-test the label's full box, not just painted glyph pixels
             .text(d => d.data.isCluster
-                ? `${shortDisplayName(d.data.name)} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
+                ? `${shortDisplayName(d.data.name).replace(/\bKhanum\b\s*/gi, '')} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
                 : shortDisplayName(d.data.name));
 
         // Cluster labels are the main visible thing to tap, but they're long
@@ -497,7 +552,7 @@
             .attr('y', -16)
             .attr('width', 230)
             .attr('height', 32)
-            .attr('transform', d => (d.x >= Math.PI) ? 'rotate(180)' : null)
+            .attr('transform', d => `rotate(${90 - (d.x * 180 / Math.PI)})`)
             .attr('fill', 'transparent')
             .style('pointer-events', 'all');
 
