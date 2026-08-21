@@ -5370,7 +5370,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/mahan-farman-farmaian-19144527"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": []
