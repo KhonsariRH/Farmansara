@@ -27,6 +27,53 @@
         })(tree, null);
     }
 
+    // Farmanfarma's 8 wives get their own browsable profile page -- built
+    // here as standalone nodes (id `wife-N`) rather than real tree members,
+    // so they never enter the D3 radial layout (which only ever walks
+    // `tree.children`) but are still reachable via search, via the "Mother"
+    // link on each of their children's profile pages, and via direct URL.
+    // `.children` is populated with references to their actual G1 children
+    // (Farmanfarma's direct children with a matching wife number), so the
+    // existing profile-page "Children" list renders them with no extra code.
+    const WIFE_BIO = {
+        1: { born: 1872, died: 1955, note: "Qajar princess; daughter of Shahzadeh's father's line. Married Farmanfarma in 1887, becoming his first wife. Lived through the reign and fall of the Qajar dynasty as the granddaughter of Nasser-ed-Din Shah. Source: genealogy book biography page." },
+        2: { born: null, died: null, note: "Farmanfarma's second wife; only one child, Bodagh Farman Farmaian, is recorded from this marriage." },
+        3: { born: null, died: null, note: "Farmanfarma's third wife; 9 children are recorded from this marriage, the most of any of his 8 wives." },
+        4: { born: 1896, died: 1975, note: "From Kermanshah; father Mirza Sayed-Ali Nasir Dolatshah. Married Farmanfarma in 1912. 9 children recorded in the genealogy book's biography of her (5 sons, 4 daughters), though only 8 are currently identified in this tree. Source: genealogy book biography page." },
+        5: { born: null, died: null, note: "Farmanfarma's fifth wife; 7 children are recorded from this marriage." },
+        6: { born: 1906, died: 1979, note: "Married Farmanfarma around age 17. One recorded child, Karimdad Farman Farmaian. Source: genealogy book biography page." },
+        7: { born: null, died: null, note: "Farmanfarma's seventh wife; 4 children are recorded from this marriage." },
+        8: { born: 1909, died: null, note: "Married Farmanfarma's older brother Mozaffar-ed-Dowleh first; married Farmanfarma himself after her first husband's death in 1939. 2 children recorded from this second marriage. Source: genealogy book biography page." },
+    };
+    function buildWifeNodes() {
+        const byIdx = new Map();
+        (tree.children || []).forEach((child) => {
+            const idx = wifeIndexOf(child);
+            if (!idx) return;
+            if (!byIdx.has(idx)) byIdx.set(idx, []);
+            byIdx.get(idx).push(child);
+        });
+        byIdx.forEach((kids, idx) => {
+            const id = `wife-${idx}`;
+            const bio = WIFE_BIO[idx] || {};
+            const wifeNode = {
+                id,
+                name: kids[0].mother.replace(/\s*\(wife #\d+.*\)$/, ''),
+                nameFa: '',
+                born: bio.born ?? null,
+                died: bio.died ?? null,
+                photo: WIFE_PHOTOS[idx] || null,
+                residence: '',
+                social: {},
+                role: 'wife',
+                note: bio.note || `Wife #${idx} of Farmanfarma's 8 recorded wives.`,
+                children: kids,
+            };
+            byId.set(id, wifeNode);
+            parentOf.set(id, tree);
+        });
+    }
+
     function ancestryPath(id) {
         const path = [];
         let node = byId.get(id);
@@ -43,15 +90,23 @@
 
     const searchInput = document.getElementById('person-search');
     const searchResults = document.getElementById('search-results');
+    const searchClear = document.getElementById('search-clear');
 
     searchInput.addEventListener('input', () => renderSearchResults(searchInput.value));
     searchInput.addEventListener('focus', () => renderSearchResults(searchInput.value));
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.search-box')) searchResults.hidden = true;
     });
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchResults.hidden = true;
+        searchClear.hidden = true;
+        searchInput.focus();
+    });
 
     function renderSearchResults(query) {
         const q = query.trim().toLowerCase();
+        searchClear.hidden = !query;
         searchResults.innerHTML = '';
         if (!q) { searchResults.hidden = true; return; }
 
@@ -287,6 +342,7 @@
         const m = /\(wife #(\d+)/.exec((g1Node && g1Node.mother) || '');
         return m ? parseInt(m[1], 10) : null;
     }
+    buildWifeNodes();
 
     function wifeColorForNode(id) {
         const path = ancestryPath(id);
@@ -563,8 +619,8 @@
             if (depth <= 1) return baseRing1Radius;
             return baseRing1Radius + (depth - 1) * (radius - baseRing1Radius) / Math.max(1, maxDepth - 1);
         }
-        const RING_GAP_PADDING = 14;
-        const SLICE_SAFETY = 1.3; // buffer since a label only needs to fit ~half its slice, not the whole thing
+        const RING_GAP_PADDING = 8;
+        const SLICE_SAFETY = 1.15; // buffer since a label only needs to fit ~half its slice, not the whole thing
         const byDepth = d3.group(root.descendants(), d => d.depth);
 
         // Labels render horizontally, not radially, so a label can reach
@@ -587,7 +643,23 @@
             const minForRingGap = ringRadius.get(depth - 1) + maxWidthByDepth.get(depth - 1) + maxWidthByDepth.get(depth) + RING_GAP_PADDING;
             ringRadius.set(depth, Math.max(baselineRingRadius(depth), minForSliceFit, minForRingGap));
         }
-        root.each(d => { d.y = ringRadius.get(d.depth) || 0; });
+        // Each ring's radius above is sized for its single worst-case node
+        // (the one with the narrowest slice relative to its label), which
+        // pushed *every* node at that depth out just as far, even the ones
+        // sitting in a roomy, uncrowded wedge with nothing to elongate for.
+        // Individually, most nodes only need `baselineRingRadius` -- so give
+        // each node its own radius between that baseline and the ring's
+        // established (and already link-crossing-safe) ceiling, stretching
+        // out only as far as ITS OWN label actually requires. This can only
+        // pull nodes inward, never past the ceiling the ring-gap math above
+        // already guarantees is collision-free, so it's a pure compaction,
+        // not a new source of overlap risk.
+        root.each(d => {
+            if (d.depth === 0) { d.y = 0; return; }
+            const ceiling = ringRadius.get(d.depth) || 0;
+            const ownNeed = (estimateNodeFootprintPx(d) * SLICE_SAFETY) / Math.max(d.sliceWidth, 1e-6);
+            d.y = Math.min(ceiling, Math.max(baselineRingRadius(d.depth), ownNeed));
+        });
 
         const pathIds = new Set(ancestryPath(selectedId).map(n => n.id));
 
@@ -634,17 +706,19 @@
             });
 
         // An invisible, generously-sized tap target per node -- the visible
-        // circle (as small as 5px) plus a rotated text label with gaps between
+        // circle (as small as 7px) plus a rotated text label with gaps between
         // glyphs is too fiddly a hit area for a real finger, especially for
         // cluster nodes that must be tappable to get anywhere on mobile.
         node.append('circle')
             .attr('class', 'node-hit-target')
-            .attr('r', d => d.data.isCluster ? 28 : 14)
+            .attr('r', d => d.data.isCluster ? 32 : 18)
             .attr('fill', 'transparent')
             .style('stroke', 'none')
             .style('pointer-events', 'all');
 
-        const photoRadius = d => d.data.id === tree.id ? 8 : (d.data.isCluster ? 13 : 5);
+        // Bigger than the earlier, more cramped sizing -- portraits are the
+        // main thing people recognize a person by, so they get more room.
+        const photoRadius = d => d.data.id === tree.id ? 11 : (d.data.isCluster ? 17 : 7);
 
         const defs = gZoom.append('defs');
         node.filter(d => !!d.data.photo).each(function (d) {
@@ -670,14 +744,15 @@
             .attr('preserveAspectRatio', 'xMidYMid slice')
             .attr('clip-path', d => `url(#clip-${d.data.id})`);
 
-        // The frame ring needs a bold stroke on photo nodes -- a hairline
-        // reads as swallowed by a dark vintage portrait and looks like a
-        // solid black disc rather than a coloured frame around it.
+        // The frame ring stays a thin colour-coded outline (thicker only on
+        // photo nodes, where a hairline reads as swallowed by a dark
+        // vintage portrait and looks like a solid black disc rather than a
+        // coloured frame around it).
         node.append('circle')
-            .attr('r', d => d.data.isCluster ? 13 : (d.data.id === tree.id ? 8 : 5))
+            .attr('r', photoRadius)
             .style('fill', d => (d.data.isCluster && !d.data.photo) ? colorForRenderNode(d) : null)
             .style('stroke', d => d.data.id === selectedId ? null : colorForRenderNode(d))
-            .style('stroke-width', d => d.data.photo ? '3px' : null);
+            .style('stroke-width', d => d.data.photo ? '2px' : null);
 
         // Labels stay upright and horizontal everywhere, never following the
         // wheel's rotation -- sideways or upside-down text was the whole
@@ -1051,13 +1126,16 @@
             profileSiblingsBlock.hidden = true;
         }
 
-        // A spouse is nested under their partner in the data purely for
+        // A spouse (or a wife of Farmanfarma -- modelled the same way here,
+        // since her "children" are attached by reference rather than by
+        // descent) is nested under their partner in the data purely for
         // display attachment -- parentOf still resolves to that partner,
         // but calling them "Parent" would be wrong; it's a marriage, not
         // descent, so the section is relabelled "Spouse" for them instead.
+        const isSpouseLike = node.role === 'spouse' || node.role === 'wife';
         const parent = parentOf.get(id);
-        const hasMother = node.role !== 'spouse' && !!node.mother;
-        profileParentHeading.textContent = node.role === 'spouse' ? 'Spouse' : (hasMother ? 'Parents' : 'Parent');
+        const hasMother = !isSpouseLike && !!node.mother;
+        profileParentHeading.textContent = isSpouseLike ? 'Spouse' : (hasMother ? 'Parents' : 'Parent');
         profileParent.innerHTML = '';
         if (parent) {
             const btn = document.createElement('button');
@@ -1071,11 +1149,25 @@
         // The tree only tracks blood descent through the father's line, so
         // "Parent" would otherwise mean only him -- the mother is recorded
         // too (at least for Farmanfarma's own children) and belongs here
-        // just as much, even though she isn't a separate node to link to.
+        // just as much. For a G1 child (Farmanfarma's own child), her
+        // record is one of the 8 wife pages built above, so link to it
+        // instead of just naming her.
         if (hasMother) {
             const motherLine = document.createElement('p');
             motherLine.className = 'profile-mother-line';
-            motherLine.textContent = `Mother: ${node.mother.replace(/\s*\(wife #\d+.*\)$/, '')}`;
+            const wifeIdx = wifeIndexOf(node);
+            const motherNode = wifeIdx ? byId.get(`wife-${wifeIdx}`) : null;
+            if (motherNode) {
+                motherLine.append('Mother: ');
+                const motherBtn = document.createElement('button');
+                motherBtn.type = 'button';
+                motherBtn.className = 'profile-mother-link';
+                motherBtn.textContent = motherNode.name;
+                motherBtn.addEventListener('click', () => { location.hash = '#p/' + motherNode.id; });
+                motherLine.appendChild(motherBtn);
+            } else {
+                motherLine.textContent = `Mother: ${node.mother.replace(/\s*\(wife #\d+.*\)$/, '')}`;
+            }
             profileParent.appendChild(motherLine);
         }
 

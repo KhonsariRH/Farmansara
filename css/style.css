@@ -123,14 +123,34 @@ main {
 .search-box { position: relative; }
 #person-search {
     width: 100%;
-    padding: 0.6rem 0.75rem;
+    padding: 0.6rem 2.2rem 0.6rem 0.75rem;
     border: 1px solid var(--light-grey);
     background: var(--bg);
     border-radius: 6px;
     font-size: 1rem;
     font-family: inherit;
+    box-sizing: border-box;
 }
 #person-search:focus { outline: 2px solid var(--accent); }
+.search-clear {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--light-grey);
+    color: var(--ink);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-clear:hover { background: var(--accent); color: #fff; }
 
 .search-results {
     position: absolute;
@@ -287,15 +307,15 @@ button.danger:hover { background: #fbe6e6; }
 .node circle {
     fill: var(--primary);
     stroke: var(--ink);
-    stroke-width: 1.5px;
+    stroke-width: 1px;
     cursor: pointer;
     transition: r 0.15s, fill 0.15s;
 }
-.node.selected circle { fill: var(--accent); stroke: var(--ink-dark); stroke-width: 2.5px; }
+.node.selected circle { fill: var(--accent); stroke: var(--ink-dark); stroke-width: 2px; }
 .node.highlighted circle { fill: #d7e2db; }
 .node:hover circle { fill: #d7e2db; }
 .node.has-photo circle { fill: none; }
-.node.has-photo.selected circle, .node.has-photo.highlighted circle, .node.has-photo:hover circle { fill: none; stroke-width: 2.5px; }
+.node.has-photo.selected circle, .node.has-photo.highlighted circle, .node.has-photo:hover circle { fill: none; stroke-width: 2px; }
 .node text {
     font-family: var(--font-text);
     font-size: 11px;
@@ -309,9 +329,9 @@ button.danger:hover { background: #fbe6e6; }
 .link {
     fill: none;
     stroke: #cfd3d5;
-    stroke-width: 1.25px;
+    stroke-width: 2px;
 }
-.link.highlighted { stroke: var(--accent); stroke-width: 2px; }
+.link.highlighted { stroke: var(--accent); stroke-width: 2.75px; }
 
 /* Marriage ties: a spouse sits beside their partner at the same generation,
    not below as if they were a child -- standard genealogy-chart convention.
@@ -523,6 +543,7 @@ button.danger:hover { background: #fbe6e6; }
 .profile-relation-block button:disabled:hover { background: var(--accent); }
 .profile-empty { color: var(--accent-soft); font-style: italic; font-size: 0.9rem; }
 .profile-mother-line { margin: 0.5rem 0 0; font-size: 0.9rem; color: var(--ink); }
+.profile-mother-link { padding: 0.15rem 0.6rem; font-size: 0.85rem; margin: 0 0 0 0.3rem; }
 
 @media (max-width: 600px) {
     .profile-relations { grid-template-columns: 1fr; }
