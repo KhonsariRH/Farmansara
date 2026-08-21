@@ -46,7 +46,7 @@ window.SEED_FAMILY_TREE = {
     "died": 1939,
     "photo": "images/people/farmanfarma-root.jpg",
     "residence": "Tehran, Persia",
-    "social": {},
+    "social": {"wikipedia": "https://fr.wikipedia.org/wiki/Abd-ol-Hossein_Farmanfarma"},
     "note": "Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered 38 children currently recorded in this tree by 8 wives, in marriage order: Ezzat-ed-Dowleh Qajar (6), Mah Bagum Khanum/Mirmokri (1), Massoumeh Khanum Tafreshi (9), Batoul Khanum Ahshami (8), Fatemeh Khanum Alinaghi/Shirazi (7), Akhtarzaman Hormozian (1), Hamdam Khanum Talai (4), and Batoul Khanum Chizar Doost (2) -- names and per-wife counts confirmed by the genealogy book's own biography page for each wife, which also corrected several children below that earlier sources had numbered against the wrong wife. One likely exception: Batoul Khanum Ahshami's biography page states she had 9 children (5 sons, 4 daughters), but only 8 -- 5 sons, 3 daughters -- are currently identified here, so a daughter of hers is probably still missing. Every child below either has an independently verifiable Wikipedia article, a family genealogy record, or a position code from the genealogy book's index (the last group not yet cross-checked against the book's content pages). His parentage under Firuz Mirza Nosrat-ed-Dowleh I is confirmed directly by the original chart's reference branch (see the Qajar dynasty chart below). Root of this family tree. Source: Wikipedia + original document + genealogy book.",
     "children": [
         {
@@ -1536,7 +1536,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "",
                             "photo": null,
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/reza-farman-farmaian-cfa-6b5a448a"},
                             "role": "descendant",
                             "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                             "children": []
@@ -3838,7 +3838,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/vallifarmaian"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": [
@@ -3853,7 +3853,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "",
                             "photo": null,
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/kamron-farman-farmaian-47209024"},
                             "role": "descendant",
                             "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                             "children": []
@@ -4132,7 +4132,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/hossein-farman-farmaian-835710"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": [
@@ -4424,7 +4424,8 @@ window.SEED_FAMILY_TREE = {
                     "photo": "images/people/roxane-farmanfarmaian.jpg",
                     "residence": "Cambridge, UK",
                     "social": {
-                        "website": "https://www.polis.cam.ac.uk/Staff_and_Students/dr-roxane-farmanfarmaian"
+                        "website": "https://www.polis.cam.ac.uk/Staff_and_Students/dr-roxane-farmanfarmaian",
+                        "linkedin": "https://www.linkedin.com/in/dr-roxane-farmanfarmaian-09488a"
                     },
                     "role": "descendant",
                     "note": "Born in Salt Lake City, Utah; grew up in the Netherlands. Lecturer in International Politics at the University of Cambridge, Director of International Studies and Global Politics at Cambridge's Institute for Continuing Education; specialist in Middle East politics and security. Lived in Iran through the revolution and hostage crisis, working as a journalist. Author of \"Blood and Oil: A Prince's Memoir of Iran, From the Shah to the Ayatollah\" (2005). Source: Wikipedia.",
@@ -4459,7 +4460,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/alexander-farman-farmaian-941225313"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": [
@@ -5003,7 +5004,7 @@ window.SEED_FAMILY_TREE = {
             "mother": "Batoul Khanum Ahshami (wife #4 of 8 recorded wives)",
             "photo": null,
             "residence": "",
-            "social": {},
+            "social": {"linkedin": "https://www.linkedin.com/in/cyrus-farman-farmaian-91b7a3257"},
             "role": "descendant",
             "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
             "children": [
@@ -5034,7 +5035,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/arashf2"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": [
@@ -5098,7 +5099,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "",
                             "photo": null,
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/ardeshir-ardi-farmanfarmaian-569986134"},
                             "role": "descendant",
                             "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                             "children": []
@@ -5425,7 +5426,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "Shahin Choubak",
                             "photo": "images/people/parissa-farman-farmaian.jpg",
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/parissa-farmanfarmaian"},
                             "role": "descendant",
                             "note": "Birth year, mother and photo per the genealogy book's chart on p.166-167.",
                             "children": []
@@ -5441,7 +5442,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "Shahin Choubak",
                             "photo": "images/people/babak-farman-farmaian.jpg",
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/babak-farmanfarmaian-2b130110a"},
                             "role": "descendant",
                             "note": "Birth year, mother and photo per the genealogy book's chart on p.166-167.",
                             "children": []
@@ -5588,7 +5589,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "Leyly Matin-Daftary",
                     "photo": "images/people/sahra-mansureh-farman-farmaian.jpg",
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/suri-farman-farmaian-73b665"},
                     "role": "descendant",
                     "note": "Birth year, photo and mother per the genealogy book's chart on p.166-167 (born within Kaveh's 1961-1968 marriage to Leyly Matin-Daftary).",
                     "children": []
@@ -6215,7 +6216,7 @@ window.SEED_FAMILY_TREE = {
                             "mother": "",
                             "photo": null,
                             "residence": "",
-                            "social": {},
+                            "social": {"linkedin": "https://www.linkedin.com/in/atessa-farmanfarmaian-078900154"},
                             "role": "descendant",
                             "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                             "children": []
