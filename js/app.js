@@ -661,6 +661,17 @@
             d.y = Math.min(ceiling, Math.max(baselineRingRadius(d.depth), ownNeed));
         });
 
+        // Cap how far the tree can be dragged to roughly where the content
+        // actually reaches (the outermost ring's radius plus its widest
+        // label's overhang), with a little slack for comfortable panning --
+        // not to some fixed, much larger surface that lets a small tree (the
+        // default 8-cluster view especially) be dragged off into empty space
+        // and feel lost. Recomputed on every render since a pinned/expanded
+        // tree can genuinely need more room than a collapsed one.
+        const outermostReach = (ringRadius.get(maxDepth) || baseRing1Radius) + (maxWidthByDepth.get(maxDepth) || 0);
+        const panExtent = Math.max(radius, outermostReach) + 80;
+        zoomBehavior.translateExtent([[-panExtent, -panExtent], [panExtent, panExtent]]);
+
         const pathIds = new Set(ancestryPath(selectedId).map(n => n.id));
 
         // Straight radial segments, not d3's default bump curve -- a bump
