@@ -1182,8 +1182,13 @@
             profileParent.appendChild(motherLine);
         }
 
-        const allKids = node.children || [];
-        const spouses = allKids.filter(c => c.role === 'spouse');
+        // A spouse's own children live in the data as her partner's
+        // children (siblings of the spouse entry itself, not nested under
+        // it) -- `node.children` on a spouse node is always empty. Pull
+        // from the partner's children instead so a spouse's own profile
+        // page shows the kids too, not just the partner's.
+        const allKids = (node.role === 'spouse' && parent) ? (parent.children || []) : (node.children || []);
+        const spouses = node.role === 'spouse' ? [] : allKids.filter(c => c.role === 'spouse');
         profileSpouse.innerHTML = '';
         if (spouses.length > 0) {
             spouses.forEach(sp => {
