@@ -4032,7 +4032,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/farman-farmaian-teymour"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": []
@@ -4736,7 +4736,7 @@ window.SEED_FAMILY_TREE = {
                     "note": "Son of Abdol-Ali Mirza. Source: Wikipedia.",
                     "children": [],
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/salmanff"},
                     "role": "descendant",
                     "bookCode": "IV93"
                 }
@@ -5374,7 +5374,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/massoud-farmanfarmaian-477b91"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": []
@@ -5390,7 +5390,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": null,
                     "residence": "",
-                    "social": {},
+                    "social": {"linkedin": "https://www.linkedin.com/in/mandana-farmanfarmaian-8997b59"},
                     "role": "descendant",
                     "note": "Position and name transcribed from the genealogy book's index (code shown below); not yet cross-checked against the book's content pages, so birth/death years and exact spelling may need confirming.",
                     "children": []
@@ -5702,7 +5702,7 @@ window.SEED_FAMILY_TREE = {
             "mother": "Hamdam Khanum Talai (wife #7 of 8 recorded wives)",
             "photo": null,
             "residence": "",
-            "social": {},
+            "social": {"linkedin": "https://www.linkedin.com/in/tarifarman"},
             "role": "descendant",
             "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
             "children": [
