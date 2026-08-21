@@ -954,6 +954,7 @@
     const profileLineage = document.getElementById('profile-lineage');
     const profileBio = document.getElementById('profile-bio');
     const profileSocial = document.getElementById('profile-social');
+    const profileParentHeading = document.getElementById('profile-parent-heading');
     const profileParent = document.getElementById('profile-parent');
     const profileChildren = document.getElementById('profile-children');
     const profileSiblingsBlock = document.getElementById('profile-siblings-block');
@@ -1033,7 +1034,12 @@
             profileSiblingsBlock.hidden = true;
         }
 
+        // A spouse is nested under their partner in the data purely for
+        // display attachment -- parentOf still resolves to that partner,
+        // but calling them "Parent" would be wrong; it's a marriage, not
+        // descent, so the section is relabelled "Spouse" for them instead.
         const parent = parentOf.get(id);
+        profileParentHeading.textContent = node.role === 'spouse' ? 'Spouse' : 'Parent';
         profileParent.innerHTML = '';
         if (parent) {
             const btn = document.createElement('button');
