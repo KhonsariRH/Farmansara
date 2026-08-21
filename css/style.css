@@ -313,6 +313,26 @@ button.danger:hover { background: #fbe6e6; }
 }
 .link.highlighted { stroke: var(--accent); stroke-width: 2px; }
 
+/* Marriage ties: a spouse sits beside their partner at the same generation,
+   not below as if they were a child -- standard genealogy-chart convention.
+   Hollow, dashed, and muted so they read at a glance as "married in", not
+   blood. */
+.spouse-tie { stroke: #9a9a9a; stroke-width: 1.25px; stroke-dasharray: 2 2; }
+.spouse-dot { stroke: #9a9a9a; stroke-width: 1.5px; stroke-dasharray: 2 2; }
+.spouse-label {
+    font-family: var(--font-text);
+    font-size: 10.5px;
+    font-style: italic;
+    fill: #7a7a7a;
+    cursor: pointer;
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+}
+.spouse-dot:hover { stroke: var(--accent-soft); }
+.spouse-label:hover { fill: var(--accent-soft); }
+
 /* Detail panel */
 .detail-panel {
     grid-column: 1;

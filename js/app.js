@@ -386,16 +386,28 @@
         });
         return ids;
     }
+    // A spouse married into the family isn't a descendant -- pull any out of
+    // a node's own children so they never get treated as one (counted,
+    // recursed into as a generation, etc.), and carry them separately as
+    // `.spouses` so the round tree can draw them as a marriage tie beside
+    // their partner instead of a child hanging below.
+    function splitSpouses(node) {
+        const kids = node.children || [];
+        return {
+            spouses: kids.filter((c) => c.role === 'spouse'),
+            bloodChildren: kids.filter((c) => c.role !== 'spouse'),
+        };
+    }
     // Builds the display copy of a real subtree. `node` is already open, so
     // every one of its children is kept (siblings never disappear); a child
     // only keeps its own children if it's on the path/fully-expanded set
     // too, otherwise it renders as a closed leaf with a hidden-count.
     function buildVisibleSubtree(node, onPath, fullSet) {
-        const clone = { ...node };
-        const kids = node.children || [];
-        clone.children = kids.map((c) => (onPath.has(c.id) || fullSet.has(c.id))
+        const { spouses, bloodChildren } = splitSpouses(node);
+        const clone = { ...node, spouses };
+        clone.children = bloodChildren.map((c) => (onPath.has(c.id) || fullSet.has(c.id))
             ? buildVisibleSubtree(c, onPath, fullSet)
-            : { ...c, children: [], _hiddenChildCount: (c.children || []).length });
+            : { ...c, spouses: splitSpouses(c).spouses, children: [], _hiddenChildCount: splitSpouses(c).bloodChildren.length });
         return clone;
     }
     // A cluster opens (full flat sibling list) if it's being actively
@@ -406,7 +418,7 @@
         if (!isOpen) return [];
         return realChildren.map((ch) => (onPath.has(ch.id) || fullSet.has(ch.id))
             ? buildVisibleSubtree(ch, onPath, fullSet)
-            : { ...ch, children: [], _hiddenChildCount: (ch.children || []).length });
+            : { ...ch, spouses: splitSpouses(ch).spouses, children: [], _hiddenChildCount: splitSpouses(ch).bloodChildren.length });
     }
     function buildDisplayTree() {
         const onPath = computeOnPathIds();
@@ -491,6 +503,26 @@
         const perChar = d.data.isCluster ? 7.8 : 6.8;
         return labelTextFor(d).length * perChar + 16;
     }
+    const SPOUSE_TIE_GAP = 20;
+    function estimateSpouseLabelPx(spouseNode) {
+        return (shortDisplayName(spouseNode.name).length + 2) * 6.4 + 14; // +2 chars for the "⚭ " mark
+    }
+    // A node's real on-screen footprint, including any marriage tie(s)
+    // trailing off it -- what the ring-sizing pass below needs to reserve
+    // room for, as opposed to `estimateLabelPx`, which is just the person's
+    // own name (used for the label itself and for same-ring neighbour math,
+    // since a spouse tie doesn't compete with a sibling for THAT gap).
+    function estimateNodeFootprintPx(d) {
+        let w = estimateLabelPx(d);
+        (d.data.spouses || []).forEach((sp) => { w += SPOUSE_TIE_GAP + estimateSpouseLabelPx(sp); });
+        return w;
+    }
+    // Which horizontal side a node's label (and any spouse tie) extends
+    // toward -- outward on the right half of the wheel, inward on the left,
+    // matching the label's own text-anchor logic below.
+    function labelSide(d) {
+        return (d.x < Math.PI === !d.children) ? 1 : -1;
+    }
     function radialPoint(angle, r) {
         return [r * Math.sin(angle), -r * Math.cos(angle)];
     }
@@ -543,7 +575,7 @@
         const maxWidthByDepth = new Map();
         for (let depth = 0; depth <= maxDepth; depth++) {
             const nodes = byDepth.get(depth) || [];
-            maxWidthByDepth.set(depth, nodes.reduce((m, d) => Math.max(m, estimateLabelPx(d)), 0));
+            maxWidthByDepth.set(depth, nodes.reduce((m, d) => Math.max(m, estimateNodeFootprintPx(d)), 0));
         }
 
         const ringRadius = new Map([[0, 0]]);
@@ -551,7 +583,7 @@
             const nodes = byDepth.get(depth) || [];
             // wide enough that every node's own label fits inside the wedge
             // partition() already gave it, so it can never reach a neighbour's.
-            const minForSliceFit = nodes.reduce((m, d) => Math.max(m, (estimateLabelPx(d) * SLICE_SAFETY) / Math.max(d.sliceWidth, 1e-6)), 0);
+            const minForSliceFit = nodes.reduce((m, d) => Math.max(m, (estimateNodeFootprintPx(d) * SLICE_SAFETY) / Math.max(d.sliceWidth, 1e-6)), 0);
             const minForRingGap = ringRadius.get(depth - 1) + maxWidthByDepth.get(depth - 1) + maxWidthByDepth.get(depth) + RING_GAP_PADDING;
             ringRadius.set(depth, Math.max(baselineRingRadius(depth), minForSliceFit, minForRingGap));
         }
@@ -653,8 +685,8 @@
         // own rotation so it renders flat regardless of where it sits.
         node.append('text')
             .attr('dy', '0.31em')
-            .attr('x', d => d.data.id === tree.id ? 12 : ((d.x < Math.PI === !d.children) ? 8 : -8))
-            .attr('text-anchor', d => d.data.id === tree.id ? 'start' : ((d.x < Math.PI === !d.children) ? 'start' : 'end'))
+            .attr('x', d => d.data.id === tree.id ? 12 : (labelSide(d) > 0 ? 8 : -8))
+            .attr('text-anchor', d => d.data.id === tree.id ? 'start' : (labelSide(d) > 0 ? 'start' : 'end'))
             .attr('transform', d => d.data.id === tree.id ? null : `rotate(${90 - (d.x * 180 / Math.PI)})`)
             .style('fill', d => d.data.id === selectedId ? null : (d.data.isCluster ? null : colorForRenderNode(d)))
             .style('font-weight', d => d.data.isCluster ? '700' : null)
@@ -667,13 +699,54 @@
         // tap) silently misses everything and does nothing.
         node.filter(d => d.data.isCluster).append('rect')
             .attr('class', 'node-hit-target')
-            .attr('x', d => (d.x < Math.PI === !d.children) ? 0 : -230)
+            .attr('x', d => labelSide(d) > 0 ? 0 : -230)
             .attr('y', -16)
             .attr('width', 230)
             .attr('height', 32)
             .attr('transform', d => `rotate(${90 - (d.x * 180 / Math.PI)})`)
             .attr('fill', 'transparent')
             .style('pointer-events', 'all');
+
+        // A spouse married into the family sits beside their partner on a
+        // dashed marriage tie, at the same generation -- the standard
+        // genealogy-chart convention -- rather than hanging below like a
+        // child, and is drawn hollow/muted/italic so it's unmistakably not
+        // a blood descendant. Chained outward from wherever the partner's
+        // own name ends, one tie+name per recorded marriage.
+        node.filter(d => (d.data.spouses || []).length > 0)
+            .append('g')
+            .attr('class', 'spouse-group')
+            .attr('transform', d => d.data.id === tree.id ? null : `rotate(${90 - (d.x * 180 / Math.PI)})`)
+            .each(function (d) {
+                const g = d3.select(this);
+                const side = d.data.id === tree.id ? 1 : labelSide(d);
+                let cursor = side * (8 + estimateLabelPx(d));
+                (d.data.spouses || []).forEach((sp) => {
+                    const tieEnd = cursor + side * SPOUSE_TIE_GAP;
+                    g.append('line')
+                        .attr('class', 'spouse-tie')
+                        .attr('x1', cursor).attr('y1', 0)
+                        .attr('x2', tieEnd).attr('y2', 0);
+                    g.append('circle')
+                        .attr('class', 'spouse-dot')
+                        .attr('cx', tieEnd).attr('cy', 0)
+                        .attr('r', 4)
+                        .style('fill', 'none')
+                        .style('cursor', 'pointer')
+                        .style('pointer-events', 'all')
+                        .on('click', (event) => { event.stopPropagation(); selectPerson(sp.id, false); });
+                    g.append('text')
+                        .attr('class', 'spouse-label')
+                        .attr('x', tieEnd + side * 7)
+                        .attr('dy', '0.31em')
+                        .attr('text-anchor', side > 0 ? 'start' : 'end')
+                        .style('cursor', 'pointer')
+                        .style('pointer-events', 'all')
+                        .text(`⚭ ${shortDisplayName(sp.name)}`)
+                        .on('click', (event) => { event.stopPropagation(); selectPerson(sp.id, false); });
+                    cursor = tieEnd + side * (7 + estimateSpouseLabelPx(sp));
+                });
+            });
 
         if (focusSelected) {
             const target = root.descendants().find(d => d.data.id === selectedId);
