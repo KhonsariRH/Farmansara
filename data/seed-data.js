@@ -504,7 +504,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "iradj-firouz",
-                    "name": "Iradj Firouz",
+                    "name": "Prince Iradj Firouz",
                     "nameFa": "",
                     "born": 1922,
                     "died": 1994,
@@ -534,7 +534,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "atessa-madeleine-firouz-i131",
-                            "name": "Atessa Madeleine Firouz",
+                            "name": "Princess Atessa Madeleine Firouz",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -583,7 +583,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "mastaneh-firouz-i141",
-                            "name": "Mastaneh Firouz",
+                            "name": "Princess Mastaneh Firouz",
                             "nameFa": "",
                             "born": 1950,
                             "died": null,
@@ -615,7 +615,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "firouz-firouz-i142",
-                            "name": "Firouz Firouz",
+                            "name": "Prince Firouz Firouz",
                             "nameFa": "",
                             "born": 1954,
                             "died": null,
@@ -646,7 +646,7 @@ window.SEED_FAMILY_TREE = {
                                 },
                                 {
                                     "id": "ferdos-firouz-i1421",
-                                    "name": "Ferdos Firouz",
+                                    "name": "Princess Ferdos Firouz",
                                     "nameFa": "",
                                     "born": 1994,
                                     "died": null,
@@ -664,7 +664,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "afsaneh-firouz-i143",
-                            "name": "Afsaneh Firouz",
+                            "name": "Princess Afsaneh Firouz",
                             "nameFa": "",
                             "born": 1958,
                             "died": null,
@@ -729,7 +729,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "fereydoun-firouz-i144",
-                            "name": "Fereydoun Firouz",
+                            "name": "Prince Fereydoun Firouz",
                             "nameFa": "",
                             "born": 1963,
                             "died": null,
@@ -760,7 +760,7 @@ window.SEED_FAMILY_TREE = {
                                 },
                                 {
                                     "id": "azadeh-charlotte-firouz-i1441",
-                                    "name": "Azadeh Charlotte Firouz",
+                                    "name": "Princess Azadeh Charlotte Firouz",
                                     "nameFa": "",
                                     "born": 1992,
                                     "died": null,
@@ -784,7 +784,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "abbas-mirza-farman-farmaian",
-            "name": "Abbas Mirza Salar Lashgar Farman Farmaian",
+            "name": "Prince Abbas Mirza Salar Lashgar Farman Farmaian",
             "nameFa": "",
             "born": 1890,
             "died": 1935,
@@ -799,7 +799,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "homa-farman-farmaian",
-                    "name": "Homa Farman-Farmaian",
+                    "name": "Princess Homa Farman-Farmaian",
                     "nameFa": "",
                     "born": 1914,
                     "died": null,
@@ -1140,7 +1140,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "tadjel-molouk-farman-farmaian-i22",
-                    "name": "Tadjel Molouk Farman Farmaian",
+                    "name": "Princess Tadjel Molouk Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -1287,7 +1287,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "ezzat-el-molouk-farman-farmaian-i23",
-                    "name": "Ezzat El Molouk Farman Farmaian",
+                    "name": "Princess Ezzat El Molouk Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -1303,7 +1303,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "mehri-dokht-farman-farmaian-i24",
-                    "name": "Mehri Dokht Farman Farmaian",
+                    "name": "Princess Mehri Dokht Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -1465,7 +1465,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "bahram-farman-farmaian-i25",
-                    "name": "Bahram Farman Farmaian",
+                    "name": "Prince Bahram Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -1496,7 +1496,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "abbas-farman-farmaian-i251",
-                            "name": "Abbas Farman Farmaian",
+                            "name": "Prince Abbas Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -1512,7 +1512,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "neda-farman-farmaian-i252",
-                            "name": "Neda Farman Farmaian",
+                            "name": "Princess Neda Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -1528,7 +1528,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "reza-farman-farmaian-i253",
-                            "name": "Reza Farman Farmaian",
+                            "name": "Prince Reza Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -1546,7 +1546,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "bahman-farman-farmaian-i26",
-                    "name": "Bahman Farman Farmaian",
+                    "name": "Prince Bahman Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -1577,7 +1577,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "sahar-farman-farmaian-i261",
-                            "name": "Sahar Farman Farmaian",
+                            "name": "Princess Sahar Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -1599,7 +1599,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "mohammad-vali-mirza-farman-farmaian",
-            "name": "Mohammad Vali Mirza Farman Farmaian",
+            "name": "Prince Mohammad Vali Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1890,
             "died": 1988,
@@ -1642,7 +1642,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "saideh-farman-farmaian-i31",
-                    "name": "Saideh Farman Farmaian (Ghaneh)",
+                    "name": "Princess Saideh Farman Farmaian (Ghaneh)",
                     "nameFa": "",
                     "born": 1922,
                     "died": null,
@@ -1902,7 +1902,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "golnaz-farman-farmaian-i32",
-                    "name": "Golnaz Farman Farmaian",
+                    "name": "Princess Golnaz Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -2056,7 +2056,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "maryam-firouz-i41",
-                    "name": "Maryam Firouz",
+                    "name": "Princess Maryam Firouz",
                     "nameFa": "",
                     "born": 1913,
                     "died": 2008,
@@ -2378,7 +2378,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "eskandar-firouz-i42",
-                    "name": "Eskandar Firouz",
+                    "name": "Prince Eskandar Firouz",
                     "nameFa": "",
                     "born": 1926,
                     "died": null,
@@ -2409,7 +2409,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "anahita-homa-firouz-i421",
-                            "name": "Anahita Homa Firouz",
+                            "name": "Princess Anahita Homa Firouz",
                             "nameFa": "",
                             "born": 1953,
                             "died": null,
@@ -2474,7 +2474,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "azar-safieh-firouz-i422",
-                            "name": "Azar Safieh Firouz",
+                            "name": "Princess Azar Safieh Firouz",
                             "nameFa": "",
                             "born": 1957,
                             "died": null,
@@ -2541,7 +2541,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "narcy-firouz-i43",
-                    "name": "Narcy Firouz",
+                    "name": "Prince Narcy Firouz",
                     "nameFa": "",
                     "born": 1928,
                     "died": 1994,
@@ -2572,7 +2572,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "roshan-taliyeh-firouz-i431",
-                            "name": "Roshan Taliyeh Firouz",
+                            "name": "Princess Roshan Taliyeh Firouz",
                             "nameFa": "",
                             "born": 1957,
                             "died": null,
@@ -2637,7 +2637,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "ateshe-roya-firouz-i432",
-                            "name": "Ateshe Roya Firouz",
+                            "name": "Princess Ateshe Roya Firouz",
                             "nameFa": "",
                             "born": 1959,
                             "died": null,
@@ -2653,7 +2653,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "caren-firouz-i433",
-                            "name": "Caren Firouz",
+                            "name": "Princess Caren Firouz",
                             "nameFa": "",
                             "born": 1962,
                             "died": null,
@@ -2671,7 +2671,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "maryam-farman-farmaian",
-                    "name": "Maryam Farman Farmaian (Maryam Firouz)",
+                    "name": "Princess Maryam Farman Farmaian (Maryam Firouz)",
                     "nameFa": "",
                     "born": 1913,
                     "died": 2008,
@@ -2719,7 +2719,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "ezat-malek-farman-farmaian-i51",
-                    "name": "Ezat Malek Farman Farmaian",
+                    "name": "Princess Ezat Malek Farman Farmaian",
                     "nameFa": "",
                     "born": 1917,
                     "died": null,
@@ -2866,7 +2866,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "gohar-malek-farman-farmaian-i52",
-                    "name": "Gohar Malek Farman Farmaian",
+                    "name": "Princess Gohar Malek Farman Farmaian",
                     "nameFa": "",
                     "born": 1919,
                     "died": null,
@@ -3471,7 +3471,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "zahra-jabbareh-farman-farmaian",
-                    "name": "Zahra Jabbareh Farman Farmaian",
+                    "name": "Princess Zahra Jabbareh Farman Farmaian",
                     "nameFa": "",
                     "born": 1916,
                     "died": null,
@@ -3586,7 +3586,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "sattareh-farmanfarmaian",
-            "name": "Sattareh Farmanfarmaian",
+            "name": "Princess Sattareh Farmanfarmaian",
             "nameFa": "",
             "born": 1921,
             "died": 2012,
@@ -3716,7 +3716,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "lehla-farman-farmaian-iii41",
-                    "name": "Lehla Farman Farmaian",
+                    "name": "Princess Lehla Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -3781,7 +3781,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "susan-farman-farmaian-iii42",
-                    "name": "Susan Farman Farmaian",
+                    "name": "Princess Susan Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -3895,7 +3895,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "marjan-farman-farmaian-iii44",
-                    "name": "Marjan Farman Farmaian",
+                    "name": "Princess Marjan Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4124,7 +4124,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "massoumeh-farman-farmaian-iii61",
-                    "name": "Massoumeh Farman Farmaian",
+                    "name": "Princess Massoumeh Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4140,7 +4140,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "amir-hossein-farman-farmaian-iii62",
-                    "name": "Amir Hossein Farman Farmaian",
+                    "name": "Prince Amir Hossein Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4173,7 +4173,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "ali-reza-farman-farmaian-iii63",
-                    "name": "Ali Reza Farman Farmaian",
+                    "name": "Prince Ali Reza Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4189,7 +4189,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "afsar-farman-farmaian-iii64",
-                    "name": "Afsar Farman Farmaian",
+                    "name": "Princess Afsar Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4303,7 +4303,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "ayesheh-farman-farmaian-iii81",
-                    "name": "Ayesheh Farman Farmaian",
+                    "name": "Princess Ayesheh Farman Farmaian",
                     "nameFa": "",
                     "born": 1961,
                     "died": null,
@@ -4319,7 +4319,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "amir-ali-farman-farmaian-iii82",
-                    "name": "Amir Ali Farman Farmaian",
+                    "name": "Prince Amir Ali Farman Farmaian",
                     "nameFa": "",
                     "born": 1964,
                     "died": null,
@@ -4335,7 +4335,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "farhad-farman-farmaian-iii83",
-                    "name": "Farhad Farman Farmaian",
+                    "name": "Prince Farhad Farman Farmaian",
                     "nameFa": "",
                     "born": 1973,
                     "died": null,
@@ -4533,7 +4533,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "manucher-mirza-farman-farmaian",
-            "name": "Manucher Mirza Farman Farmaian",
+            "name": "Prince Manucher Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1916,
             "died": null,
@@ -4563,7 +4563,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "roxane-farmanfarmaian",
-                    "name": "Roxane Batoul Farmanfarmaian",
+                    "name": "Princess Roxane Batoul Farmanfarmaian",
                     "nameFa": "",
                     "born": 1955,
                     "died": null,
@@ -4599,7 +4599,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "alexander-farman-farmaian-iv32",
-                    "name": "Alexander Farman Farmaian",
+                    "name": "Prince Alexander Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4632,7 +4632,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "teymour-farman-farmaian-iv33",
-                    "name": "Teymour Farman Farmaian",
+                    "name": "Prince Teymour Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4651,7 +4651,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "abdol-aziz-mirza-farmanfarmaian",
-            "name": "Abdol-Aziz Mirza Farmanfarmaian",
+            "name": "Prince Abdol-Aziz Mirza Farmanfarmaian",
             "nameFa": "",
             "born": 1920,
             "died": 2013,
@@ -4678,7 +4678,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "abdol-hossein-farman-farmaian-iv41",
-                    "name": "Abdol Hossein (Tino) Farman Farmaian",
+                    "name": "Prince Abdol Hossein (Tino) Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -4709,7 +4709,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "fereydoun-firouz-farman-farmaian-iv411",
-                            "name": "Fereydoun Firouz Farman Farmaian",
+                            "name": "Prince Fereydoun Firouz Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -4725,7 +4725,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "amir-teymour-farman-farmaian-iv412",
-                            "name": "Amir Teymour Farman Farmaian",
+                            "name": "Prince Amir Teymour Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -4741,7 +4741,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "aicheh-farman-farmaian-iv413",
-                            "name": "Aicheh Farman Farmaian",
+                            "name": "Princess Aicheh Farman Farmaian",
                             "nameFa": "",
                             "born": null,
                             "died": null,
@@ -4767,7 +4767,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "abolbashar-mirza-farman-farmaian",
-            "name": "Abolbashar Mirza Farman Farmaian",
+            "name": "Prince Abolbashar Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1922,
             "died": 1991,
@@ -4781,7 +4781,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "zahra-farman-farmaian-iv51",
-                    "name": "Zahra Farman Farmaian",
+                    "name": "Princess Zahra Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5174,7 +5174,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "arash-farman-farmaian-iv81",
-                    "name": "Arash Farman Farmaian",
+                    "name": "Prince Arash Farman Farmaian",
                     "nameFa": "",
                     "born": 1963,
                     "died": null,
@@ -5207,7 +5207,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "ardavan-farman-farmaian-iv82",
-                    "name": "Ardavan Farman Farmaian",
+                    "name": "Prince Ardavan Farman Farmaian",
                     "nameFa": "",
                     "born": 1964,
                     "died": null,
@@ -5238,7 +5238,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "ardeshire-mohsen-farman-farmaian-iv821",
-                            "name": "Ardeshire Mohsen Farman Farmaian",
+                            "name": "Prince Ardeshire Mohsen Farman Farmaian",
                             "nameFa": "",
                             "born": 1996,
                             "died": null,
@@ -5256,7 +5256,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "katayoune-farman-farmaian-iv83",
-                    "name": "Katayoune Farman Farmaian",
+                    "name": "Princess Katayoune Farman Farmaian",
                     "nameFa": "",
                     "born": 1966,
                     "died": null,
@@ -5275,7 +5275,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "abdol-ali-mirza-farman-farmaian",
-            "name": "Abdol-Ali Mirza Farman Farmaian",
+            "name": "Prince Abdol-Ali Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1935,
             "died": 1973,
@@ -5286,7 +5286,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "mariam-abdol-ali",
-                    "name": "Mariam Farman Farmaian",
+                    "name": "Princess Mariam Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5351,7 +5351,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "salman-abdol-ali",
-                    "name": "Salman Farman Farmaian",
+                    "name": "Prince Salman Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5375,7 +5375,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "belghaiz-farman-farmaian",
-            "name": "Belghaiz Farman Farmaian",
+            "name": "Princess Belghaiz Farman Farmaian",
             "nameFa": "",
             "born": 1926,
             "died": 1927,
@@ -5534,7 +5534,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "mohammad-ali-farman-farmaian-v21",
-                    "name": "Mohammad Ali Farman Farmaian",
+                    "name": "Prince Mohammad Ali Farman Farmaian",
                     "nameFa": "",
                     "born": 1947,
                     "died": null,
@@ -5565,7 +5565,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "parissa-farman-farmaian-v211",
-                            "name": "Parissa Farman Farmaian",
+                            "name": "Princess Parissa Farman Farmaian",
                             "nameFa": "",
                             "born": 1986,
                             "died": null,
@@ -5581,7 +5581,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "babak-farman-farmaian-v212",
-                            "name": "Babak Farman Farmaian",
+                            "name": "Prince Babak Farman Farmaian",
                             "nameFa": "",
                             "born": 1991,
                             "died": null,
@@ -5599,7 +5599,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "marjaneh-farman-farmaian-v22",
-                    "name": "Marjaneh Farman Farmaian",
+                    "name": "Princess Marjaneh Farman Farmaian",
                     "nameFa": "",
                     "born": 1949,
                     "died": 1950,
@@ -5615,7 +5615,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "nader-farman-farmaian-v23",
-                    "name": "Nader Farman Farmaian",
+                    "name": "Prince Nader Farman Farmaian",
                     "nameFa": "",
                     "born": 1951,
                     "died": null,
@@ -5696,7 +5696,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "nassrin-farman-farmaian-v31",
-                    "name": "Nassrin Farman Farmaian",
+                    "name": "Princess Nassrin Farman Farmaian",
                     "nameFa": "",
                     "born": 1948,
                     "died": null,
@@ -5712,7 +5712,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "kamran-farman-farmaian-v32",
-                    "name": "Kamran Farman Farmaian",
+                    "name": "Prince Kamran Farman Farmaian",
                     "nameFa": "",
                     "born": 1963,
                     "died": null,
@@ -5728,7 +5728,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "sahra-mansureh-farman-farmaian-v33",
-                    "name": "Sahra Mansureh (Suri) Farman Farmaian",
+                    "name": "Princess Sahra Mansureh (Suri) Farman Farmaian",
                     "nameFa": "",
                     "born": 1965,
                     "died": null,
@@ -5761,7 +5761,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "fatemeh-farman-farmaian-v41",
-                    "name": "Fatemeh Farman Farmaian",
+                    "name": "Princess Fatemeh Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5777,7 +5777,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "abdol-hamid-farman-farmaian-v42",
-                    "name": "Abdol Hamid Farman Farmaian",
+                    "name": "Prince Abdol Hamid Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5857,7 +5857,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "persita-farman-farmaian-v52",
-                    "name": "Persita Farman Farmaian",
+                    "name": "Princess Persita Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -5890,7 +5890,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "charmine-farman-farmaian-v53",
-                    "name": "Charmine Farman Farmaian",
+                    "name": "Princess Charmine Farman Farmaian",
                     "nameFa": "",
                     "born": 1970,
                     "died": null,
@@ -5906,7 +5906,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "abdol-ali-reza-farman-farmaian-v54",
-                    "name": "Abdol Ali Reza Farman Farmaian",
+                    "name": "Prince Abdol Ali Reza Farman Farmaian",
                     "nameFa": "",
                     "born": 1971,
                     "died": null,
@@ -5971,7 +5971,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "salar-w-f-farmayan-v71",
-                    "name": "Salar W. F. Farmayan",
+                    "name": "Prince Salar W. F. Farmayan",
                     "nameFa": "",
                     "born": 1955,
                     "died": null,
@@ -6003,7 +6003,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "mahan-farman-farmaian-v72",
-                    "name": "Mahan Farman Farmaian",
+                    "name": "Prince Mahan Farman Farmaian",
                     "nameFa": "",
                     "born": 1959,
                     "died": null,
@@ -6084,7 +6084,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "abdol-majid-farman-farmaian-vi11",
-                    "name": "Abdol Majid Farman Farmaian",
+                    "name": "Prince Abdol Majid Farman Farmaian",
                     "nameFa": "",
                     "born": 1961,
                     "died": null,
@@ -6132,7 +6132,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "mandana-farman-farmaian-vi13",
-                    "name": "Mandana Farman Farmaian",
+                    "name": "Princess Mandana Farman Farmaian",
                     "nameFa": "",
                     "born": 1968,
                     "died": null,
@@ -6148,7 +6148,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "valy-mansoor-farman-farmaian-vi14",
-                    "name": "Mansoor Valley Farmanfarmaian",
+                    "name": "Prince Mansoor Valley Farmanfarmaian",
                     "nameFa": "",
                     "born": 1976,
                     "died": null,
@@ -6178,7 +6178,7 @@ window.SEED_FAMILY_TREE = {
                         },
                         {
                             "id": "victoria-francis-farmanfarmaian",
-                            "name": "Victoria Francis Farmanfarmaian",
+                            "name": "Princess Victoria Francis Farmanfarmaian",
                             "nameFa": "",
                             "born": 2011,
                             "died": null,
@@ -6198,7 +6198,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "khodadad-farman-farmaian-vii1",
-            "name": "Khodadad Farman Farmaian (the first)",
+            "name": "Prince Khodadad Farman Farmaian (the first)",
             "nameFa": "",
             "born": null,
             "died": null,
@@ -6214,7 +6214,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "khodadad-mirza-farman-farmaian",
-            "name": "Khodadad Mirza Farman Farmaian",
+            "name": "Prince Khodadad Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1928,
             "died": 2015,
@@ -6225,7 +6225,7 @@ window.SEED_FAMILY_TREE = {
             "children": [
                 {
                     "id": "tanya-farman-farmaian-vii21",
-                    "name": "Tanya Farman Farmaian",
+                    "name": "Princess Tanya Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -6290,7 +6290,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "juni-farman-farmaian-vii22",
-                    "name": "Juni Farman Farmaian",
+                    "name": "Princess Juni Farman Farmaian",
                     "nameFa": "",
                     "born": null,
                     "died": null,
@@ -6410,7 +6410,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "allah-verdi-mirza-farman-farmaian",
-            "name": "Allah Verdi Mirza Farman Farmaian",
+            "name": "Prince Allah Verdi Mirza Farman Farmaian",
             "nameFa": "",
             "born": 1929,
             "died": 2016,
@@ -6437,7 +6437,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "dellara-farman-farmaian-vii31",
-                    "name": "Dellara Farman Farmaian",
+                    "name": "Princess Dellara Farman Farmaian",
                     "nameFa": "",
                     "born": 1969,
                     "died": null,
@@ -6453,7 +6453,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "kimya-farman-farmaian-vii32",
-                    "name": "Kimya Farman Farmaian",
+                    "name": "Princess Kimya Farman Farmaian",
                     "nameFa": "",
                     "born": 1970,
                     "died": null,
@@ -6522,7 +6522,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "malakeh-farman-farmaian-vii41",
-                    "name": "Malakeh Farman Farmaian",
+                    "name": "Princess Malakeh Farman Farmaian",
                     "nameFa": "",
                     "born": 1966,
                     "died": null,
@@ -6558,7 +6558,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "roudabeh-farman-farmaian-viii1",
-            "name": "Roudabeh Farman Farmaian",
+            "name": "Princess Roudabeh Farman Farmaian",
             "nameFa": "",
             "born": null,
             "died": null,
@@ -6639,7 +6639,7 @@ window.SEED_FAMILY_TREE = {
         },
         {
             "id": "fereydoon-farman-farmaian-viii2",
-            "name": "Fereydoon Farman Farmaian",
+            "name": "Prince Fereydoon Farman Farmaian",
             "nameFa": "",
             "born": null,
             "died": null,
