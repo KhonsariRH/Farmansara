@@ -84,8 +84,9 @@ h1, h2, h3 {
     color: var(--light-grey);
     padding: 1.5rem 2rem;
 }
-.crest { flex-shrink: 0; display: flex; }
+.crest { flex-shrink: 0; display: flex; align-items: center; gap: 0.6rem; }
 .crest img { height: 64px; width: auto; }
+.crest-seal { height: 54px !important; }
 .header-text h1 { margin: 0; font-size: 1.6rem; color: var(--primary); }
 .subtitle { margin: 0.25rem 0 0; opacity: 0.8; }
 
