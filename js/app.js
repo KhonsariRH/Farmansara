@@ -1225,42 +1225,582 @@
         selectedId = id;
     }
 
+    // Every full-page tool view (profile, relationship calculator, family
+    // group sheet, timeline, fan chart) shares the same show/hide plumbing:
+    // exactly one of them (or none, showing the main tree) is visible at a
+    // time, and "back" always returns to the tree with whoever was already
+    // pinned still on it.
+    const toolViews = {
+        profile: profileView,
+        relationship: document.getElementById('relationship-view'),
+        family: document.getElementById('family-view'),
+        timeline: document.getElementById('timeline-view'),
+        fan: document.getElementById('fan-view'),
+    };
+    function showToolView(key) {
+        mainEl.hidden = true;
+        Object.entries(toolViews).forEach(([k, el]) => { el.hidden = (k !== key); });
+        window.scrollTo(0, 0);
+    }
+    function hideAllToolViews() {
+        Object.values(toolViews).forEach((el) => { el.hidden = true; });
+        mainEl.hidden = false;
+    }
+    function goBackToTree() {
+        history.pushState('', document.title, location.pathname + location.search);
+        hideAllToolViews();
+        // Don't reset here -- everyone whose profile was visited along the
+        // way stays pinned, so their paths are all still on the tree.
+        renderPosition(selectedId);
+        renderDetail(selectedId);
+        renderTree(true);
+    }
+
     function showProfileView(id) {
         // Browsing to someone's profile pins their path onto the tree too,
         // so it's still there -- alongside whoever else was already pinned --
         // when you go back.
         addPin(id);
         renderProfile(id);
-        mainEl.hidden = true;
-        profileView.hidden = false;
-        window.scrollTo(0, 0);
+        showToolView('profile');
     }
 
-    function hideProfileView() {
-        profileView.hidden = true;
-        mainEl.hidden = false;
-    }
+    document.getElementById('btn-profile-back').addEventListener('click', goBackToTree);
+    document.getElementById('btn-rel-back').addEventListener('click', goBackToTree);
+    document.getElementById('btn-family-back').addEventListener('click', goBackToTree);
+    document.getElementById('btn-timeline-back').addEventListener('click', goBackToTree);
+    document.getElementById('btn-fan-back').addEventListener('click', goBackToTree);
 
-    document.getElementById('btn-profile-back').addEventListener('click', () => {
-        history.pushState('', document.title, location.pathname + location.search);
-        hideProfileView();
-        // Don't reset here -- everyone whose profile was visited along the
-        // way stays pinned, so their paths are all still on the tree.
-        renderPosition(selectedId);
-        renderDetail(selectedId);
-        renderTree(true);
+    document.querySelectorAll('.tool-nav-btn').forEach((btn) => {
+        btn.addEventListener('click', () => { location.hash = btn.dataset.route; });
     });
 
     function checkRoute() {
-        const match = /^#p\/(.+)$/.exec(location.hash);
-        if (match && byId.has(decodeURIComponent(match[1]))) {
-            showProfileView(decodeURIComponent(match[1]));
+        const hash = location.hash;
+        let m;
+        if ((m = /^#p\/(.+)$/.exec(hash)) && byId.has(decodeURIComponent(m[1]))) {
+            showProfileView(decodeURIComponent(m[1]));
+        } else if (hash === '#rel' || /^#rel\//.test(hash)) {
+            showRelationshipView(hash);
+        } else if ((m = /^#family\/(.+)$/.exec(hash))) {
+            showFamilyView(decodeURIComponent(m[1]));
+        } else if (hash === '#timeline') {
+            showTimelineView();
+        } else if ((m = /^#fan\/(.+)$/.exec(hash)) && byId.has(decodeURIComponent(m[1]))) {
+            showFanView(decodeURIComponent(m[1]));
         } else {
-            hideProfileView();
+            hideAllToolViews();
         }
     }
 
     window.addEventListener('hashchange', checkRoute);
+
+    /* ---------------------------------------------------------------- */
+    /* Relationship calculator                                           */
+    /* ---------------------------------------------------------------- */
+
+    // Best-effort gender signal -- the only place this is recorded at all
+    // is the "Prince"/"Princess" title prefix (added deliberately for
+    // every entitled descendant); anyone without it renders in
+    // relationship terms gender-neutrally rather than guessed.
+    function genderOf(node) {
+        if (!node) return null;
+        if (/^Prince\s/.test(node.name)) return 'M';
+        if (/^Princess\s/.test(node.name)) return 'F';
+        return null;
+    }
+    function ordinal(n) {
+        const s = ['th', 'st', 'nd', 'rd'];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+    function removedWord(n) {
+        if (n === 1) return 'once';
+        if (n === 2) return 'twice';
+        return `${n} times`;
+    }
+    function greatPrefix(n) { return n > 0 ? 'great-'.repeat(n) : ''; }
+    function directAncestorTerm(distance, gender) {
+        if (distance === 1) return gender === 'M' ? 'father' : gender === 'F' ? 'mother' : 'parent';
+        if (distance === 2) return gender === 'M' ? 'grandfather' : gender === 'F' ? 'grandmother' : 'grandparent';
+        return greatPrefix(distance - 2) + (gender === 'M' ? 'grandfather' : gender === 'F' ? 'grandmother' : 'grandparent');
+    }
+    function directDescendantTerm(distance, gender) {
+        if (distance === 1) return gender === 'M' ? 'son' : gender === 'F' ? 'daughter' : 'child';
+        if (distance === 2) return gender === 'M' ? 'grandson' : gender === 'F' ? 'granddaughter' : 'grandchild';
+        return greatPrefix(distance - 2) + (gender === 'M' ? 'grandson' : gender === 'F' ? 'granddaughter' : 'grandchild');
+    }
+    function siblingTerm(gender) { return gender === 'M' ? 'brother' : gender === 'F' ? 'sister' : 'sibling'; }
+    function auntUncleTerm(removed, gender) {
+        return greatPrefix(removed - 1) + (gender === 'M' ? 'uncle' : gender === 'F' ? 'aunt' : 'aunt/uncle');
+    }
+    function nieceNephewTerm(removed, gender) {
+        return greatPrefix(removed - 1) + (gender === 'M' ? 'nephew' : gender === 'F' ? 'niece' : 'niece/nephew');
+    }
+
+    // Blood relationship between two people, using the single-parent chain
+    // this tree actually models (ancestryPath) -- covers direct
+    // ancestor/descendant, siblings, aunt/uncle + niece/nephew (with
+    // "great-" for further removed), and Nth cousins M times removed.
+    // Returns null only if they share no recorded common ancestor at all.
+    function bloodRelationship(idA, idB) {
+        const aNode = byId.get(idA), bNode = byId.get(idB);
+        if (!aNode || !bNode) return null;
+        const pathA = ancestryPath(idA).map(n => n.id);
+        const pathB = ancestryPath(idB).map(n => n.id);
+        let i = 0;
+        while (i < pathA.length && i < pathB.length && pathA[i] === pathB[i]) i++;
+        if (i === 0) return null;
+        const da = pathA.length - i;
+        const db = pathB.length - i;
+
+        if (da === 0) {
+            return `${aNode.name} is ${bNode.name}'s ${directAncestorTerm(db, genderOf(aNode))} — `
+                 + `${bNode.name} is ${aNode.name}'s ${directDescendantTerm(db, genderOf(bNode))}.`;
+        }
+        if (db === 0) {
+            return `${aNode.name} is ${bNode.name}'s ${directDescendantTerm(da, genderOf(aNode))} — `
+                 + `${bNode.name} is ${aNode.name}'s ${directAncestorTerm(da, genderOf(bNode))}.`;
+        }
+        const degree = Math.min(da, db) - 1;
+        const removed = Math.abs(da - db);
+        if (degree === 0 && removed === 0) {
+            return `${aNode.name} and ${bNode.name} are siblings (${siblingTerm(genderOf(aNode))} / ${siblingTerm(genderOf(bNode))}).`;
+        }
+        if (degree === 0) {
+            if (da < db) {
+                return `${aNode.name} is ${bNode.name}'s ${auntUncleTerm(removed, genderOf(aNode))} — `
+                     + `${bNode.name} is ${aNode.name}'s ${nieceNephewTerm(removed, genderOf(bNode))}.`;
+            }
+            return `${aNode.name} is ${bNode.name}'s ${nieceNephewTerm(removed, genderOf(aNode))} — `
+                 + `${bNode.name} is ${aNode.name}'s ${auntUncleTerm(removed, genderOf(bNode))}.`;
+        }
+        const label = `${ordinal(degree)} cousins${removed > 0 ? ` ${removedWord(removed)} removed` : ''}`;
+        return `${aNode.name} and ${bNode.name} are ${label}.`;
+    }
+
+    function isSpouseLikeNode(node) { return !!node && (node.role === 'spouse' || node.role === 'wife'); }
+
+    // Wraps bloodRelationship with in-law handling for anyone who married
+    // into the family (role 'spouse' or 'wife') rather than being a blood
+    // descendant themselves -- computed honestly via their partner rather
+    // than guessing an in-law term that might not fit (e.g. a marriage
+    // that produced no children of its own).
+    function describeRelationship(idA, idB) {
+        const a = byId.get(idA), b = byId.get(idB);
+        if (!a || !b) return null;
+        if (idA === idB) return `That's the same person: ${a.name}.`;
+
+        if (isSpouseLikeNode(a) && (a.children || []).some(c => c.id === idB)) {
+            return `${a.name} is ${b.name}'s ${genderOf(a) === 'M' ? 'father' : genderOf(a) === 'F' ? 'mother' : 'parent'}.`;
+        }
+        if (isSpouseLikeNode(b) && (b.children || []).some(c => c.id === idA)) {
+            return `${b.name} is ${a.name}'s ${genderOf(b) === 'M' ? 'father' : genderOf(b) === 'F' ? 'mother' : 'parent'}.`;
+        }
+
+        if (isSpouseLikeNode(a) || isSpouseLikeNode(b)) {
+            const partnerA = isSpouseLikeNode(a) ? parentOf.get(idA) : a;
+            const partnerB = isSpouseLikeNode(b) ? parentOf.get(idB) : b;
+            if (isSpouseLikeNode(a) && isSpouseLikeNode(b)) {
+                if (!partnerA || !partnerB) return `${a.name} and ${b.name} aren't connected through this tree.`;
+                if (partnerA.id === partnerB.id) return `${a.name} and ${b.name} are both married to ${partnerA.name}.`;
+                const rel = bloodRelationship(partnerA.id, partnerB.id);
+                if (!rel) return `${a.name} and ${b.name} aren't connected through this tree.`;
+                return `${a.name} is married to ${partnerA.name}, and ${b.name} is married to ${partnerB.name}. ${rel}`;
+            }
+            const spouseNode = isSpouseLikeNode(a) ? a : b;
+            const bloodNode = isSpouseLikeNode(a) ? b : a;
+            const partner = isSpouseLikeNode(a) ? partnerA : partnerB;
+            if (!partner) return `${spouseNode.name} isn't linked to a spouse in this tree.`;
+            if (partner.id === bloodNode.id) return `${spouseNode.name} is married to ${bloodNode.name}.`;
+            const rel = bloodRelationship(partner.id, bloodNode.id);
+            if (!rel) return `${spouseNode.name} and ${bloodNode.name} aren't connected through this tree.`;
+            return `${spouseNode.name} is married to ${partner.name}. ${partner.name} and ${bloodNode.name}: ${rel}`;
+        }
+
+        return bloodRelationship(idA, idB) || `${a.name} and ${b.name} don't share a recorded common ancestor in this tree.`;
+    }
+
+    let relPersonA = null, relPersonB = null;
+    const relInputA = document.getElementById('rel-person-a');
+    const relInputB = document.getElementById('rel-person-b');
+    const relResultsA = document.getElementById('rel-results-a');
+    const relResultsB = document.getElementById('rel-results-b');
+    const relResultEl = document.getElementById('rel-result');
+
+    function wireRelPicker(input, results, onPick) {
+        input.addEventListener('input', () => {
+            const q = input.value.trim().toLowerCase();
+            results.innerHTML = '';
+            if (!q) { results.hidden = true; return; }
+            const matches = [...byId.values()].filter(p => p.name.toLowerCase().includes(q)).slice(0, 20);
+            if (matches.length === 0) {
+                results.innerHTML = '<div class="search-empty">No one matches that name yet.</div>';
+            } else {
+                matches.forEach(p => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.textContent = p.name;
+                    item.addEventListener('click', () => {
+                        input.value = p.name;
+                        results.hidden = true;
+                        onPick(p.id);
+                    });
+                    results.appendChild(item);
+                });
+            }
+            results.hidden = false;
+        });
+        input.addEventListener('focus', () => { if (input.value) input.dispatchEvent(new Event('input')); });
+        document.addEventListener('click', (e) => { if (!e.target.closest('.rel-picker')) results.hidden = true; });
+    }
+    wireRelPicker(relInputA, relResultsA, (id) => { relPersonA = id; updateRelResult(); });
+    wireRelPicker(relInputB, relResultsB, (id) => { relPersonB = id; updateRelResult(); });
+
+    function updateRelResult() {
+        if (!relPersonA || !relPersonB) { relResultEl.hidden = true; return; }
+        relResultEl.textContent = describeRelationship(relPersonA, relPersonB);
+        relResultEl.hidden = false;
+    }
+
+    function showRelationshipView(hash) {
+        const m = /^#rel\/([^/]+)(?:\/([^/]+))?$/.exec(hash);
+        if (m) {
+            const idA = decodeURIComponent(m[1]);
+            if (byId.has(idA)) { relPersonA = idA; relInputA.value = byId.get(idA).name; }
+            if (m[2]) {
+                const idB = decodeURIComponent(m[2]);
+                if (byId.has(idB)) { relPersonB = idB; relInputB.value = byId.get(idB).name; }
+            }
+        }
+        updateRelResult();
+        showToolView('relationship');
+    }
+
+    document.getElementById('btn-profile-relate').addEventListener('click', () => {
+        location.hash = '#rel/' + selectedId;
+    });
+
+    /* ---------------------------------------------------------------- */
+    /* Family group sheet                                                 */
+    /* ---------------------------------------------------------------- */
+
+    function familyPersonCard(node, roleLabel, showFamilyLink) {
+        const card = document.createElement('div');
+        card.className = 'family-person-card';
+        const avatar = document.createElement('div');
+        avatar.className = 'family-person-avatar';
+        renderAvatar(avatar, node);
+        card.appendChild(avatar);
+        const nameBtn = document.createElement('button');
+        nameBtn.type = 'button';
+        nameBtn.className = 'family-person-name';
+        nameBtn.textContent = node.name;
+        nameBtn.addEventListener('click', () => { location.hash = '#p/' + node.id; });
+        card.appendChild(nameBtn);
+        const dates = [node.born, node.died].filter(d => d !== null && d !== undefined && d !== '');
+        if (dates.length) {
+            const d = document.createElement('div');
+            d.className = 'family-person-dates';
+            d.textContent = `${node.born ?? '?'} – ${node.died ?? '?'}`;
+            card.appendChild(d);
+        }
+        if (roleLabel) {
+            const r = document.createElement('div');
+            r.className = 'family-person-role';
+            r.textContent = roleLabel;
+            card.appendChild(r);
+        }
+        if (showFamilyLink) {
+            const { spouses: kidSpouses, bloodChildren: kidKids } = splitSpouses(node);
+            if (kidSpouses.length || kidKids.length) {
+                const link = document.createElement('button');
+                link.type = 'button';
+                link.className = 'family-person-link';
+                link.textContent = 'View their family →';
+                link.addEventListener('click', () => { location.hash = '#family/' + node.id; });
+                card.appendChild(link);
+            }
+        }
+        return card;
+    }
+
+    function renderFamilyView(id) {
+        const container = document.getElementById('family-content');
+        const node = byId.get(id) || tree;
+        let { spouses, bloodChildren } = splitSpouses(node);
+        // Farmanfarma's own 8 wives aren't modelled as spouse-role children
+        // (see buildWifeNodes) since the round tree groups his kids by wife
+        // cluster instead -- pull them in here so his family sheet isn't
+        // the one "head of family" card on the whole site missing a spouse.
+        if (node.id === tree.id) {
+            spouses = [1, 2, 3, 4, 5, 6, 7, 8].map(i => byId.get(`wife-${i}`)).filter(Boolean);
+        }
+        const parent = parentOf.get(node.id);
+
+        container.innerHTML = '';
+        const h1 = document.createElement('h1');
+        h1.textContent = `Family of ${node.name}`;
+        container.appendChild(h1);
+
+        if (parent) {
+            const p = document.createElement('p');
+            p.className = 'family-context';
+            p.append(isSpouseLikeNode(node) ? 'Married to ' : 'Child of ');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = parent.name;
+            btn.addEventListener('click', () => { location.hash = '#family/' + parent.id; });
+            p.appendChild(btn);
+            container.appendChild(p);
+        }
+
+        container.appendChild(familyPersonCard(node, 'Head of family'));
+
+        if (spouses.length) {
+            const h2 = document.createElement('h2');
+            h2.textContent = spouses.length > 1 ? 'Spouses' : 'Spouse';
+            container.appendChild(h2);
+            const row = document.createElement('div');
+            row.className = 'family-row';
+            spouses.forEach(sp => row.appendChild(familyPersonCard(sp, 'Married in')));
+            container.appendChild(row);
+        }
+
+        const h3 = document.createElement('h2');
+        h3.textContent = `Children (${bloodChildren.length})`;
+        container.appendChild(h3);
+        if (node.id === tree.id && spouses.length > 1) {
+            const note = document.createElement('p');
+            note.className = 'family-note';
+            note.textContent = "Each wife's own children are shown on her profile page and colour-coded on the tree; this combined list is all 39 together, oldest wife first.";
+            container.appendChild(note);
+        } else if (spouses.length > 1) {
+            const note = document.createElement('p');
+            note.className = 'family-note';
+            note.textContent = "This record has more than one spouse on file; children below aren't individually attributed to a specific marriage.";
+            container.appendChild(note);
+        }
+        if (bloodChildren.length) {
+            const row = document.createElement('div');
+            row.className = 'family-row';
+            bloodChildren.forEach(c => row.appendChild(familyPersonCard(c, null, true)));
+            container.appendChild(row);
+        } else {
+            const p = document.createElement('p');
+            p.className = 'profile-empty';
+            p.textContent = 'No children recorded yet.';
+            container.appendChild(p);
+        }
+    }
+
+    function showFamilyView(id) {
+        if (!byId.has(id)) id = tree.id;
+        renderFamilyView(id);
+        showToolView('family');
+    }
+
+    document.getElementById('btn-profile-family').addEventListener('click', () => {
+        const node = byId.get(selectedId);
+        const target = (node && isSpouseLikeNode(node)) ? (parentOf.get(selectedId) || node) : node;
+        location.hash = '#family/' + (target ? target.id : selectedId);
+    });
+
+    /* ---------------------------------------------------------------- */
+    /* Family timeline                                                    */
+    /* ---------------------------------------------------------------- */
+
+    function buildTimelineEvents() {
+        const events = [];
+        byId.forEach((node) => {
+            if (typeof node.born === 'number') events.push({ year: node.born, type: 'birth', node });
+            if (typeof node.died === 'number') events.push({ year: node.died, type: 'death', node });
+        });
+        events.sort((a, b) => a.year - b.year);
+        return events;
+    }
+
+    function renderTimelineView() {
+        const container = document.getElementById('timeline-content');
+        container.innerHTML = '';
+        const events = buildTimelineEvents();
+        if (!events.length) {
+            container.innerHTML = '<p class="profile-empty">No dated events recorded yet.</p>';
+            return;
+        }
+        let currentDecade = null;
+        let decadeGroup = null;
+        events.forEach((ev) => {
+            const decade = Math.floor(ev.year / 10) * 10;
+            if (decade !== currentDecade) {
+                currentDecade = decade;
+                const h = document.createElement('h2');
+                h.className = 'timeline-decade';
+                h.textContent = `${decade}s`;
+                container.appendChild(h);
+                decadeGroup = document.createElement('div');
+                decadeGroup.className = 'timeline-decade-group';
+                container.appendChild(decadeGroup);
+            }
+            const row = document.createElement('div');
+            row.className = 'timeline-event timeline-' + ev.type;
+            const avatar = document.createElement('div');
+            avatar.className = 'timeline-event-avatar';
+            renderAvatar(avatar, ev.node);
+            row.appendChild(avatar);
+            const info = document.createElement('div');
+            info.className = 'timeline-event-info';
+            const yearSpan = document.createElement('span');
+            yearSpan.className = 'timeline-event-year';
+            yearSpan.textContent = ev.year;
+            info.appendChild(yearSpan);
+            info.append(' ');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'timeline-event-name';
+            btn.textContent = ev.node.name;
+            btn.addEventListener('click', () => { location.hash = '#p/' + ev.node.id; });
+            info.appendChild(btn);
+            const label = document.createElement('span');
+            label.className = 'timeline-event-label';
+            label.textContent = ' ' + (ev.type === 'birth' ? 'born' : 'died');
+            info.appendChild(label);
+            row.appendChild(info);
+            decadeGroup.appendChild(row);
+        });
+    }
+
+    function showTimelineView() {
+        renderTimelineView();
+        showToolView('timeline');
+    }
+
+    /* ---------------------------------------------------------------- */
+    /* Ancestor fan chart                                                 */
+    /* ---------------------------------------------------------------- */
+
+    // Reverse-parent index over the separate Qajar reference chart, so the
+    // fan chart can keep going past Farmanfarma using that chart's own
+    // (differently-shaped) data once a chain reaches him.
+    let qajarParentOf = null;
+    function buildQajarIndex() {
+        qajarParentOf = new Map();
+        (function walk(node, parent) {
+            qajarParentOf.set(node.id, parent);
+            (node.children || []).forEach(c => walk(c, node));
+        })(window.SEED_QAJAR_REFERENCE, null);
+    }
+    function findQajarNodeLinkingTo(mainId) {
+        let found = null;
+        (function walk(node) {
+            if (found) return;
+            if (node.linkToMainTree === mainId) { found = node; return; }
+            (node.children || []).forEach(walk);
+        })(window.SEED_QAJAR_REFERENCE);
+        return found;
+    }
+    // [self, parent, grandparent, ...] via the single blood-parent chain
+    // this tree already tracks (ancestryPath), continuing into the Qajar
+    // reference chart's own ancestors once the chain reaches Farmanfarma.
+    function fullAncestorChain(id) {
+        const chain = ancestryPath(id).slice().reverse();
+        if (chain[chain.length - 1] && chain[chain.length - 1].id === 'farmanfarma') {
+            if (!qajarParentOf) buildQajarIndex();
+            let q = findQajarNodeLinkingTo('farmanfarma');
+            while (q) {
+                const p = qajarParentOf.get(q.id);
+                if (!p) break;
+                chain.push(p);
+                q = p;
+            }
+        }
+        return chain;
+    }
+
+    const FAN_RING_COLORS = ['#e9c46a', '#f4a261', '#e76f51', '#2a9d8f', '#457b9d', '#6a4c93', '#bc6c25', '#8a5a44', '#3a86ff', '#9a9a9a'];
+
+    function renderFanChart(id) {
+        const container = document.getElementById('fan-canvas');
+        container.innerHTML = '';
+        const chain = fullAncestorChain(id);
+        const person = chain[0];
+        document.getElementById('fan-title').textContent = `Ancestors of ${person.name}`;
+
+        const ringThickness = 84;
+        const innerStart = 44;
+        const maxRings = chain.length - 1;
+        const width = Math.max(680, innerStart * 2 + maxRings * ringThickness * 2 + 60);
+        const height = Math.round(width * 0.58);
+        const cx = width / 2, cy = height - 36;
+
+        const svg = d3.select(container).append('svg').attr('viewBox', `0 0 ${width} ${height}`);
+        const defs = svg.append('defs');
+        const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+
+        const selfGroup = g.append('g')
+            .style('cursor', 'default');
+        selfGroup.append('circle').attr('class', 'fan-self-circle').attr('r', innerStart - 5);
+        selfGroup.append('text')
+            .attr('class', 'fan-self-label')
+            .attr('dy', '0.35em')
+            .text(shortDisplayName(person.name).split(' ')[0]);
+
+        const arcGen = d3.arc();
+        for (let gIdx = 1; gIdx <= maxRings; gIdx++) {
+            const node = chain[gIdx];
+            const r0 = innerStart + (gIdx - 1) * ringThickness;
+            const r1 = r0 + ringThickness - 3;
+            const start = -Math.PI / 2, end = Math.PI / 2;
+            const path = arcGen({ innerRadius: r0, outerRadius: r1, startAngle: start, endAngle: end });
+
+            const wedge = g.append('path')
+                .attr('d', path)
+                .attr('class', 'fan-ring' + (node ? '' : ' fan-ring-empty'))
+                .style('fill', node ? FAN_RING_COLORS[(gIdx - 1) % FAN_RING_COLORS.length] : null);
+            if (node) {
+                wedge.style('cursor', 'pointer').on('click', () => { location.hash = '#fan/' + node.id; });
+                wedge.append('title').text(node.name);
+
+                const midR = (r0 + r1) / 2;
+                const labelPathId = `fan-label-path-${gIdx}`;
+                const lp = d3.path();
+                lp.arc(0, 0, midR, start, end);
+                defs.append('path').attr('id', labelPathId).attr('d', lp.toString());
+
+                // The full semicircle path is available to textPath, but
+                // starting from the 50% offset (the top) text only flows
+                // one way -- toward this wedge's own outer edge -- so only
+                // about a quarter of the full path length is actually
+                // usable before it would run past the chart into empty
+                // space. Measure the real rendered length (font metrics
+                // vary too much to estimate reliably) and trim to fit.
+                const dates = (node.born || node.died) ? ` (${node.born ?? '?'}–${node.died ?? '?'})` : '';
+                const fullLabel = shortDisplayName(node.name) + dates;
+                const textPath = g.append('text')
+                    .attr('class', 'fan-ring-label')
+                    .append('textPath')
+                    .attr('href', `#${labelPathId}`)
+                    .attr('startOffset', '50%')
+                    .attr('text-anchor', 'middle')
+                    .text(fullLabel);
+                const maxLen = (Math.PI * midR / 2) * 0.82;
+                let label = fullLabel;
+                while (label.length > 4 && textPath.node().getComputedTextLength() > maxLen) {
+                    label = label.slice(0, -2) + '…';
+                    textPath.text(label);
+                }
+            }
+        }
+    }
+
+    function showFanView(id) {
+        renderFanChart(id);
+        showToolView('fan');
+    }
+
+    document.getElementById('btn-profile-fan').addEventListener('click', () => {
+        location.hash = '#fan/' + selectedId;
+    });
 
     /* ---------------------------------------------------------------- */
     /* Init                                                               */

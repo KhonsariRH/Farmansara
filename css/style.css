@@ -557,3 +557,143 @@ button.danger:hover { background: #fbe6e6; }
     color: var(--accent-soft);
     font-size: 0.85rem;
 }
+
+/* Tool nav (Gramps-style feature entry points) */
+.tool-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--light-grey);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.tool-nav-btn { background: var(--primary); font-size: 0.82rem; }
+.tool-nav-btn:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* Shared full-page tool views */
+.tool-view { padding: 1.25rem; max-width: 900px; margin: 0 auto; }
+.tool-card { padding: 2rem; }
+.tool-card h1 { margin: 0 0 0.25rem; font-size: 1.6rem; }
+.tool-intro { color: var(--accent-soft); margin: 0 0 1.5rem; }
+
+.profile-tool-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.profile-tool-links button { background: var(--light-grey); font-size: 0.82rem; }
+.profile-tool-links button:hover { background: #dfe2e3; }
+
+/* Relationship calculator */
+.rel-pickers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.rel-picker { position: relative; }
+.rel-picker label { font-weight: 600; display: block; margin-bottom: 0.4rem; }
+.rel-picker input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--light-grey);
+    background: var(--bg);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.rel-picker input:focus { outline: 2px solid var(--accent); }
+.rel-result {
+    margin-top: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+@media (max-width: 600px) {
+    .rel-pickers { grid-template-columns: 1fr; }
+}
+
+/* Family group sheet */
+.family-content h1 { margin: 0 0 0.25rem; font-size: 1.6rem; }
+.family-context { color: var(--accent-soft); margin: 0 0 1.5rem; }
+.family-context button {
+    background: none; border: none; padding: 0; font: inherit;
+    color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+}
+#family-content h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-soft);
+    margin: 1.75rem 0 0.75rem;
+}
+.family-note { font-size: 0.85rem; color: var(--accent-soft); font-style: italic; margin: 0 0 0.75rem; }
+.family-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+.family-person-card {
+    width: 148px;
+    text-align: center;
+    padding: 0.85rem 0.6rem;
+    border: 1px solid var(--light-grey);
+    border-radius: var(--radius);
+    background: var(--bg);
+}
+.family-person-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--light-grey); color: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; margin: 0 auto 0.5rem; font-size: 1.4rem;
+}
+.family-person-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.family-person-name {
+    display: block; width: 100%; background: none; border: none; padding: 0;
+    font: inherit; font-weight: 600; font-size: 0.88rem; color: var(--accent);
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+    white-space: normal;
+}
+.family-person-dates { font-size: 0.78rem; color: var(--accent-soft); margin-top: 0.2rem; }
+.family-person-role { font-size: 0.72rem; color: var(--accent-soft); font-style: italic; margin-top: 0.15rem; }
+.family-person-link { display: block; width: 100%; margin-top: 0.5rem; font-size: 0.72rem; background: none; border: none; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; padding: 0; cursor: pointer; }
+
+/* Family timeline */
+.timeline-decade {
+    font-size: 1.1rem;
+    margin: 1.75rem 0 0.75rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+}
+.timeline-decade:first-child { margin-top: 0; }
+.timeline-decade-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.timeline-event { display: flex; align-items: center; gap: 0.75rem; padding: 0.3rem 0; }
+.timeline-event-avatar {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    background: var(--light-grey); color: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; font-size: 0.85rem;
+}
+.timeline-event-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.timeline-event-year { font-weight: 700; color: var(--accent); min-width: 2.6em; display: inline-block; }
+.timeline-event-name {
+    background: none; border: none; padding: 0; font: inherit; font-weight: 600;
+    color: var(--ink); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+}
+.timeline-event-label { color: var(--accent-soft); font-size: 0.85rem; }
+.timeline-death .timeline-event-avatar { opacity: 0.6; }
+
+/* Fan chart */
+.fan-canvas { overflow-x: auto; padding-bottom: 1rem; }
+.fan-canvas svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.fan-self-circle { fill: var(--accent); stroke: var(--ink-dark); stroke-width: 2px; }
+.fan-self-label { fill: var(--accent-ink); font-size: 12px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+.fan-ring { stroke: var(--bg); stroke-width: 1.5px; }
+.fan-ring:hover { opacity: 0.85; }
+.fan-ring-label {
+    font-size: 11px;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: rgba(255,255,255,0.75);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+.fan-ring-empty { fill: var(--light-grey); opacity: 0.4; }

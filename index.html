@@ -63,6 +63,13 @@
     </div>
 </header>
 
+<nav class="tool-nav" aria-label="Genealogy tools">
+    <button type="button" class="tool-nav-btn" data-route="#rel">Relationship calculator</button>
+    <button type="button" class="tool-nav-btn" data-route="#family/farmanfarma">Family group sheets</button>
+    <button type="button" class="tool-nav-btn" data-route="#timeline">Family timeline</button>
+    <button type="button" class="tool-nav-btn" data-route="#fan/farmanfarma">Ancestor fan chart</button>
+</nav>
+
 <main>
     <section class="panel search-panel">
         <label for="person-search">Find someone in the tree</label>
@@ -139,6 +146,12 @@
 
         <div id="profile-lineage" class="profile-lineage"></div>
 
+        <div class="profile-tool-links">
+            <button id="btn-profile-family" type="button">View family group sheet →</button>
+            <button id="btn-profile-fan" type="button">View ancestor fan chart →</button>
+            <button id="btn-profile-relate" type="button">Find relationship to someone →</button>
+        </div>
+
         <div class="profile-section">
             <h2>Biography</h2>
             <p id="profile-bio"></p>
@@ -166,6 +179,52 @@
                 <div id="profile-children"></div>
             </div>
         </div>
+    </div>
+</section>
+
+<section id="relationship-view" class="tool-view" hidden>
+    <div class="panel tool-card">
+        <button id="btn-rel-back" type="button" class="profile-back">← Back to tree</button>
+        <h1>Relationship calculator</h1>
+        <p class="tool-intro">Pick two people to see exactly how they're related.</p>
+        <div class="rel-pickers">
+            <div class="rel-picker">
+                <label for="rel-person-a">Person A</label>
+                <input type="text" id="rel-person-a" placeholder="Type a name…" autocomplete="off">
+                <div id="rel-results-a" class="search-results" hidden></div>
+            </div>
+            <div class="rel-picker">
+                <label for="rel-person-b">Person B</label>
+                <input type="text" id="rel-person-b" placeholder="Type a name…" autocomplete="off">
+                <div id="rel-results-b" class="search-results" hidden></div>
+            </div>
+        </div>
+        <div id="rel-result" class="rel-result" hidden></div>
+    </div>
+</section>
+
+<section id="family-view" class="tool-view" hidden>
+    <div class="panel tool-card family-card">
+        <button id="btn-family-back" type="button" class="profile-back">← Back to tree</button>
+        <div id="family-content"></div>
+    </div>
+</section>
+
+<section id="timeline-view" class="tool-view" hidden>
+    <div class="panel tool-card">
+        <button id="btn-timeline-back" type="button" class="profile-back">← Back to tree</button>
+        <h1>Family timeline</h1>
+        <p class="tool-intro">Every recorded birth and death in this tree, in chronological order.</p>
+        <div id="timeline-content" class="timeline-content"></div>
+    </div>
+</section>
+
+<section id="fan-view" class="tool-view" hidden>
+    <div class="panel tool-card fan-card">
+        <button id="btn-fan-back" type="button" class="profile-back">← Back to tree</button>
+        <h1 id="fan-title">Ancestor fan chart</h1>
+        <p class="tool-intro">Follows the single blood-line chain of ancestors recorded for this person, generation by generation. Click any ring to re-center the chart on that ancestor.</p>
+        <div id="fan-canvas" class="fan-canvas"></div>
     </div>
 </section>
 
