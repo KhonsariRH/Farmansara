@@ -6148,7 +6148,7 @@ window.SEED_FAMILY_TREE = {
                 },
                 {
                     "id": "valy-mansoor-farman-farmaian-vi14",
-                    "name": "Valy Mansoor Farman Farmaian",
+                    "name": "Mansoor Valley Farmanfarmaian",
                     "nameFa": "",
                     "born": 1976,
                     "died": null,
@@ -6159,8 +6159,39 @@ window.SEED_FAMILY_TREE = {
                     "residence": "",
                     "social": {},
                     "role": "descendant",
-                    "note": "Birth year and photo from the genealogy book's chart, p.181.",
-                    "children": []
+                    "note": "Birth year and photo from the genealogy book's chart, p.181 (which transliterates the name as \"Valy Mansoor Farman Farmaian\"). Name spelling/order, exact birthdate (August 8, 1976), spouse and daughter corrected/added directly by Mansoor himself via family correspondence.",
+                    "children": [
+                        {
+                            "id": "annette-blanche-farmanfarmaian",
+                            "name": "Annette Blanche Farmanfarmaian",
+                            "nameFa": "",
+                            "born": 1973,
+                            "died": null,
+                            "childNumber": "",
+                            "mother": "",
+                            "photo": null,
+                            "residence": "",
+                            "social": {"linkedin": "https://www.linkedin.com/in/annettefarmanfarmaian"},
+                            "role": "spouse",
+                            "note": "Married Mansoor Valley Farmanfarmaian. Maiden name Giambroni; born January 16, 1973. Added directly by Mansoor via family correspondence.",
+                            "children": []
+                        },
+                        {
+                            "id": "victoria-francis-farmanfarmaian",
+                            "name": "Victoria Francis Farmanfarmaian",
+                            "nameFa": "",
+                            "born": 2011,
+                            "died": null,
+                            "childNumber": "",
+                            "mother": "Annette Blanche Farmanfarmaian",
+                            "photo": null,
+                            "residence": "",
+                            "social": {},
+                            "role": "descendant",
+                            "note": "Daughter of Mansoor Valley Farmanfarmaian and Annette Blanche Farmanfarmaian. Born June 17, 2011. Added directly by Mansoor via family correspondence.",
+                            "children": []
+                        }
+                    ]
                 }
             ],
             "bookCode": "VI1"
