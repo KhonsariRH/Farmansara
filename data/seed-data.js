@@ -17,8 +17,9 @@
  * genealogy book can be read directly.
  *
  * Each person can have: id, name, nameFa, born, died, photo (path or data
- * URL), residence, social ({wikipedia, website, instagram, linkedin} --
- * show wikipedia first when present, other links otherwise), childNumber,
+ * URL), residence, social ({wikipedia, website, instagram, linkedin,
+ * facebook} -- all present links are shown, each as its own icon),
+ * childNumber,
  * mother, role ('descendant' or 'spouse' -- spouses married into the
  * family and are attached under their partner rather than being blood
  * descendants), note (used as the bio on their profile page), children.

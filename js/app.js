@@ -873,15 +873,23 @@
                 div.appendChild(datesEl);
             }
 
-            if (node.social && node.social.wikipedia) {
-                const a = document.createElement('a');
-                a.className = 'qajar-node-wiki';
-                a.href = node.social.wikipedia;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                a.textContent = 'Wikipedia';
-                a.addEventListener('click', (e) => e.stopPropagation());
-                div.appendChild(a);
+            if (node.social && Object.keys(node.social).length) {
+                const socialRow = document.createElement('div');
+                socialRow.className = 'qajar-node-social';
+                ['wikipedia', 'website', 'instagram', 'linkedin', 'facebook'].forEach((key) => {
+                    const href = socialHref(key, node.social[key]);
+                    if (!href) return;
+                    const a = document.createElement('a');
+                    a.className = 'qajar-node-wiki';
+                    a.href = href;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.title = SOCIAL_LABELS[key];
+                    a.innerHTML = SOCIAL_ICONS[key];
+                    a.addEventListener('click', (e) => e.stopPropagation());
+                    socialRow.appendChild(a);
+                });
+                if (socialRow.children.length) div.appendChild(socialRow);
             }
 
             if (isLink) {
@@ -968,8 +976,18 @@
         if (/^https?:\/\//i.test(value)) return value;
         if (type === 'instagram') return `https://instagram.com/${value.replace(/^@/, '')}`;
         if (type === 'linkedin') return `https://www.linkedin.com/in/${value.replace(/^@/, '')}`;
+        if (type === 'facebook') return `https://facebook.com/${value.replace(/^@/, '')}`;
         return `https://${value}`;
     }
+
+    const SOCIAL_ICONS = {
+        wikipedia: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5.6 6.5-3.1 8h-.9l-1.9-5-1.95 5h-.9l-3.1-8h1.15l2.35 6.15L11 8.5h1l1.85 6.15 2.35-6.15h1.4z"/></svg>',
+        linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H17.4v-5.7c0-1.36-.02-3.1-1.89-3.1-1.9 0-2.19 1.48-2.19 3v5.8H9z"/></svg>',
+        instagram: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77A4.9 4.9 0 0 1 5.45.53C6.09.28 6.82.11 7.88.06 8.94.01 9.28 0 12 0zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.2-8.4a1.17 1.17 0 1 1 0-2.34 1.17 1.17 0 0 1 0 2.34z" transform="translate(0 2)"/></svg>',
+        facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.58 14.24 3.58c-2.4 0-4.04 1.47-4.04 4.16V9.9H7.5V13h2.7v8h3.3z"/></svg>',
+        website: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'
+    };
+    const SOCIAL_LABELS = { wikipedia: 'Wikipedia', website: 'Website', instagram: 'Instagram', linkedin: 'LinkedIn', facebook: 'Facebook' };
 
     function renderProfile(id) {
         const node = byId.get(id);
@@ -1001,18 +1019,17 @@
 
         profileSocial.innerHTML = '';
         const social = node.social || {};
-        // Rule: if a Wikipedia link is on file, lead with that alone; otherwise show whatever other links exist.
-        const linkTypes = social.wikipedia
-            ? [['wikipedia', 'Wikipedia']]
-            : [['website', 'Website'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']];
-        linkTypes.forEach(([key, label]) => {
+        // Show every social link on file -- Wikipedia first, then the rest in a fixed order.
+        const linkTypes = ['wikipedia', 'website', 'instagram', 'linkedin', 'facebook'];
+        linkTypes.forEach((key) => {
             const href = socialHref(key, social[key]);
             if (!href) return;
             const a = document.createElement('a');
             a.href = href;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
-            a.textContent = label;
+            a.className = 'profile-social-link';
+            a.innerHTML = SOCIAL_ICONS[key] + `<span>${SOCIAL_LABELS[key]}</span>`;
             profileSocial.appendChild(a);
         });
 
