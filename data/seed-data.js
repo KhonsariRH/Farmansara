@@ -2680,7 +2680,7 @@ window.SEED_FAMILY_TREE = {
                     "note": "Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women's section of Iran's Tudeh party. Granddaughter, not direct daughter, of Farmanfarma -- corrected using the genealogy book's biography of Ezzat-ed-Dowleh, which identifies her as the daughter of Ezzat-ed-Dowleh's fourth son, Mohammad Hossein Mirza (this node); an earlier version of this tree had her misplaced as Farmanfarma's own 10th child via the Iranica record. Source: Wikipedia.",
                     "children": [],
                     "residence": "Tehran, Iran",
-                    "social": {},
+                    "social": {"wikipedia": "https://fr.wikipedia.org/wiki/Maryam_Farman_Farmaian"},
                     "role": "descendant"
                 }
             ],
@@ -3448,7 +3448,7 @@ window.SEED_FAMILY_TREE = {
             "mother": "Massoumeh Khanum Tafreshi (wife #3 of 8 recorded wives)",
             "photo": "images/people/sabar-farman-farmaian.jpg",
             "residence": "",
-            "social": {},
+            "social": {"wikipedia": "https://en.wikipedia.org/wiki/Sabar_Farmanfarmaian"},
             "role": "descendant",
             "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica); photo and descendants below from the genealogy book's chart (\"Descendants of Massoumeh Khanum and Abdol Hossein Mirza Farman Farma\", p.122). That Iranica source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted.",
             "children": [
@@ -4393,7 +4393,7 @@ window.SEED_FAMILY_TREE = {
             "mother": "Batoul Khanum Ahshami (wife #4 of 8 recorded wives)",
             "photo": null,
             "residence": "",
-            "social": {},
+            "social": {"wikipedia": "https://en.wikipedia.org/wiki/Manucher_Mirza_Farman_Farmaian"},
             "role": "descendant",
             "note": "Qajar prince; author of \"Blood and Oil: A Memoir of a Persian Prince\" (with Roxane Farmanfarmaian). Source: Wikipedia (via his daughter Roxane's page) — no independent article found yet, dates unconfirmed. Per a family genealogy record (Encyclopaedia Iranica), born 1916, mother Batoul Khanum Ahshami.",
             "children": [
@@ -5525,7 +5525,7 @@ window.SEED_FAMILY_TREE = {
                     "mother": "",
                     "photo": "images/people/leyly-matin-daftary.jpg",
                     "residence": "",
-                    "social": {},
+                    "social": {"wikipedia": "https://en.wikipedia.org/wiki/Leyly_Matine-Daftary"},
                     "role": "spouse",
                     "note": "Kaveh Farman Farmaian's second wife, married 1961-1968 (marriage ended; not in the genealogy book's index, but shown on its chart on p.166-167).",
                     "children": []
@@ -6225,7 +6225,7 @@ window.SEED_FAMILY_TREE = {
                 }
             ],
             "residence": "London, UK",
-            "social": {},
+            "social": {"wikipedia": "https://en.wikipedia.org/wiki/Khodadad_Mirza_Farman_Farmaian"},
             "role": "descendant",
             "bookCode": "VII2"
         },
@@ -6291,7 +6291,7 @@ window.SEED_FAMILY_TREE = {
                 }
             ],
             "residence": "Princeton, New Jersey, USA",
-            "social": {},
+            "social": {"wikipedia": "https://en.wikipedia.org/wiki/Allah_Verdi_Mirza_Farman_Farmaian"},
             "role": "descendant",
             "bookCode": "VII3"
         },
