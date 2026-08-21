@@ -1039,7 +1039,8 @@
         // but calling them "Parent" would be wrong; it's a marriage, not
         // descent, so the section is relabelled "Spouse" for them instead.
         const parent = parentOf.get(id);
-        profileParentHeading.textContent = node.role === 'spouse' ? 'Spouse' : 'Parent';
+        const hasMother = node.role !== 'spouse' && !!node.mother;
+        profileParentHeading.textContent = node.role === 'spouse' ? 'Spouse' : (hasMother ? 'Parents' : 'Parent');
         profileParent.innerHTML = '';
         if (parent) {
             const btn = document.createElement('button');
@@ -1049,6 +1050,16 @@
             profileParent.appendChild(btn);
         } else {
             profileParent.innerHTML = '<span class="profile-empty">Root of the tree</span>';
+        }
+        // The tree only tracks blood descent through the father's line, so
+        // "Parent" would otherwise mean only him -- the mother is recorded
+        // too (at least for Farmanfarma's own children) and belongs here
+        // just as much, even though she isn't a separate node to link to.
+        if (hasMother) {
+            const motherLine = document.createElement('p');
+            motherLine.className = 'profile-mother-line';
+            motherLine.textContent = `Mother: ${node.mother.replace(/\s*\(wife #\d+.*\)$/, '')}`;
+            profileParent.appendChild(motherLine);
         }
 
         const allKids = node.children || [];
