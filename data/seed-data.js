@@ -6715,6 +6715,18 @@ window.SEED_QAJAR_REFERENCE = {
                                     "note": "16th son of Abbas Mirza. Qajar prince, military commander and administrator. Father of Abdol Hossein Mirza Farmanfarma -- confirmed directly by this branch of the original chart. Married at least twice: Hajieh Homa Khanoum (Farmanfarma's mother) and a daughter of Mostofi-el-Mamalek (1st wife). Source: Wikipedia + original document + genealogy book (\"Descent of the Qajar Rulers\", pp.14-15).",
                                     "children": [
                                         {
+                                            "id": "q-abdol-hossein-mirza-farmanfarma",
+                                            "name": "Abdol Hossein Mirza Farmanfarma",
+                                            "nameFa": "",
+                                            "born": 1857,
+                                            "died": 1939,
+                                            "social": {},
+                                            "photo": "images/people/farmanfarma-root.jpg",
+                                            "note": "Son of Firuz Mirza Nosrat-ed-Dowleh I -- root of the main family tree above. Previously this reference chart only showed him indirectly, as a small \"spouse\" attachment on his first wife Ezzat-ed-Dowleh's card under an entirely different (Naser al-Din Shah) branch further down; he now also appears here, directly under his own father, where the rest of this chart's captions already described him as belonging. Click to jump to the main tree.",
+                                            "linkToMainTree": "farmanfarma",
+                                            "children": []
+                                        },
+                                        {
                                             "id": "q-firuz-child-1",
                                             "name": "Eskandar (Nosrat-ed-Dowleh)",
                                             "nameFa": "",
