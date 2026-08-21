@@ -374,6 +374,7 @@
             item.type = 'button';
             item.className = 'wife-legend-item' + (expanded ? ' expanded' : '');
             item.innerHTML = `<span class="wife-legend-swatch" style="background:${WIFE_COLORS[(idx - 1) % WIFE_COLORS.length]}"></span>`
+                + `<span class="wife-legend-order">${idx}.</span>`
                 + `<span class="wife-legend-name">${escapeHtml(name)}</span>`
                 + (isMobileCanvas() ? `<span class="wife-legend-count">${counts.get(idx) || 0}</span><span class="wife-legend-chevron">${expanded ? '⌄' : '›'}</span>` : '');
             item.addEventListener('click', () => {
@@ -548,9 +549,13 @@
     // Same string the label <text> below renders -- shared so the width
     // estimate used for layout never drifts from what's actually drawn.
     function labelTextFor(d) {
-        return d.data.isCluster
-            ? `${shortDisplayName(d.data.name).replace(/\bKhanum\b\s*/gi, '')} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`
-            : shortDisplayName(d.data.name);
+        if (!d.data.isCluster) return shortDisplayName(d.data.name);
+        // A wife's marriage order (1st, 2nd, ...) is the whole point of
+        // laying the clusters out chronologically around the wheel -- state
+        // it plainly on the label itself rather than leaving it implicit in
+        // the angular position, which is easy to misread at a glance.
+        const ordinal = d.data.wifeIndex ? `${d.data.wifeIndex}. ` : '';
+        return `${ordinal}${shortDisplayName(d.data.name).replace(/\bKhanum\b\s*/gi, '')} (${d.data.realChildren.length})${d.children ? '' : ' ›'}`;
     }
     // Rough glyph width for the 11px label font -- doesn't need to be exact,
     // just a safe-sized upper bound so the collision pass below never

@@ -260,6 +260,7 @@ button.danger:hover { background: #fbe6e6; }
     cursor: default;
 }
 .wife-legend-swatch { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.wife-legend-order { font-weight: 700; color: var(--ink); }
 .wife-legend-count, .wife-legend-chevron { display: none; }
 
 /* On mobile, where the round tree collapses into tappable wife clusters,
@@ -329,9 +330,9 @@ button.danger:hover { background: #fbe6e6; }
 .link {
     fill: none;
     stroke: #cfd3d5;
-    stroke-width: 2px;
+    stroke-width: 3px;
 }
-.link.highlighted { stroke: var(--accent); stroke-width: 2.75px; }
+.link.highlighted { stroke: var(--accent); stroke-width: 4px; }
 
 /* Marriage ties: a spouse sits beside their partner at the same generation,
    not below as if they were a child -- standard genealogy-chart convention.
