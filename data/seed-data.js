@@ -2036,8 +2036,24 @@ window.SEED_FAMILY_TREE = {
                 "wikipedia": "https://en.wikipedia.org/wiki/Mohammad_Hossein_Mirza_Firouz"
             },
             "role": "descendant",
-            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted. Married Safieh Nemazee in 1925, per the genealogy book's chart on p.96-97.",
+            "note": "Name, birth year and mother from a family genealogy record (via Encyclopaedia Iranica). That source's marriage/spouse claims for this generation were flagged as unreliable and have been omitted. Married twice: first Tahel-Molouk (mother of Maryam Firouz), then Safieh Nemazee in 1925 (mother of Eskandar and Narcy) -- per the genealogy book's chart on p.96-97 and family correspondence.",
             "children": [
+                {
+                    "id": "tahel-molouk-firouz",
+                    "name": "Tahel-Molouk",
+                    "nameFa": "",
+                    "born": null,
+                    "died": null,
+                    "bookCode": "",
+                    "childNumber": "",
+                    "mother": "",
+                    "photo": null,
+                    "residence": "",
+                    "social": {},
+                    "role": "spouse",
+                    "note": "Mohammad Hossein Mirza Firouz's first wife; mother of Maryam Firouz (I41). Not in the genealogy book's chart, which only shows his second wife Safieh Nemazee -- added directly by Nargess, Maryam Firouz's daughter, via family correspondence.",
+                    "children": []
+                },
                 {
                     "id": "safieh-nemazee",
                     "name": "Safieh Nemazee",
@@ -2051,7 +2067,7 @@ window.SEED_FAMILY_TREE = {
                     "residence": "",
                     "social": {},
                     "role": "spouse",
-                    "note": "Married Mohammad Hossein Mirza Firouz in 1925 (not in the genealogy book's index, but shown on its chart on p.96-97).",
+                    "note": "Mohammad Hossein Mirza Firouz's second wife, married in 1925 (not in the genealogy book's index, but shown on its chart on p.96-97); mother of Eskandar and Narcy. His first wife, Tahel-Molouk (mother of Maryam Firouz), predates her but isn't recorded in the book -- added directly by family correspondence.",
                     "children": []
                 },
                 {
@@ -2062,12 +2078,12 @@ window.SEED_FAMILY_TREE = {
                     "died": null,
                     "bookCode": "I41",
                     "childNumber": "",
-                    "mother": "",
+                    "mother": "Tahel-Molouk",
                     "photo": null,
                     "residence": "",
                     "social": {},
                     "role": "descendant",
-                    "note": "Daughter of Mohammad Hossein Mirza Firouz (this I41 position code is correct for her). For years this entry was conflated with the unrelated, much more famous \"Maryam Firouz\" (the Tudeh party figure, actually Batoul Khanum Ahshami's daughter -- see that entry) because a genealogy book chart page had listed the famous Maryam's husbands, photo and birth/death years under this position code by mistake. Corrected directly by Nargess, this Maryam Firouz's daughter and Mohammad Hossein Mirza Firouz's granddaughter, via family correspondence: this Maryam married Ali Mohammad Moghaddam-Maragheh; their children are Hormoz, Nargess, and Fereidoun (died at age 3) Moghaddam-Maragheh.",
+                    "note": "Daughter of Mohammad Hossein Mirza Firouz and his first wife, Tahel-Molouk (this I41 position code is correct for her). For years this entry was conflated with the unrelated, much more famous \"Maryam Firouz\" (the Tudeh party figure, actually Batoul Khanum Ahshami's daughter -- see that entry) because a genealogy book chart page had listed the famous Maryam's husbands, photo and birth/death years under this position code by mistake. Corrected directly by Nargess, this Maryam Firouz's daughter and Mohammad Hossein Mirza Firouz's granddaughter, via family correspondence: this Maryam married Ali Mohammad Moghaddam-Maragheh; their children are Hormoz, Fereidoun (died at age 3), and Nargess Moghaddam-Maragheh.",
                     "children": [
                         {
                             "id": "ali-mohammad-moghaddam-maragheh-i41a",
