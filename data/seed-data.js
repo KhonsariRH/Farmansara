@@ -48,7 +48,7 @@ window.SEED_FAMILY_TREE = {
     "photo": "images/people/farmanfarma-root.jpg",
     "residence": "Tehran, Persia",
     "social": {"wikipedia": "https://fr.wikipedia.org/wiki/Abd-ol-Hossein_Farmanfarma"},
-    "note": "Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered 39 children currently recorded in this tree by 8 wives, in marriage order: Ezzat-ed-Dowleh Qajar (6), Mah Bagum Khanum/Mirmokri (1), Massoumeh Khanum Tafreshi (9), Batoul Khanum Ahshami (9), Fatemeh Khanum Alinaghi/Shirazi (7), Akhtarzaman Hormozian (1), Hamdam Khanum Talai (4), and Batoul Khanum Chizar Doost (2) -- names and per-wife counts confirmed by the genealogy book's own biography page for each wife, which also corrected several children below that earlier sources had numbered against the wrong wife. Batoul Khanum Ahshami's biography page states she had 9 children (5 sons, 4 daughters); the 9th -- her 4th daughter -- is Maryam Farman Farmaian (the Tudeh party figure), previously misplaced two generations down as a granddaughter via Mohammad Hossein Mirza Firouz due to an ambiguous cross-reference in the book, and corrected directly by a family member (a granddaughter of Mohammad Hossein Mirza Firouz, who confirmed the two same-named \"Maryam Firouz\" women in this family are different people -- see her entry and Maryam Firouz i41's entry for the full explanation). Every child below either has an independently verifiable Wikipedia article, a family genealogy record, or a position code from the genealogy book's index (the last group not yet cross-checked against the book's content pages). His parentage under Firuz Mirza Nosrat-ed-Dowleh I is confirmed directly by the original chart's reference branch (see the Qajar dynasty chart below). Root of this family tree. Source: Wikipedia + original document + genealogy book.",
+    "note": "Qajar prince; governor of several Persian provinces; briefly Prime Minister of Persia in 1915. Son of Prince Firuz Mirza Nosrat-ed-Dowleh I (1817-1886, 16th son of Abbas Mirza) and Hajieh Homa Khanoum. Fathered 39 children currently recorded in this tree by 8 wives, in marriage order: Ezzat-ed-Dowleh Qajar (6), Mah Bagum Khanum/Mirmokri (1), Massoumeh Khanum Tafreshi (9), Batoul Khanum Ahshami (9), Fatemeh Khanum Alinaghi/Shirazi (7), Akhtarzaman Hormozian (1), Hamdam Khanum Talai (4), and Batoul Khanum Chizar Doost (2) -- names and per-wife counts confirmed by the genealogy book's own biography page for each wife, which also corrected several children below that earlier sources had numbered against the wrong wife. Batoul Khanum Ahshami's biography page states she had 9 children (5 sons, 4 daughters); the 9th -- her 4th daughter -- is Maryam Farman Farmaian (the Tudeh party figure). Every child below either has an independently verifiable Wikipedia article, a family genealogy record, or a position code from the genealogy book's index (the last group not yet cross-checked against the book's content pages). His parentage under Firuz Mirza Nosrat-ed-Dowleh I is confirmed directly by the original chart's reference branch (see the Qajar dynasty chart below). Root of this family tree. Source: Wikipedia + original document + genealogy book.",
     "children": [
         {
             "id": "firouz-nosrat-ed-dowleh-iii",
@@ -2051,7 +2051,7 @@ window.SEED_FAMILY_TREE = {
                     "residence": "",
                     "social": {},
                     "role": "spouse",
-                    "note": "Mohammad Hossein Mirza Firouz's first wife; mother of Maryam Firouz (I41). Not in the genealogy book's chart, which only shows his second wife Safieh Nemazee -- added directly by Nargess, Maryam Firouz's daughter, via family correspondence.",
+                    "note": "Mohammad Hossein Mirza Firouz's first wife; mother of Maryam Firouz.",
                     "children": []
                 },
                 {
@@ -2067,7 +2067,7 @@ window.SEED_FAMILY_TREE = {
                     "residence": "",
                     "social": {},
                     "role": "spouse",
-                    "note": "Mohammad Hossein Mirza Firouz's second wife, married in 1925 (not in the genealogy book's index, but shown on its chart on p.96-97); mother of Eskandar and Narcy. His first wife, Tahel-Molouk (mother of Maryam Firouz), predates her but isn't recorded in the book -- added directly by family correspondence.",
+                    "note": "Mohammad Hossein Mirza Firouz's second wife, married in 1925, per the genealogy book's chart on p.96-97; mother of Eskandar and Narcy.",
                     "children": []
                 },
                 {
@@ -2083,7 +2083,7 @@ window.SEED_FAMILY_TREE = {
                     "residence": "",
                     "social": {},
                     "role": "descendant",
-                    "note": "Daughter of Mohammad Hossein Mirza Firouz and his first wife, Tahel-Molouk (this I41 position code is correct for her). For years this entry was conflated with the unrelated, much more famous \"Maryam Firouz\" (the Tudeh party figure, actually Batoul Khanum Ahshami's daughter -- see that entry) because a genealogy book chart page had listed the famous Maryam's husbands, photo and birth/death years under this position code by mistake. Corrected directly by Nargess, this Maryam Firouz's daughter and Mohammad Hossein Mirza Firouz's granddaughter, via family correspondence: this Maryam married Ali Mohammad Moghaddam-Maragheh; their children are Hormoz, Fereidoun (died at age 3), and Nargess Moghaddam-Maragheh.",
+                    "note": "Daughter of Mohammad Hossein Mirza Firouz and his first wife, Tahel-Molouk. Married Ali Mohammad Moghaddam-Maragheh; their children are Hormoz, Fereidoun (died at age 3), and Nargess Moghaddam-Maragheh.",
                     "children": [
                         {
                             "id": "ali-mohammad-moghaddam-maragheh-i41a",
@@ -2114,7 +2114,7 @@ window.SEED_FAMILY_TREE = {
                             "residence": "",
                             "social": {},
                             "role": "descendant",
-                            "note": "Son of Maryam Firouz (daughter of Mohammad Hossein Mirza Firouz) and Ali Mohammad Moghaddam-Maragheh. Confirmed directly by his sister Nargess via family correspondence.",
+                            "note": "Son of Maryam Firouz and Ali Mohammad Moghaddam-Maragheh.",
                             "children": [
                                 {
                                     "id": "arabella-arsanis-tamrazi-i411a",
@@ -2147,7 +2147,7 @@ window.SEED_FAMILY_TREE = {
                             "residence": "",
                             "social": {},
                             "role": "descendant",
-                            "note": "Daughter of Maryam Firouz (daughter of Mohammad Hossein Mirza Firouz) and Ali Mohammad Moghaddam-Maragheh. Reached out directly via family correspondence to correct this whole branch, and to disentangle her mother's identity from the unrelated, more famous \"Maryam Firouz\" the two had been conflated with.",
+                            "note": "Daughter of Maryam Firouz and Ali Mohammad Moghaddam-Maragheh.",
                             "children": []
                         },
                         {
@@ -2162,7 +2162,7 @@ window.SEED_FAMILY_TREE = {
                             "residence": "",
                             "social": {},
                             "role": "descendant",
-                            "note": "Died at age 3. Added directly by his sister Nargess via family correspondence.",
+                            "note": "Died at age 3.",
                             "children": []
                         }
                     ]
@@ -4167,13 +4167,13 @@ window.SEED_FAMILY_TREE = {
             "born": 1913,
             "died": 2008,
             "bookCode": "IV1",
-            "childNumber": "Daughter of Batoul Khanum Ahshami; her birth year (1913) predates the currently-recorded MehrMah (1915), so she was almost certainly Batoul Khanum's eldest recorded child -- but the book's own overall/per-wife numbering for the rest of this wife's children (and everyone born after 1913 across all wives) hasn't been re-verified against that, so those numbers may now be off by one",
+            "childNumber": "Likely Batoul Khanum Ahshami's eldest recorded child (born 1913, before the previously-earliest-recorded MehrMah in 1915)",
             "mother": "Batoul Khanum Ahshami (wife #4 of 8 recorded wives)",
             "photo": "images/people/maryam-firouz.jpg",
             "residence": "Tehran, Iran",
             "social": {"wikipedia": "https://fr.wikipedia.org/wiki/Maryam_Farman_Farmaian"},
             "role": "descendant",
-            "note": "Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women's section of Iran's Tudeh party. For years misplaced two generations down as a granddaughter of Farmanfarma (daughter of Ezzat-ed-Dowleh's son Mohammad Hossein Mirza Firouz) rather than his own daughter, because a genealogy book chart page had cross-referenced her under that branch's I41 position code by mistake -- the same page that gives her birth/death years and photo used here is headed \"Descendants of Batoul Khanum\" (wife #4), and Batoul Khanum's own biography page independently states she had 9 children (5 sons, 4 daughters) though only 8 had been identified, leaving exactly one missing daughter. Corrected directly by a family member (a granddaughter of Mohammad Hossein Mirza Firouz, whose own actual grandmother -- also named Maryam Firouz -- had been conflated with this much more famous, unrelated namesake) via family correspondence. Married Abbasgholi Noury Esfandiary, then Nour-ed-din Kianoury. Source: Wikipedia + genealogy book + family correspondence.",
+            "note": "Linguist (Kurdish, Persian, Arabic, French, Russian, German, English); founded the women's section of Iran's Tudeh party. Married Abbasgholi Noury Esfandiary, then Nour-ed-din Kianoury. Source: Wikipedia + genealogy book.",
             "children": [
                 {
                     "id": "afsaneh-noury-esfandiary-i413",
